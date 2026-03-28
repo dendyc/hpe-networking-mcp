@@ -17,8 +17,10 @@ def register_tools(mcp: FastMCP, config: ServerConfig) -> int:
         clients,
         devices,
         events,
+        monitoring,
         prompts,
         sites,
+        wlans,
     )
 
     sites.register(mcp)
@@ -26,7 +28,9 @@ def register_tools(mcp: FastMCP, config: ServerConfig) -> int:
     clients.register(mcp)
     alerts.register(mcp)
     events.register(mcp)
+    monitoring.register(mcp)
+    wlans.register(mcp)
     prompts.register(mcp)
 
     logger.info("Central: registered tools and prompts")
-    return 10  # number of tools + prompts registered
+    return 14  # 13 tools + 11 prompts registered
