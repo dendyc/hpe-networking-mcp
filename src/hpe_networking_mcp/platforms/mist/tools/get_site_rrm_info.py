@@ -95,9 +95,7 @@ async def get_site_rrm_info(
     band: Annotated[
         Band,
         Field(
-            description=(
-                "802.11 band. Required when rrm_info_type is current_rrm_considerations or current_rrm_neighbors"
-            ),
+            description=("802.11 band. Required for current_rrm_considerations, current_rrm_neighbors, and events"),
             default=None,
         ),
     ],
@@ -125,17 +123,17 @@ async def get_site_rrm_info(
     limit: Annotated[
         int,
         Field(
-            description="Max number of results per page",
-            default=200,
+            description="Max number of results per page (events only; defaults to 200 when rrm_info_type=events)",
+            default=None,
         ),
-    ] = 200,
+    ],
     page: Annotated[
         int,
         Field(
-            description="Page number for pagination",
-            default=1,
+            description="Page number for pagination (events only; defaults to 1 when rrm_info_type=events)",
+            default=None,
         ),
-    ] = 1,
+    ],
 ) -> dict | list | str:
     """Retrieve Radio Resource Management (RRM) information."""
 
@@ -183,6 +181,14 @@ async def get_site_rrm_info(
                 {
                     "status_code": 400,
                     "message": ('`band` parameter is required when `rrm_info_type` is "current_rrm_neighbors".'),
+                }
+            )
+
+        if object_type.value == "events" and not band:
+            raise ToolError(
+                {
+                    "status_code": 400,
+                    "message": ('`band` parameter is required when `rrm_info_type` is "events".'),
                 }
             )
 
@@ -237,8 +243,8 @@ async def get_site_rrm_info(
                     start=str(start) if start else None,
                     end=str(end) if end else None,
                     duration=duration if duration else None,
-                    limit=limit,
-                    page=page,
+                    limit=limit if limit is not None else 200,
+                    page=page if page is not None else 1,
                 )
                 await process_response(response)
 
