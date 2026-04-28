@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0.0] - 2026-04-28
+
+### Added
+- **Aruba OS 8 / Mobility Conductor platform module** (seventh platform).
+  - 38 tools across 6 categories: 8 health/inventory, 4 client, 3 alert/audit, 4 WLAN/config, 7 troubleshooting, 12 write
+  - 9 guided prompts: aos8_triage_client, aos8_triage_ap, aos8_health_check, aos8_audit_change, aos8_rf_analysis, aos8_wlan_review, aos8_client_flood, aos8_compare_md_config, aos8_pre_change_check
+  - Token-reusing UIDARUBA session client with single-flight 401 refresh, asyncio.Lock-serialized token rotation, lazy login (deferred to first tool call), and explicit aclose() that logs out on shutdown
+  - Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS` (default false); every write returns `requires_write_memory_for`
+  - `aos8_write_memory` is the only path to persist staged config — never auto-called
+  - SSL verification enabled by default; opt-out emits a startup WARNING
+  - Five Docker secrets: `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port` (default 4343), `aos8_verify_ssl`
+- New repo-root **INSTRUCTIONS.md** — operator-facing documentation covering AOS8 config_path semantics, write_memory contract, show_command passthrough, Conductor-vs-standalone behavior, and the guided-prompt index. Distinct from the in-package AI-facing src/hpe_networking_mcp/INSTRUCTIONS.md.
+- AOS8 tool reference section in **docs/TOOLS.md**.
+- AOS8 row in README.md capability table; AOS8 secrets reference section; AOS8 added to platform auto-disable example.
+
+### Changed
+- README.md tool counts and architecture diagram updated to include AOS8 (38 + 9 prompts).
+- Bumped version to 2.4.0.0 (minor — additive platform).
+
+### Tests
+- 11+ new unit tests in tests/unit/test_aos8_prompts.py covering prompt registration and non-empty return contract for all 9 PROMPT-01..09 prompts.
+- Phase-5 baseline of 737 tests remains green; total now 767+ tests passing.
+
 ## [2.3.0.1] - 2026-04-27
 
 **Adds the `change-post-check` skill (partner to `change-pre-check`) and documents two pydantic-monty sandbox limits the LLM was discovering at runtime.**
