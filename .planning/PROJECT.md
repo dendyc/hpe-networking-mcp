@@ -39,18 +39,24 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ health tool updated to probe AOS8 alongside existing platforms — Validated in Phase 2: api-client
 - ✓ Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true` with elicitation confirmation — Validated in Phase 2: api-client
 
+### Validated
+
+*(Validated in Phase 3: read-tools)*
+
+- ✓ AOS8 supports both Mobility Conductor hierarchy and standalone controllers — Validated in Phase 3: read-tools
+- ✓ config_path defaults to `/md`, overridable per-call for targeted MD/AP-group operations — Validated in Phase 3: read-tools
+- ✓ Health & devices: controller inventory, AP inventory, device stats, firmware status (READ-01..08) — Validated in Phase 3: read-tools
+- ✓ Client connectivity: client lookup by MAC/IP/username, connection state, association details (READ-09..12) — Validated in Phase 3: read-tools
+- ✓ Alerts & events: active alerts, event history, audit logs (READ-13..15) — Validated in Phase 3: read-tools
+- ✓ WLAN & config: SSID/WLAN profile read, configuration object read (READ-16..19) — Validated in Phase 3: read-tools
+- ✓ Troubleshooting: ping, traceroute, show command passthrough, logs, controller stats, ARM history, RF monitor (READ-20..26) — Validated in Phase 3: read-tools
+- ✓ Dynamic mode: 3 meta-tools (`aos8_list_tools`, `aos8_get_tool_schema`, `aos8_invoke_tool`) wired via `build_meta_tools` — Validated in Phase 3: read-tools
+
 ### Active
 
-*(New work — this project)*
+*(New work — remaining phases)*
 
-- [ ] AOS8 supports both Mobility Conductor hierarchy and standalone controllers
-- [ ] config_path defaults to `/md`, overridable per-call for targeted MD/AP-group operations
-- [ ] Health & devices: controller inventory, AP inventory, device stats, firmware status
-- [ ] Client connectivity: client lookup by MAC/IP/username, connection state, association details
-- [ ] Troubleshooting: ping, traceroute, show command passthrough, client disconnect
-- [ ] Alerts & events: active alerts, event history, audit logs
-- [ ] WLAN & config: SSID/WLAN profile read, configuration object read/write
-- [ ] Dynamic mode: 3 meta-tools (`aos8_list_tools`, `aos8_get_tool_schema`, `aos8_invoke_tool`)
+- [ ] AOS8 write tools: WLAN create/update, AP reboot, client disconnect, write-memory
 - [ ] Guided prompts for common AOS8 workflows (parity with Central's 12 prompts)
 
 ### Out of Scope
@@ -126,4 +132,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 after Phase 2 (api-client) completion*
+*Last updated: 2026-04-28 after Phase 3 (read-tools) completion*
