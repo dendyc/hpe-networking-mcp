@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 03
-last_updated: "2026-04-28T13:47:59.633Z"
+last_updated: "2026-04-28T13:50:39.499Z"
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 14
-  completed_plans: 9
+  completed_plans: 11
 ---
 
 # Project State
@@ -63,6 +63,7 @@ Current focus: Phase 2 complete — proceed to Phase 3 (Read Tools)
 - [Phase 03-01]: Test contracts pin exact endpoint paths and parameter dicts so Plans 02-06 have zero ambiguity when implementing each of the 26 read tools
 - [Phase 03-01]: ssid_prof.json fixture intentionally omits _meta key — config-object responses use _data wrapper, not the showcommand _meta column-schema field
 - [Phase 03-read-tools]: [Phase 03-05]: WLAN read tools route via get_object() (config-object endpoint) not run_show — distinct API surface from showcommand-based reads
+- [Phase 03-read-tools]: Plan 03-06: aos8_show_command preserves original command casing; only the prefix CHECK is case-insensitive — keeps test_show_command_case_insensitive contract minimal
 
 ### Open Todos
 
