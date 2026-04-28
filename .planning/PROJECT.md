@@ -28,11 +28,21 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ Middleware stack: null-strip, validation-catch, elicitation, retry (5xx + 429) — existing
 - ✓ Non-root Docker container (mcpuser uid 1000), Streamable HTTP on port 8000 — existing
 
+### Validated
+
+*(Validated in Phase 1 & Phase 2)*
+
+- ✓ AOS8 API client with UIDARUBA token auth (login/logout, session reuse, HTTPS port 4343) — Validated in Phase 2: api-client
+- ✓ Docker secrets: `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port`, `aos8_verify_ssl` — Validated in Phase 1: foundation
+- ✓ Unit tests with mocked API responses (no live system required for CI) — Validated in Phase 2: api-client
+- ✓ Platform auto-disable if AOS8 secrets absent/empty (consistent with other platforms) — Validated in Phase 2: api-client
+- ✓ health tool updated to probe AOS8 alongside existing platforms — Validated in Phase 2: api-client
+- ✓ Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true` with elicitation confirmation — Validated in Phase 2: api-client
+
 ### Active
 
 *(New work — this project)*
 
-- [ ] AOS8 API client with UIDARUBA token auth (login/logout, session reuse, HTTPS port 4343)
 - [ ] AOS8 supports both Mobility Conductor hierarchy and standalone controllers
 - [ ] config_path defaults to `/md`, overridable per-call for targeted MD/AP-group operations
 - [ ] Health & devices: controller inventory, AP inventory, device stats, firmware status
@@ -40,13 +50,8 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - [ ] Troubleshooting: ping, traceroute, show command passthrough, client disconnect
 - [ ] Alerts & events: active alerts, event history, audit logs
 - [ ] WLAN & config: SSID/WLAN profile read, configuration object read/write
-- [ ] Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true` with elicitation confirmation
 - [ ] Dynamic mode: 3 meta-tools (`aos8_list_tools`, `aos8_get_tool_schema`, `aos8_invoke_tool`)
 - [ ] Guided prompts for common AOS8 workflows (parity with Central's 12 prompts)
-- [ ] Docker secrets: `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port`, `aos8_verify_ssl`
-- [ ] Unit tests with mocked API responses (no live system required for CI)
-- [ ] Platform auto-disable if AOS8 secrets absent/empty (consistent with other platforms)
-- [ ] health tool updated to probe AOS8 alongside existing platforms
 
 ### Out of Scope
 
@@ -121,4 +126,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-27 after initialization*
+*Last updated: 2026-04-28 after Phase 2 (api-client) completion*
