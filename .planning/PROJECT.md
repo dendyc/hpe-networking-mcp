@@ -61,11 +61,20 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ `aos8_write_memory` uses dedicated `/v1/configuration/object/write_memory` endpoint; manage_X tools return `requires_write_memory_for=[config_path]` — Validated in Phase 5: write-tools
 - ✓ TDD red→green cycle: 44 contract tests in `test_aos8_write.py`; full suite 737/737 passing — Validated in Phase 5: write-tools
 
+### Validated
+
+*(Validated in Phase 6: guided-prompts-documentation)*
+
+- ✓ 9 AOS8 guided prompts (PROMPT-01..09): triage_client, triage_ap, health_check, audit_change, rf_analysis, wlan_review, client_flood, compare_md_config, pre_change_check — Validated in Phase 6: guided-prompts-documentation
+- ✓ `aos8_pre_change_check` explicitly surfaces `aos8_write_memory` contract (WRITE-12) to operators — Validated in Phase 6: guided-prompts-documentation
+- ✓ Operator-facing `INSTRUCTIONS.md` at repo root (config_path semantics, write_memory contract, show_command, Conductor vs. standalone, prompt index) — Validated in Phase 6: guided-prompts-documentation
+- ✓ `docs/TOOLS.md` AOS8 section: all 38 tools + 9 prompts documented — Validated in Phase 6: guided-prompts-documentation
+- ✓ README.md AOS8 capability row, secrets reference, auto-disable example, "38 + 9 prompts" count — Validated in Phase 6: guided-prompts-documentation
+- ✓ Version bumped to 2.4.0.0; CHANGELOG.md [2.4.0.0] entry complete — Validated in Phase 6: guided-prompts-documentation
+
 ### Active
 
-*(New work — remaining phases)*
-
-- [ ] Guided prompts for common AOS8 workflows (parity with Central's 12 prompts)
+*(No active requirements — all mileston work complete through Phase 6)*
 
 ### Out of Scope
 
