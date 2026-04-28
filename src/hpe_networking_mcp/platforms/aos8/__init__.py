@@ -32,9 +32,7 @@ def register_tools(mcp: FastMCP, config: ServerConfig) -> int:
 
     mode = config.tool_mode
     if mode == "dynamic":
-        logger.info(
-            "AOS8: 0 underlying tools registered (dynamic mode — meta-tools deferred until Phase 3)"
-        )
+        logger.info("AOS8: 0 underlying tools registered (dynamic mode — meta-tools deferred until Phase 3)")
     elif mode == "code":
         logger.info("AOS8: 0 underlying tools registered (code mode)")
     else:
