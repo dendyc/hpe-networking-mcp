@@ -52,11 +52,19 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ Troubleshooting: ping, traceroute, show command passthrough, logs, controller stats, ARM history, RF monitor (READ-20..26) — Validated in Phase 3: read-tools
 - ✓ Dynamic mode: 3 meta-tools (`aos8_list_tools`, `aos8_get_tool_schema`, `aos8_invoke_tool`) wired via `build_meta_tools` — Validated in Phase 3: read-tools
 
+### Validated
+
+*(Validated in Phase 5: write-tools)*
+
+- ✓ AOS8 write tools: 12 WRITE tools (WRITE-01..12) — SSID/VAP/AP-group/role/VLAN/AAA/ACL/netdest config, client disconnect, AP reboot, write-memory — Validated in Phase 5: write-tools
+- ✓ Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true`; elicitation middleware extended for `{"aos8_write","aos8_write_delete"}` tags — Validated in Phase 5: write-tools
+- ✓ `aos8_write_memory` uses dedicated `/v1/configuration/object/write_memory` endpoint; manage_X tools return `requires_write_memory_for=[config_path]` — Validated in Phase 5: write-tools
+- ✓ TDD red→green cycle: 44 contract tests in `test_aos8_write.py`; full suite 737/737 passing — Validated in Phase 5: write-tools
+
 ### Active
 
 *(New work — remaining phases)*
 
-- [ ] AOS8 write tools: WLAN create/update, AP reboot, client disconnect, write-memory
 - [ ] Guided prompts for common AOS8 workflows (parity with Central's 12 prompts)
 
 ### Out of Scope
@@ -132,4 +140,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 after Phase 3 (read-tools) completion*
+*Last updated: 2026-04-28 after Phase 5 (write-tools) completion*
