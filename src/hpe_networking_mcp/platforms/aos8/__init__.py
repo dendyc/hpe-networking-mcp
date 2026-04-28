@@ -2,39 +2,81 @@
 
 from __future__ import annotations
 
+import importlib
+
 from fastmcp import FastMCP
 from loguru import logger
 
 from hpe_networking_mcp.config import ServerConfig
+from hpe_networking_mcp.platforms._common.meta_tools import build_meta_tools
 
-TOOLS: dict[str, list[str]] = {}  # populated in Phase 3
+TOOLS: dict[str, list[str]] = {
+    "health": [
+        "aos8_get_controllers",
+        "aos8_get_ap_database",
+        "aos8_get_active_aps",
+        "aos8_get_ap_detail",
+        "aos8_get_bss_table",
+        "aos8_get_radio_summary",
+        "aos8_get_version",
+        "aos8_get_licenses",
+    ],
+    "clients": [
+        "aos8_get_clients",
+        "aos8_find_client",
+        "aos8_get_client_detail",
+        "aos8_get_client_history",
+    ],
+    "alerts": [
+        "aos8_get_alarms",
+        "aos8_get_audit_trail",
+        "aos8_get_events",
+    ],
+    "wlan": [
+        "aos8_get_ssid_profiles",
+        "aos8_get_virtual_aps",
+        "aos8_get_ap_groups",
+        "aos8_get_user_roles",
+    ],
+    "troubleshooting": [
+        "aos8_ping",
+        "aos8_traceroute",
+        "aos8_show_command",
+        "aos8_get_logs",
+        "aos8_get_controller_stats",
+        "aos8_get_arm_history",
+        "aos8_get_rf_monitor",
+    ],
+}
 
 __all__ = ["TOOLS", "register_tools"]
 
 
 def register_tools(mcp: FastMCP, config: ServerConfig) -> int:
-    """Wire up the AOS8 platform.
-
-    Phase 2: stub — sets the _registry.mcp holder so future tool-module imports
-    work, but registers zero tools (tools/ is empty). Phase 3 will populate
-    TOOLS and call build_meta_tools.
+    """Register all AOS8 read tools and (in dynamic mode) the meta-tools.
 
     Args:
-        mcp: The FastMCP server instance to register tools with.
-        config: Server configuration containing AOS8 secrets and tool mode.
+        mcp: The FastMCP server instance.
+        config: Server configuration containing tool_mode.
 
     Returns:
-        The number of underlying tools registered (0 in Phase 2).
+        The number of underlying tools registered (always 26 in Phase 3).
     """
     from hpe_networking_mcp.platforms.aos8 import _registry
 
     _registry.mcp = mcp
 
+    total = 0
+    for category, names in TOOLS.items():
+        importlib.import_module(f"hpe_networking_mcp.platforms.aos8.tools.{category}")
+        total += len(names)
+
     mode = config.tool_mode
     if mode == "dynamic":
-        logger.info("AOS8: 0 underlying tools registered (dynamic mode — meta-tools deferred until Phase 3)")
+        build_meta_tools("aos8", mcp)
+        logger.info("AOS8: registered {} underlying tools + 3 meta-tools (dynamic mode)", total)
     elif mode == "code":
-        logger.info("AOS8: 0 underlying tools registered (code mode)")
+        logger.info("AOS8: registered {} tools (code mode)", total)
     else:
-        logger.info("AOS8: 0 tools registered (static mode)")
-    return 0
+        logger.info("AOS8: registered {} tools (static mode)", total)
+    return total
