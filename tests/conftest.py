@@ -22,6 +22,7 @@ def _install_registry_stubs() -> None:
     stubbing. Scoped to both unit and integration tests; idempotent.
     """
     platform_registries = (
+        "hpe_networking_mcp.platforms.aos8._registry",
         "hpe_networking_mcp.platforms.apstra._registry",
         "hpe_networking_mcp.platforms.central._registry",
         "hpe_networking_mcp.platforms.clearpass._registry",
