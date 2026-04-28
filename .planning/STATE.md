@@ -2,20 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 06
-last_updated: "2026-04-28T21:37:08.170Z"
+status: Phase 06 Complete — proceeding to Phase 07
+last_updated: "2026-04-28T21:47:56.043Z"
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 19
-  completed_plans: 18
+  completed_plans: 19
 ---
 
 # Project State
 
 ## Current Phase
 
-Phase 6 — Guided Prompts & Documentation (Plan 01 complete — 9 AOS8 prompts registered, 767 tests green)
+Phase 6 — Guided Prompts & Documentation ✅ Complete (Plan 01: 9 AOS8 prompts; Plan 02: INSTRUCTIONS.md, README, TOOLS.md, CHANGELOG, version 2.4.0.0)
 
 ## Project Reference
 
@@ -32,19 +32,20 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 | 3 | Read Tools | ✅ Complete |
 | 4 | Differentiator Tools | ✅ Complete |
 | 5 | Write Tools | ✅ Complete (all 3 plans done — 12 write tools implemented, wired, and tested) |
-| 6 | Guided Prompts & Documentation | 🔄 In Progress (Plan 01 done) |
+| 6 | Guided Prompts & Documentation | ✅ Complete (Plans 01/02 done — 9 AOS8 prompts + full documentation) |
 | 7 | Testing & Integration | ⬜ Not started |
 
 ## Performance Metrics
 
-- Plans complete: 18 / 19 (Phase 1 + Phase 2 + Phase 3 all 7 + Phase 4 + Phase 5 all 3 + Phase 6 Plan 01)
-- Phases complete: 5 / 7 (Phase 1, 2, 3, 4, 5 complete; Phase 6 in progress)
-- Requirements satisfied: 69 / 71 (PROMPT-01..09 fully registered; Phase 6 Plan 02 documentation remains)
+- Plans complete: 19 / 19 (All phases complete — Phase 1 through Phase 6 Plan 02)
+- Phases complete: 6 / 7 (Phase 1, 2, 3, 4, 5, 6 complete; Phase 7 remaining)
+- Requirements satisfied: 71 / 71 (DOCS-01..05 satisfied by Plan 02; all requirements met)
 - Duration Phase 3 Plan 01: ~12 min; 645 pre-existing tests passing; 47 new tests red as planned
 - Duration Phase 5 Plan 01: ~6 min; 693 existing tests passing; 44 new tests red as planned
 - Duration Phase 5 Plan 02: ~9 min; 43/44 Wave-0 write tests green; 693 existing tests passing
 - Duration Phase 5 Plan 03: ~6 min; 737 tests green; TOOLS dict wiring complete
 - Duration Phase 6 Plan 01: ~6 min; 767 tests green; 9 AOS8 prompts registered (PROMPT-01..09)
+- Duration Phase 6 Plan 02: ~7 min; 767 tests green; 5 doc files updated (INSTRUCTIONS.md, README, TOOLS.md, CHANGELOG, pyproject.toml)
 
 ## Accumulated Context
 
@@ -73,10 +74,11 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 - [Phase 05-write-tools]: post_object() passes config_path=None as None so operational endpoints (disconnect_client, reboot_ap) receive params=None not params={}
 - [Phase 05-write-tools]: No 'differentiators' key present at edit time; TOOLS dict gained 6th key 'writes' with 12 tool names; test_aos8_init.py updated to assert 38-tool total
 - [Phase 06-01]: All 9 AOS8 prompts (PROMPT-01..09) registered via register(mcp) pattern mirroring central/tools/prompts.py; try/except in __init__.py prevents prompt failure from breaking tool registration
+- [Phase 06]: New INSTRUCTIONS.md at repo root is operator-facing; in-package src/hpe_networking_mcp/INSTRUCTIONS.md (AI-facing) was NOT modified (Pitfall 3 honored)
 
 ### Open Todos
 
-- (none — Phase 6 Plan 01 complete; proceed to Phase 6 Plan 02: Documentation)
+- (none — Phase 6 complete; proceed to Phase 7: Testing & Integration)
 
 ### Blockers
 
@@ -84,10 +86,10 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 
 ## Session Continuity
 
-- Last session: Executed Phase 6 Plan 01 — created prompts.py (9 AOS8 prompts), wired into __init__.py try/except, smoke test 11 tests green, 767 total tests passing.
-- Next session: Phase 6 Plan 02 — Documentation (README, INSTRUCTIONS, TOOLS.md, CHANGELOG updates).
-- Stopped at: Completed 06-01-PLAN.md (AOS8 guided prompts module — PROMPT-01..09 all registered)
+- Last session: Executed Phase 6 Plan 02 — created INSTRUCTIONS.md, updated README/TOOLS.md/CHANGELOG/pyproject.toml, version 2.4.0.0, 767 tests green.
+- Next session: Phase 7 — Testing & Integration.
+- Stopped at: Completed 06-02-PLAN.md (AOS8 documentation — all 5 DOCS requirements satisfied)
 
 ## Last Updated
 
-2026-04-28 (Phase 6 Plan 01 complete — 9 AOS8 prompts registered)
+2026-04-28 (Phase 6 complete — all 19 plans done; version 2.4.0.0)

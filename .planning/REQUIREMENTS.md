@@ -102,11 +102,11 @@
 - [ ] **TEST-06**: Existing platform tests (Mist, Central, GreenLake, ClearPass, Apstra, Axis) all pass without modification
 
 ### DOCS — Documentation
-- [ ] **DOCS-01**: `INSTRUCTIONS.md` updated with AOS8 section covering config_path semantics, write_memory contract, show_command usage, and Conductor vs standalone behavior
-- [ ] **DOCS-02**: `README.md` updated — AOS8 row in capability table, AOS8 secrets reference section, platform auto-disable example updated, tool count updated
-- [ ] **DOCS-03**: `CHANGELOG.md` updated with new version entry
-- [ ] **DOCS-04**: `docs/TOOLS.md` updated with AOS8 tool reference
-- [ ] **DOCS-05**: `pyproject.toml` version bumped
+- [x] **DOCS-01**: `INSTRUCTIONS.md` updated with AOS8 section covering config_path semantics, write_memory contract, show_command usage, and Conductor vs standalone behavior
+- [x] **DOCS-02**: `README.md` updated — AOS8 row in capability table, AOS8 secrets reference section, platform auto-disable example updated, tool count updated
+- [x] **DOCS-03**: `CHANGELOG.md` updated with new version entry
+- [x] **DOCS-04**: `docs/TOOLS.md` updated with AOS8 tool reference
+- [x] **DOCS-05**: `pyproject.toml` version bumped
 
 ---
 
@@ -205,11 +205,11 @@
 | PROMPT-07 | Phase 6 — Guided Prompts & Documentation | Complete |
 | PROMPT-08 | Phase 6 — Guided Prompts & Documentation | Complete |
 | PROMPT-09 | Phase 6 — Guided Prompts & Documentation | Complete |
-| DOCS-01 | Phase 6 — Guided Prompts & Documentation | Pending |
-| DOCS-02 | Phase 6 — Guided Prompts & Documentation | Pending |
-| DOCS-03 | Phase 6 — Guided Prompts & Documentation | Pending |
-| DOCS-04 | Phase 6 — Guided Prompts & Documentation | Pending |
-| DOCS-05 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-01 | Phase 6 — Guided Prompts & Documentation | Complete |
+| DOCS-02 | Phase 6 — Guided Prompts & Documentation | Complete |
+| DOCS-03 | Phase 6 — Guided Prompts & Documentation | Complete |
+| DOCS-04 | Phase 6 — Guided Prompts & Documentation | Complete |
+| DOCS-05 | Phase 6 — Guided Prompts & Documentation | Complete |
 | TEST-01 | Phase 7 — Testing & Integration | Pending |
 | TEST-02 | Phase 7 — Testing & Integration | Pending |
 | TEST-03 | Phase 7 — Testing & Integration | Pending |
