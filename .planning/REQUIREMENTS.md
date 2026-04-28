@@ -69,18 +69,18 @@
 - [ ] **DIFF-09**: `aos8_get_md_health_check` — unified health report for a specific MD or config_path scope (equivalent of cross-platform site_health_check for AOS8)
 
 ### WRITE — Write Tools (gated behind ENABLE_AOS8_WRITE_TOOLS=true)
-- [ ] **WRITE-01**: `aos8_manage_ssid_profile` — create, update, or delete an SSID profile; requires explicit `config_path`; response includes `requires_write_memory_for` field
-- [ ] **WRITE-02**: `aos8_manage_virtual_ap` — create, update, or delete a virtual AP profile
-- [ ] **WRITE-03**: `aos8_manage_ap_group` — create, update, or delete an AP group
-- [ ] **WRITE-04**: `aos8_manage_user_role` — create, update, or delete a user role
-- [ ] **WRITE-05**: `aos8_manage_vlan` — create, update, or delete a VLAN definition
-- [ ] **WRITE-06**: `aos8_manage_aaa_server` — create, update, or delete an AAA server entry
-- [ ] **WRITE-07**: `aos8_manage_aaa_server_group` — create, update, or delete an AAA server group
-- [ ] **WRITE-08**: `aos8_manage_acl` — create, update, or delete a session ACL
-- [ ] **WRITE-09**: `aos8_manage_netdestination` — create, update, or delete a network destination object
-- [ ] **WRITE-10**: `aos8_disconnect_client` — force-disconnect a wireless client by MAC address
-- [ ] **WRITE-11**: `aos8_reboot_ap` — reboot a specific AP by name
-- [ ] **WRITE-12**: `aos8_write_memory` — persist staged config changes to startup config for a given config_path; this is always an explicit operator action, never called automatically by other write tools
+- [x] **WRITE-01**: `aos8_manage_ssid_profile` — create, update, or delete an SSID profile; requires explicit `config_path`; response includes `requires_write_memory_for` field
+- [x] **WRITE-02**: `aos8_manage_virtual_ap` — create, update, or delete a virtual AP profile
+- [x] **WRITE-03**: `aos8_manage_ap_group` — create, update, or delete an AP group
+- [x] **WRITE-04**: `aos8_manage_user_role` — create, update, or delete a user role
+- [x] **WRITE-05**: `aos8_manage_vlan` — create, update, or delete a VLAN definition
+- [x] **WRITE-06**: `aos8_manage_aaa_server` — create, update, or delete an AAA server entry
+- [x] **WRITE-07**: `aos8_manage_aaa_server_group` — create, update, or delete an AAA server group
+- [x] **WRITE-08**: `aos8_manage_acl` — create, update, or delete a session ACL
+- [x] **WRITE-09**: `aos8_manage_netdestination` — create, update, or delete a network destination object
+- [x] **WRITE-10**: `aos8_disconnect_client` — force-disconnect a wireless client by MAC address
+- [x] **WRITE-11**: `aos8_reboot_ap` — reboot a specific AP by name
+- [x] **WRITE-12**: `aos8_write_memory` — persist staged config changes to startup config for a given config_path; this is always an explicit operator action, never called automatically by other write tools
 
 ### PROMPT — Guided Prompts
 - [ ] **PROMPT-01**: `aos8_triage_client` — multi-step workflow: find client, check AP health, review auth events, identify likely root cause
@@ -184,18 +184,18 @@
 | DIFF-07 | Phase 4 — Differentiator Tools | Pending |
 | DIFF-08 | Phase 4 — Differentiator Tools | Pending |
 | DIFF-09 | Phase 4 — Differentiator Tools | Pending |
-| WRITE-01 | Phase 5 — Write Tools | Pending |
-| WRITE-02 | Phase 5 — Write Tools | Pending |
-| WRITE-03 | Phase 5 — Write Tools | Pending |
-| WRITE-04 | Phase 5 — Write Tools | Pending |
-| WRITE-05 | Phase 5 — Write Tools | Pending |
-| WRITE-06 | Phase 5 — Write Tools | Pending |
-| WRITE-07 | Phase 5 — Write Tools | Pending |
-| WRITE-08 | Phase 5 — Write Tools | Pending |
-| WRITE-09 | Phase 5 — Write Tools | Pending |
-| WRITE-10 | Phase 5 — Write Tools | Pending |
-| WRITE-11 | Phase 5 — Write Tools | Pending |
-| WRITE-12 | Phase 5 — Write Tools | Pending |
+| WRITE-01 | Phase 5 — Write Tools | Complete |
+| WRITE-02 | Phase 5 — Write Tools | Complete |
+| WRITE-03 | Phase 5 — Write Tools | Complete |
+| WRITE-04 | Phase 5 — Write Tools | Complete |
+| WRITE-05 | Phase 5 — Write Tools | Complete |
+| WRITE-06 | Phase 5 — Write Tools | Complete |
+| WRITE-07 | Phase 5 — Write Tools | Complete |
+| WRITE-08 | Phase 5 — Write Tools | Complete |
+| WRITE-09 | Phase 5 — Write Tools | Complete |
+| WRITE-10 | Phase 5 — Write Tools | Complete |
+| WRITE-11 | Phase 5 — Write Tools | Complete |
+| WRITE-12 | Phase 5 — Write Tools | Complete |
 | PROMPT-01 | Phase 6 — Guided Prompts & Documentation | Pending |
 | PROMPT-02 | Phase 6 — Guided Prompts & Documentation | Pending |
 | PROMPT-03 | Phase 6 — Guided Prompts & Documentation | Pending |
