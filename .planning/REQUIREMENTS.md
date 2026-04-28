@@ -3,11 +3,11 @@
 ## v1 Requirements
 
 ### FOUND — Platform Foundation
-- [ ] **FOUND-01**: AOS8Secrets dataclass loads `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port` (default 4343), `aos8_verify_ssl` from Docker secrets via `_read_secret()`
-- [ ] **FOUND-02**: Platform auto-disables gracefully when any required secret is absent or empty — no server crash
+- [x] **FOUND-01**: AOS8Secrets dataclass loads `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port` (default 4343), `aos8_verify_ssl` from Docker secrets via `_read_secret()`
+- [x] **FOUND-02**: Platform auto-disables gracefully when any required secret is absent or empty — no server crash
 - [x] **FOUND-03**: `ENABLE_AOS8_WRITE_TOOLS` environment variable gates write tool visibility (default false), consistent with all other platforms
 - [x] **FOUND-04**: `aos8` registered in `_common/tool_registry.py` REGISTRIES, write-tag sets, and gate-config map
-- [ ] **FOUND-05**: `docker-compose.yml` updated with 5 AOS8 secrets and `ENABLE_AOS8_WRITE_TOOLS` env var; `.example` template files created for each secret
+- [x] **FOUND-05**: `docker-compose.yml` updated with 5 AOS8 secrets and `ENABLE_AOS8_WRITE_TOOLS` env var; `.example` template files created for each secret
 
 ### CLIENT — API Client
 - [ ] **CLIENT-01**: `AOS8Client` authenticates via POST login, stores UIDARUBA session token in httpx cookie jar and `self._token`; token is reused across all subsequent calls (not re-login per request)
@@ -134,11 +134,11 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| FOUND-01 | Phase 1 — Platform Foundation | Pending |
-| FOUND-02 | Phase 1 — Platform Foundation | Pending |
+| FOUND-01 | Phase 1 — Platform Foundation | Complete |
+| FOUND-02 | Phase 1 — Platform Foundation | Complete |
 | FOUND-03 | Phase 1 — Platform Foundation | Complete |
 | FOUND-04 | Phase 1 — Platform Foundation | Complete |
-| FOUND-05 | Phase 1 — Platform Foundation | Pending |
+| FOUND-05 | Phase 1 — Platform Foundation | Complete |
 | CLIENT-01 | Phase 2 — API Client | Pending |
 | CLIENT-02 | Phase 2 — API Client | Pending |
 | CLIENT-03 | Phase 2 — API Client | Pending |

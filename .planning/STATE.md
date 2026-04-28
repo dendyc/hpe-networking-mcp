@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-04-28T03:56:24.427Z"
+last_updated: "2026-04-28T04:01:07.807Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -48,6 +48,7 @@ Current focus: Awaiting Phase 1 (Platform Foundation)
 *(See PROJECT.md → Key Decisions; logged at phase transitions)*
 
 - [Phase 01]: AOS8 registered in REGISTRIES, _WRITE_TAG_BY_PLATFORM, _GATE_CONFIG_ATTR with enable_aos8_write_tools gate; enable_aos8_write_tools added to ServerConfig
+- [Phase 01-platform-foundation]: AOS8 test keys added to shared secrets_dir fixture following apstra precedent
 
 ### Open Todos
 
