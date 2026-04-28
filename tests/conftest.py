@@ -4,6 +4,7 @@ import importlib
 from unittest.mock import MagicMock
 
 import pytest
+from loguru import logger as _loguru_logger
 
 
 def _install_registry_stubs() -> None:
@@ -75,6 +76,25 @@ def secrets_dir(tmp_path):
     for name, value in secrets.items():
         (tmp_path / name).write_text(value)
     return tmp_path
+
+
+@pytest.fixture
+def loguru_capture():
+    """Capture all loguru log records emitted during a test as a list of strings.
+
+    Returns the list. Each element is the fully-formatted log line. Used by
+    tests that must assert a secret never appears in any log output.
+    """
+    captured: list[str] = []
+    sink_id = _loguru_logger.add(
+        lambda msg: captured.append(str(msg)),
+        level="TRACE",
+        format="{level} | {name}:{function}:{line} | {message}",
+    )
+    try:
+        yield captured
+    finally:
+        _loguru_logger.remove(sink_id)
 
 
 @pytest.fixture
