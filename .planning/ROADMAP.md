@@ -59,7 +59,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   4. An operator can read every SSID profile, virtual AP, AP group, and user role definition currently configured.
   5. An operator can run ping, traceroute, and any AOS8 CLI show command through the MCP and receive structured JSON (with `_meta` stripped).
 **Plans:** 7 plans
-  - [ ] 03-01-PLAN.md — Wave 0 scaffold: conftest stub + tools/__init__.py + _helpers.py + JSON fixtures + 26 red tests
+  - [x] 03-01-PLAN.md — Wave 0 scaffold: conftest stub + tools/__init__.py + _helpers.py + JSON fixtures + 26 red tests
   - [ ] 03-02-PLAN.md — health.py: READ-01..08 (controllers, AP database/active/detail, BSS/radio, version, licenses)
   - [ ] 03-03-PLAN.md — clients.py: READ-09..12 (list, find, detail, history)
   - [ ] 03-04-PLAN.md — alerts.py: READ-13..15 (alarms, audit-trail, events)

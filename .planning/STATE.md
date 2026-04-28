@@ -2,20 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-last_updated: "2026-04-28T06:42:08.129Z"
+status: Executing Phase 03
+last_updated: "2026-04-28T13:41:15.644Z"
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 14
+  completed_plans: 8
 ---
 
 # Project State
 
 ## Current Phase
 
-Phase 3 — Read Tools (Not started)
+Phase 3 — Read Tools (In Progress — Plan 01 complete)
 
 ## Project Reference
 
@@ -29,7 +29,7 @@ Current focus: Phase 2 complete — proceed to Phase 3 (Read Tools)
 |-------|------|--------|
 | 1 | Platform Foundation | ✅ Complete |
 | 2 | API Client | ✅ Complete (Plans 01/02/03 all done) |
-| 3 | Read Tools | ⬜ Not started |
+| 3 | Read Tools | 🔄 In Progress (Plan 01 of 7 complete — Wave 0 scaffold) |
 | 4 | Differentiator Tools | ⬜ Not started |
 | 5 | Write Tools | ⬜ Not started |
 | 6 | Guided Prompts & Documentation | ⬜ Not started |
@@ -37,10 +37,10 @@ Current focus: Phase 2 complete — proceed to Phase 3 (Read Tools)
 
 ## Performance Metrics
 
-- Plans complete: 3 (Phase 2, Plans 01, 02, and 03)
+- Plans complete: 8 / 14 (Phase 1 + Phase 2 + Phase 3 Plan 01)
 - Phases complete: 2 / 7 (Phase 1 and Phase 2)
-- Requirements satisfied: 10 / 71 (CLIENT-01..CLIENT-10 all GREEN)
-- Duration Phase 2 Plan 03: ~25 min; 645 tests passing
+- Requirements satisfied: 36 / 71 (CLIENT-01..10 GREEN; READ-01..26 scaffolded — red baseline established, implementation pending Plans 03-02..03-07)
+- Duration Phase 3 Plan 01: ~12 min; 645 pre-existing tests passing; 47 new tests red as planned
 
 ## Accumulated Context
 
@@ -59,10 +59,14 @@ Current focus: Phase 2 complete — proceed to Phase 3 (Read Tools)
 - [Phase 02-03]: _probe_aos8 exposes host, hostname, version keys on ok path matching AOS8Client.health_check() return shape
 - [Phase 02-03]: server.py line count kept to 495 by using single-line Visibility style and concise docstring
 - [Phase 02-03]: Pre-existing UnicodeDecodeError fixed: encoding='utf-8' added to INSTRUCTIONS.md read_text() call in server.py
+- [Phase 03-01]: Wave 0 scaffold landed — aos8._registry stub added to conftest, READ_ONLY ToolAnnotations exported from aos8/tools/__init__.py, _helpers.py provides strip_meta/run_show/get_object/format_aos8_error
+- [Phase 03-01]: Test contracts pin exact endpoint paths and parameter dicts so Plans 02-06 have zero ambiguity when implementing each of the 26 read tools
+- [Phase 03-01]: ssid_prof.json fixture intentionally omits _meta key — config-object responses use _data wrapper, not the showcommand _meta column-schema field
 
 ### Open Todos
 
-- Execute Phase 3 Read Tools: implement AOS8 read tools (health overview, device management, client troubleshooting, etc.)
+- Plans 03-02..03-06 (parallel-able): implement health.py / clients.py / alerts.py / wlan.py / troubleshooting.py to flip respective red tests green
+- Plan 03-07: populate TOOLS dict + register_tools() and call build_meta_tools — depends on all 5 category plans
 
 ### Blockers
 
@@ -70,9 +74,9 @@ Current focus: Phase 2 complete — proceed to Phase 3 (Read Tools)
 
 ## Session Continuity
 
-- Last session: Executed Phase 2 Plan 03 — Wired AOS8 into health.py probe and server.py lifespan; 645 tests passing; all ruff/mypy gates green.
-- Next session: Begin Phase 3 — Add AOS8 read tools to platforms/aos8/tools/
-- Stopped at: Completed 02-03-PLAN.md
+- Last session: Executed Phase 3 Plan 01 — Wave 0 scaffold (helpers, fixtures, 47 red tests, conftest registry stub). 645 pre-existing tests still green; ruff + mypy clean on new tools/ modules.
+- Next session: Execute Plans 03-02..03-06 (category implementations, parallel-safe) followed by 03-07 (wiring).
+- Stopped at: Completed 03-01-PLAN.md (Wave 0 scaffold)
 
 ## Last Updated
 

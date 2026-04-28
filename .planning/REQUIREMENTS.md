@@ -22,40 +22,40 @@
 - [x] **CLIENT-10**: `aclose()` logs out session and closes httpx client on server shutdown
 
 ### READ — Health & Inventory Tools (Read)
-- [ ] **READ-01**: `aos8_get_controllers` — list all controllers/MDs under the Conductor with status and role
-- [ ] **READ-02**: `aos8_get_ap_database` — full AP database with name, MAC, IP, model, status, AP group
-- [ ] **READ-03**: `aos8_get_active_aps` — currently active (up) APs with association counts
-- [ ] **READ-04**: `aos8_get_ap_detail` — detailed stats for a single AP by name or MAC
-- [ ] **READ-05**: `aos8_get_bss_table` — BSS table showing all radio/BSSID associations at a scope
-- [ ] **READ-06**: `aos8_get_radio_summary` — per-AP radio state: channel, power, utilization, noise floor
-- [ ] **READ-07**: `aos8_get_version` — AOS8 software version on Conductor and MDs
-- [ ] **READ-08**: `aos8_get_licenses` — installed licenses and feature entitlements
+- [x] **READ-01**: `aos8_get_controllers` — list all controllers/MDs under the Conductor with status and role
+- [x] **READ-02**: `aos8_get_ap_database` — full AP database with name, MAC, IP, model, status, AP group
+- [x] **READ-03**: `aos8_get_active_aps` — currently active (up) APs with association counts
+- [x] **READ-04**: `aos8_get_ap_detail` — detailed stats for a single AP by name or MAC
+- [x] **READ-05**: `aos8_get_bss_table` — BSS table showing all radio/BSSID associations at a scope
+- [x] **READ-06**: `aos8_get_radio_summary` — per-AP radio state: channel, power, utilization, noise floor
+- [x] **READ-07**: `aos8_get_version` — AOS8 software version on Conductor and MDs
+- [x] **READ-08**: `aos8_get_licenses` — installed licenses and feature entitlements
 
 ### READ — Client Tools (Read)
-- [ ] **READ-09**: `aos8_get_clients` — list connected wireless clients at a config_path scope
-- [ ] **READ-10**: `aos8_find_client` — find client by MAC address, IP address, or username
-- [ ] **READ-11**: `aos8_get_client_detail` — detailed association, auth, and connection info for a single client
-- [ ] **READ-12**: `aos8_get_client_history` — historical connection events for a client
+- [x] **READ-09**: `aos8_get_clients` — list connected wireless clients at a config_path scope
+- [x] **READ-10**: `aos8_find_client` — find client by MAC address, IP address, or username
+- [x] **READ-11**: `aos8_get_client_detail` — detailed association, auth, and connection info for a single client
+- [x] **READ-12**: `aos8_get_client_history` — historical connection events for a client
 
 ### READ — Alerts & Audit Tools (Read)
-- [ ] **READ-13**: `aos8_get_alarms` — active alarms with severity, category, and timestamp
-- [ ] **READ-14**: `aos8_get_audit_trail` — configuration audit log (who changed what, when)
-- [ ] **READ-15**: `aos8_get_events` — system event log filtered by type, severity, or time window
+- [x] **READ-13**: `aos8_get_alarms` — active alarms with severity, category, and timestamp
+- [x] **READ-14**: `aos8_get_audit_trail` — configuration audit log (who changed what, when)
+- [x] **READ-15**: `aos8_get_events` — system event log filtered by type, severity, or time window
 
 ### READ — WLAN & Config Tools (Read)
-- [ ] **READ-16**: `aos8_get_ssid_profiles` — list all SSID profiles with key settings
-- [ ] **READ-17**: `aos8_get_virtual_aps` — virtual AP profiles mapped to SSIDs and AP groups
-- [ ] **READ-18**: `aos8_get_ap_groups` — AP group list with member APs and applied profiles
-- [ ] **READ-19**: `aos8_get_user_roles` — defined user roles and policy assignments
+- [x] **READ-16**: `aos8_get_ssid_profiles` — list all SSID profiles with key settings
+- [x] **READ-17**: `aos8_get_virtual_aps` — virtual AP profiles mapped to SSIDs and AP groups
+- [x] **READ-18**: `aos8_get_ap_groups` — AP group list with member APs and applied profiles
+- [x] **READ-19**: `aos8_get_user_roles` — defined user roles and policy assignments
 
 ### READ — Troubleshooting & Stats Tools (Read)
-- [ ] **READ-20**: `aos8_ping` — ping from a controller to a target IP, returns RTT and loss
-- [ ] **READ-21**: `aos8_traceroute` — traceroute from a controller to a target IP
-- [ ] **READ-22**: `aos8_show_command` — passthrough for any AOS8 CLI show command; strips `_meta` field from response; returns structured JSON where available
-- [ ] **READ-23**: `aos8_get_logs` — recent system log entries filterable by severity
-- [ ] **READ-24**: `aos8_get_controller_stats` — CPU, memory, uptime, and session counts on a controller
-- [ ] **READ-25**: `aos8_get_arm_history` — ARM channel-change and power-adjustment history
-- [ ] **READ-26**: `aos8_get_rf_monitor` — RF monitor data including interference and rogue detections
+- [x] **READ-20**: `aos8_ping` — ping from a controller to a target IP, returns RTT and loss
+- [x] **READ-21**: `aos8_traceroute` — traceroute from a controller to a target IP
+- [x] **READ-22**: `aos8_show_command` — passthrough for any AOS8 CLI show command; strips `_meta` field from response; returns structured JSON where available
+- [x] **READ-23**: `aos8_get_logs` — recent system log entries filterable by severity
+- [x] **READ-24**: `aos8_get_controller_stats` — CPU, memory, uptime, and session counts on a controller
+- [x] **READ-25**: `aos8_get_arm_history` — ARM channel-change and power-adjustment history
+- [x] **READ-26**: `aos8_get_rf_monitor` — RF monitor data including interference and rogue detections
 
 ### DIFF — AOS8 Differentiator Tools (Read)
 - [ ] **DIFF-01**: `aos8_get_md_hierarchy` — Conductor-to-Managed-Device relationship tree showing all MDs and their config_path
@@ -149,32 +149,32 @@
 | CLIENT-08 | Phase 2 — API Client | Complete |
 | CLIENT-09 | Phase 2 — API Client | Complete |
 | CLIENT-10 | Phase 2 — API Client | Complete |
-| READ-01 | Phase 3 — Read Tools | Pending |
-| READ-02 | Phase 3 — Read Tools | Pending |
-| READ-03 | Phase 3 — Read Tools | Pending |
-| READ-04 | Phase 3 — Read Tools | Pending |
-| READ-05 | Phase 3 — Read Tools | Pending |
-| READ-06 | Phase 3 — Read Tools | Pending |
-| READ-07 | Phase 3 — Read Tools | Pending |
-| READ-08 | Phase 3 — Read Tools | Pending |
-| READ-09 | Phase 3 — Read Tools | Pending |
-| READ-10 | Phase 3 — Read Tools | Pending |
-| READ-11 | Phase 3 — Read Tools | Pending |
-| READ-12 | Phase 3 — Read Tools | Pending |
-| READ-13 | Phase 3 — Read Tools | Pending |
-| READ-14 | Phase 3 — Read Tools | Pending |
-| READ-15 | Phase 3 — Read Tools | Pending |
-| READ-16 | Phase 3 — Read Tools | Pending |
-| READ-17 | Phase 3 — Read Tools | Pending |
-| READ-18 | Phase 3 — Read Tools | Pending |
-| READ-19 | Phase 3 — Read Tools | Pending |
-| READ-20 | Phase 3 — Read Tools | Pending |
-| READ-21 | Phase 3 — Read Tools | Pending |
-| READ-22 | Phase 3 — Read Tools | Pending |
-| READ-23 | Phase 3 — Read Tools | Pending |
-| READ-24 | Phase 3 — Read Tools | Pending |
-| READ-25 | Phase 3 — Read Tools | Pending |
-| READ-26 | Phase 3 — Read Tools | Pending |
+| READ-01 | Phase 3 — Read Tools | Complete |
+| READ-02 | Phase 3 — Read Tools | Complete |
+| READ-03 | Phase 3 — Read Tools | Complete |
+| READ-04 | Phase 3 — Read Tools | Complete |
+| READ-05 | Phase 3 — Read Tools | Complete |
+| READ-06 | Phase 3 — Read Tools | Complete |
+| READ-07 | Phase 3 — Read Tools | Complete |
+| READ-08 | Phase 3 — Read Tools | Complete |
+| READ-09 | Phase 3 — Read Tools | Complete |
+| READ-10 | Phase 3 — Read Tools | Complete |
+| READ-11 | Phase 3 — Read Tools | Complete |
+| READ-12 | Phase 3 — Read Tools | Complete |
+| READ-13 | Phase 3 — Read Tools | Complete |
+| READ-14 | Phase 3 — Read Tools | Complete |
+| READ-15 | Phase 3 — Read Tools | Complete |
+| READ-16 | Phase 3 — Read Tools | Complete |
+| READ-17 | Phase 3 — Read Tools | Complete |
+| READ-18 | Phase 3 — Read Tools | Complete |
+| READ-19 | Phase 3 — Read Tools | Complete |
+| READ-20 | Phase 3 — Read Tools | Complete |
+| READ-21 | Phase 3 — Read Tools | Complete |
+| READ-22 | Phase 3 — Read Tools | Complete |
+| READ-23 | Phase 3 — Read Tools | Complete |
+| READ-24 | Phase 3 — Read Tools | Complete |
+| READ-25 | Phase 3 — Read Tools | Complete |
+| READ-26 | Phase 3 — Read Tools | Complete |
 | DIFF-01 | Phase 4 — Differentiator Tools | Pending |
 | DIFF-02 | Phase 4 — Differentiator Tools | Pending |
 | DIFF-03 | Phase 4 — Differentiator Tools | Pending |
