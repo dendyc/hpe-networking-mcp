@@ -12,7 +12,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 - [ ] **Phase 2: API Client** — `AOS8Client` with token-reuse auth, error handling, and health probe
 - [ ] **Phase 3: Read Tools** — Health, clients, alerts, WLAN, and troubleshooting read surface
 - [ ] **Phase 4: Differentiator Tools** — Conductor-hierarchy, RF, cluster, and IPsec read tools unique to AOS8
-- [ ] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory`
+- [x] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory` (completed 2026-04-28)
 - [ ] **Phase 6: Guided Prompts & Documentation** — Workflow prompts plus `INSTRUCTIONS.md`/`README.md`/`TOOLS.md` updates
 - [ ] **Phase 7: Testing & Integration** — Mocked unit tests, log-leak audits, and regression of existing platforms
 
@@ -89,10 +89,10 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   3. `aos8_write_memory` is the only path to persist config; no other write tool calls it implicitly.
   4. An operator can force-disconnect a client by MAC and reboot a specific AP by name through MCP write tools.
   5. Every write and delete tool fires the elicitation confirmation middleware before executing.
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
   - [x] 05-01-PLAN.md — Wave 0 red-baseline tests for all 12 WRITE tools (test_aos8_write.py + fixtures)
   - [x] 05-02-PLAN.md — Implement writes.py (12 tools), add post_object() helper, extend ElicitationMiddleware for aos8 tags
-  - [ ] 05-03-PLAN.md — Wire TOOLS["writes"] in platforms/aos8/__init__.py
+  - [x] 05-03-PLAN.md — Wire TOOLS["writes"] in platforms/aos8/__init__.py
 
 ### Phase 6: Guided Prompts & Documentation
 **Goal:** Provide AOS8 workflow prompts that stitch tools into recognizable operator tasks, and update all user-facing documentation to reflect the new platform.
@@ -126,7 +126,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | 2. API Client | 3/3 | Complete | 2026-04-28 |
 | 3. Read Tools | 0/7 | Not started | - |
 | 4. Differentiator Tools | 0/0 | Not started | - |
-| 5. Write Tools | 2/3 | In Progress|  |
+| 5. Write Tools | 3/3 | Complete   | 2026-04-28 |
 | 6. Guided Prompts & Documentation | 0/0 | Not started | - |
 | 7. Testing & Integration | 0/0 | Not started | - |
 
