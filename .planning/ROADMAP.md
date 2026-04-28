@@ -44,7 +44,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   4. The UIDARUBA token never appears in any log line, error message, or URL fragment that gets logged.
   5. The server's existing `health` tool reports AOS8 reachability alongside the other six platforms.
 **Plans:** 3 plans
-  - [ ] 02-01-PLAN.md — Wave 0 TDD scaffold: test_aos8_client.py + loguru_capture fixture + show_version JSON fixture (CLIENT-01..CLIENT-10 red tests)
+  - [x] 02-01-PLAN.md — Wave 0 TDD scaffold: test_aos8_client.py + loguru_capture fixture + show_version JSON fixture (CLIENT-01..CLIENT-10 red tests)
   - [ ] 02-02-PLAN.md — AOS8Client implementation + platform module skeleton (__init__, _registry, client.py)
   - [ ] 02-03-PLAN.md — health.py _probe_aos8 + server.py lifespan/registration/write-gate wiring
 
@@ -112,8 +112,8 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation | 4/4 | In Progress|  |
-| 2. API Client | 0/3 | Not started | - |
+| 1. Platform Foundation | 4/4 | Complete | 2026-04-28 |
+| 2. API Client | 1/3 | In Progress | - |
 | 3. Read Tools | 0/0 | Not started | - |
 | 4. Differentiator Tools | 0/0 | Not started | - |
 | 5. Write Tools | 0/0 | Not started | - |
@@ -137,4 +137,4 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | TEST-01 — TEST-06 | 6 | Phase 7 |
 
 ---
-*Last updated: 2026-04-27 after initialization*
+*Last updated: 2026-04-28 after Phase 2 Plan 01 execution*

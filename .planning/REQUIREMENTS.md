@@ -10,16 +10,16 @@
 - [x] **FOUND-05**: `docker-compose.yml` updated with 5 AOS8 secrets and `ENABLE_AOS8_WRITE_TOOLS` env var; `.example` template files created for each secret
 
 ### CLIENT — API Client
-- [ ] **CLIENT-01**: `AOS8Client` authenticates via POST login, stores UIDARUBA session token in httpx cookie jar and `self._token`; token is reused across all subsequent calls (not re-login per request)
-- [ ] **CLIENT-02**: `asyncio.Lock` serializes token refresh — concurrent requests do not trigger parallel logins
-- [ ] **CLIENT-03**: Login is lazy (deferred to first tool call, not blocking server startup) — unreachable Conductor does not prevent server from starting
-- [ ] **CLIENT-04**: 401 response triggers exactly one token refresh attempt; subsequent 401 surfaces error to caller without infinite loop
-- [ ] **CLIENT-05**: All HTTP responses checked for `_global_result.status` — non-zero raises `AOS8APIError`, not silently returns bad data
-- [ ] **CLIENT-06**: UIDARUBA token is never logged — `mask_secret()` applied; token stripped from URL strings before logging or error formatting
-- [ ] **CLIENT-07**: `verify_ssl` defaults to `True`; `False` emits a startup WARNING in logs — operator must opt in explicitly
-- [ ] **CLIENT-08**: Port is configurable via secret (never hardcoded to 4343)
-- [ ] **CLIENT-09**: `client.health_check()` method used by the server's `health` tool to probe AOS8 alongside other platforms
-- [ ] **CLIENT-10**: `aclose()` logs out session and closes httpx client on server shutdown
+- [x] **CLIENT-01**: `AOS8Client` authenticates via POST login, stores UIDARUBA session token in httpx cookie jar and `self._token`; token is reused across all subsequent calls (not re-login per request)
+- [x] **CLIENT-02**: `asyncio.Lock` serializes token refresh — concurrent requests do not trigger parallel logins
+- [x] **CLIENT-03**: Login is lazy (deferred to first tool call, not blocking server startup) — unreachable Conductor does not prevent server from starting
+- [x] **CLIENT-04**: 401 response triggers exactly one token refresh attempt; subsequent 401 surfaces error to caller without infinite loop
+- [x] **CLIENT-05**: All HTTP responses checked for `_global_result.status` — non-zero raises `AOS8APIError`, not silently returns bad data
+- [x] **CLIENT-06**: UIDARUBA token is never logged — `mask_secret()` applied; token stripped from URL strings before logging or error formatting
+- [x] **CLIENT-07**: `verify_ssl` defaults to `True`; `False` emits a startup WARNING in logs — operator must opt in explicitly
+- [x] **CLIENT-08**: Port is configurable via secret (never hardcoded to 4343)
+- [x] **CLIENT-09**: `client.health_check()` method used by the server's `health` tool to probe AOS8 alongside other platforms
+- [x] **CLIENT-10**: `aclose()` logs out session and closes httpx client on server shutdown
 
 ### READ — Health & Inventory Tools (Read)
 - [ ] **READ-01**: `aos8_get_controllers` — list all controllers/MDs under the Conductor with status and role
@@ -139,16 +139,16 @@
 | FOUND-03 | Phase 1 — Platform Foundation | Complete |
 | FOUND-04 | Phase 1 — Platform Foundation | Complete |
 | FOUND-05 | Phase 1 — Platform Foundation | Complete |
-| CLIENT-01 | Phase 2 — API Client | Pending |
-| CLIENT-02 | Phase 2 — API Client | Pending |
-| CLIENT-03 | Phase 2 — API Client | Pending |
-| CLIENT-04 | Phase 2 — API Client | Pending |
-| CLIENT-05 | Phase 2 — API Client | Pending |
-| CLIENT-06 | Phase 2 — API Client | Pending |
-| CLIENT-07 | Phase 2 — API Client | Pending |
-| CLIENT-08 | Phase 2 — API Client | Pending |
-| CLIENT-09 | Phase 2 — API Client | Pending |
-| CLIENT-10 | Phase 2 — API Client | Pending |
+| CLIENT-01 | Phase 2 — API Client | Complete |
+| CLIENT-02 | Phase 2 — API Client | Complete |
+| CLIENT-03 | Phase 2 — API Client | Complete |
+| CLIENT-04 | Phase 2 — API Client | Complete |
+| CLIENT-05 | Phase 2 — API Client | Complete |
+| CLIENT-06 | Phase 2 — API Client | Complete |
+| CLIENT-07 | Phase 2 — API Client | Complete |
+| CLIENT-08 | Phase 2 — API Client | Complete |
+| CLIENT-09 | Phase 2 — API Client | Complete |
+| CLIENT-10 | Phase 2 — API Client | Complete |
 | READ-01 | Phase 3 — Read Tools | Pending |
 | READ-02 | Phase 3 — Read Tools | Pending |
 | READ-03 | Phase 3 — Read Tools | Pending |
