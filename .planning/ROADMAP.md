@@ -60,12 +60,12 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   5. An operator can run ping, traceroute, and any AOS8 CLI show command through the MCP and receive structured JSON (with `_meta` stripped).
 **Plans:** 7 plans
   - [x] 03-01-PLAN.md — Wave 0 scaffold: conftest stub + tools/__init__.py + _helpers.py + JSON fixtures + 26 red tests
-  - [ ] 03-02-PLAN.md — health.py: READ-01..08 (controllers, AP database/active/detail, BSS/radio, version, licenses)
+  - [x] 03-02-PLAN.md — health.py: READ-01..08 (controllers, AP database/active/detail, BSS/radio, version, licenses)
   - [x] 03-03-PLAN.md — clients.py: READ-09..12 (list, find, detail, history)
-  - [ ] 03-04-PLAN.md — alerts.py: READ-13..15 (alarms, audit-trail, events)
+  - [x] 03-04-PLAN.md — alerts.py: READ-13..15 (alarms, audit-trail, events)
   - [x] 03-05-PLAN.md — wlan.py: READ-16..19 (SSID/VAP/AP-group/role via config-object endpoint)
   - [x] 03-06-PLAN.md — troubleshooting.py: READ-20..26 (ping, traceroute, show_command, logs, controller stats, ARM, RF monitor)
-  - [ ] 03-07-PLAN.md — __init__.py wire-up: TOOLS dict + build_meta_tools
+  - [x] 03-07-PLAN.md — __init__.py wire-up: TOOLS dict + build_meta_tools
 
 ### Phase 4: Differentiator Tools
 **Goal:** Expose the AOS8-specific capabilities (Conductor hierarchy, effective config, ARM neighbors, cluster state, IPsec) that go beyond Central parity.
