@@ -12,7 +12,8 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 - [ ] **Phase 2: API Client** — `AOS8Client` with token-reuse auth, error handling, and health probe
 - [ ] **Phase 3: Read Tools** — Health, clients, alerts, WLAN, and troubleshooting read surface
 - [ ] **Phase 4: Differentiator Tools** — Conductor-hierarchy, RF, cluster, and IPsec read tools unique to AOS8
-- [x] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory` (completed 2026-04-28)
+- [x] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory`
+ (completed 2026-04-28)
 - [ ] **Phase 6: Guided Prompts & Documentation** — Workflow prompts plus `INSTRUCTIONS.md`/`README.md`/`TOOLS.md` updates
 - [ ] **Phase 7: Testing & Integration** — Mocked unit tests, log-leak audits, and regression of existing platforms
 
@@ -104,7 +105,9 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   3. `README.md`'s capability table includes an AOS8 row with secrets reference and updated tool count, and the auto-disable example covers AOS8.
   4. `docs/TOOLS.md` lists every new AOS8 tool with its description and tags.
   5. `CHANGELOG.md` carries a new version entry and `pyproject.toml` reflects the bumped version.
-**Plans:** TBD
+**Plans:** 2 plans
+  - [ ] 06-01-PLAN.md — prompts.py (9 AOS8 guided prompts) + aos8/__init__.py wiring + test_aos8_prompts.py smoke test
+  - [ ] 06-02-PLAN.md — INSTRUCTIONS.md (new repo-root) + README.md + docs/TOOLS.md + CHANGELOG.md + pyproject.toml version bump 2.3.0.1 -> 2.4.0.0
 
 ### Phase 7: Testing & Integration
 **Goal:** Prove correctness through mocked unit tests, prove safety through token-leak audits, and prove non-regression across all six existing platforms.
@@ -127,7 +130,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | 3. Read Tools | 0/7 | Not started | - |
 | 4. Differentiator Tools | 0/0 | Not started | - |
 | 5. Write Tools | 3/3 | Complete   | 2026-04-28 |
-| 6. Guided Prompts & Documentation | 0/0 | Not started | - |
+| 6. Guided Prompts & Documentation | 0/2 | Not started | - |
 | 7. Testing & Integration | 0/0 | Not started | - |
 
 ## Coverage
