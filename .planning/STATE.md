@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-04-28T04:01:07.807Z"
+last_updated: "2026-04-28T04:02:29.238Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 4
 ---
 
 # Project State
@@ -49,6 +49,7 @@ Current focus: Awaiting Phase 1 (Platform Foundation)
 
 - [Phase 01]: AOS8 registered in REGISTRIES, _WRITE_TAG_BY_PLATFORM, _GATE_CONFIG_ATTR with enable_aos8_write_tools gate; enable_aos8_write_tools added to ServerConfig
 - [Phase 01-platform-foundation]: AOS8 test keys added to shared secrets_dir fixture following apstra precedent
+- [Phase 01]: AOS8 port default is 4343 (Mobility Conductor API port), not 443 like Apstra
 
 ### Open Todos
 

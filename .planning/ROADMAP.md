@@ -27,11 +27,11 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   2. With AOS8 secrets absent or empty, the server starts cleanly and the AOS8 platform reports as auto-disabled — no crash, no traceback.
   3. With `ENABLE_AOS8_WRITE_TOOLS` unset or `false`, no `aos8_write*`-tagged tools appear in the registry; setting it to `true` exposes them.
   4. `docker-compose.yml` includes the five AOS8 secrets and the write-gate env var, with `.example` templates committed.
-**Plans:** 2/4 plans executed
+**Plans:** 4/4 plans executed
   - [x] 01-01-PLAN.md — Wave 0 test scaffolding (test_aos8_config.py, conftest fixture, registry/config test extensions)
-  - [ ] 01-02-PLAN.md — config.py implementation (AOS8Secrets, _load_aos8, ServerConfig wiring)
+  - [x] 01-02-PLAN.md — config.py implementation (AOS8Secrets, _load_aos8, ServerConfig wiring)
   - [x] 01-03-PLAN.md — tool_registry.py three-dict registration (REGISTRIES, _WRITE_TAG_BY_PLATFORM, _GATE_CONFIG_ATTR)
-  - [ ] 01-04-PLAN.md — docker-compose.yml + 5 .example secret templates
+  - [x] 01-04-PLAN.md — docker-compose.yml + 5 .example secret templates
 
 ### Phase 2: API Client
 **Goal:** Deliver a robust, token-reusing AOS8 API client that authenticates safely, handles AOS8 error semantics, and integrates with the server's health probe.
@@ -109,7 +109,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Platform Foundation | 2/4 | In Progress|  |
+| 1. Platform Foundation | 4/4 | In Progress|  |
 | 2. API Client | 0/0 | Not started | - |
 | 3. Read Tools | 0/0 | Not started | - |
 | 4. Differentiator Tools | 0/0 | Not started | - |
