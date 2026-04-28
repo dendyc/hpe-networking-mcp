@@ -50,6 +50,8 @@ Current focus: Awaiting Phase 1 (Platform Foundation)
 - [Phase 01]: AOS8 registered in REGISTRIES, _WRITE_TAG_BY_PLATFORM, _GATE_CONFIG_ATTR with enable_aos8_write_tools gate; enable_aos8_write_tools added to ServerConfig
 - [Phase 01-platform-foundation]: AOS8 test keys added to shared secrets_dir fixture following apstra precedent
 - [Phase 01]: AOS8 port default is 4343 (Mobility Conductor API port), not 443 like Apstra
+- [Phase 01]: ENABLE_AOS8_WRITE_TOOLS uses :-true default matching all other platform write-gate vars in docker-compose.yml
+- [Phase 01]: AOS8 secret names align with _load_aos8() _read_secret() calls: aos8_host, aos8_username, aos8_password, aos8_port, aos8_verify_ssl
 
 ### Open Todos
 
