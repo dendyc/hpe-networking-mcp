@@ -132,14 +132,89 @@
 
 ## Traceability
 
-*(Filled by roadmap agent)*
+| REQ-ID | Phase | Status |
+|--------|-------|--------|
+| FOUND-01 | Phase 1 — Platform Foundation | Pending |
+| FOUND-02 | Phase 1 — Platform Foundation | Pending |
+| FOUND-03 | Phase 1 — Platform Foundation | Pending |
+| FOUND-04 | Phase 1 — Platform Foundation | Pending |
+| FOUND-05 | Phase 1 — Platform Foundation | Pending |
+| CLIENT-01 | Phase 2 — API Client | Pending |
+| CLIENT-02 | Phase 2 — API Client | Pending |
+| CLIENT-03 | Phase 2 — API Client | Pending |
+| CLIENT-04 | Phase 2 — API Client | Pending |
+| CLIENT-05 | Phase 2 — API Client | Pending |
+| CLIENT-06 | Phase 2 — API Client | Pending |
+| CLIENT-07 | Phase 2 — API Client | Pending |
+| CLIENT-08 | Phase 2 — API Client | Pending |
+| CLIENT-09 | Phase 2 — API Client | Pending |
+| CLIENT-10 | Phase 2 — API Client | Pending |
+| READ-01 | Phase 3 — Read Tools | Pending |
+| READ-02 | Phase 3 — Read Tools | Pending |
+| READ-03 | Phase 3 — Read Tools | Pending |
+| READ-04 | Phase 3 — Read Tools | Pending |
+| READ-05 | Phase 3 — Read Tools | Pending |
+| READ-06 | Phase 3 — Read Tools | Pending |
+| READ-07 | Phase 3 — Read Tools | Pending |
+| READ-08 | Phase 3 — Read Tools | Pending |
+| READ-09 | Phase 3 — Read Tools | Pending |
+| READ-10 | Phase 3 — Read Tools | Pending |
+| READ-11 | Phase 3 — Read Tools | Pending |
+| READ-12 | Phase 3 — Read Tools | Pending |
+| READ-13 | Phase 3 — Read Tools | Pending |
+| READ-14 | Phase 3 — Read Tools | Pending |
+| READ-15 | Phase 3 — Read Tools | Pending |
+| READ-16 | Phase 3 — Read Tools | Pending |
+| READ-17 | Phase 3 — Read Tools | Pending |
+| READ-18 | Phase 3 — Read Tools | Pending |
+| READ-19 | Phase 3 — Read Tools | Pending |
+| READ-20 | Phase 3 — Read Tools | Pending |
+| READ-21 | Phase 3 — Read Tools | Pending |
+| READ-22 | Phase 3 — Read Tools | Pending |
+| READ-23 | Phase 3 — Read Tools | Pending |
+| READ-24 | Phase 3 — Read Tools | Pending |
+| READ-25 | Phase 3 — Read Tools | Pending |
+| READ-26 | Phase 3 — Read Tools | Pending |
+| DIFF-01 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-02 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-03 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-04 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-05 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-06 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-07 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-08 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-09 | Phase 4 — Differentiator Tools | Pending |
+| WRITE-01 | Phase 5 — Write Tools | Pending |
+| WRITE-02 | Phase 5 — Write Tools | Pending |
+| WRITE-03 | Phase 5 — Write Tools | Pending |
+| WRITE-04 | Phase 5 — Write Tools | Pending |
+| WRITE-05 | Phase 5 — Write Tools | Pending |
+| WRITE-06 | Phase 5 — Write Tools | Pending |
+| WRITE-07 | Phase 5 — Write Tools | Pending |
+| WRITE-08 | Phase 5 — Write Tools | Pending |
+| WRITE-09 | Phase 5 — Write Tools | Pending |
+| WRITE-10 | Phase 5 — Write Tools | Pending |
+| WRITE-11 | Phase 5 — Write Tools | Pending |
+| WRITE-12 | Phase 5 — Write Tools | Pending |
+| PROMPT-01 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-02 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-03 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-04 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-05 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-06 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-07 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-08 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-09 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-01 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-02 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-03 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-04 | Phase 6 — Guided Prompts & Documentation | Pending |
+| DOCS-05 | Phase 6 — Guided Prompts & Documentation | Pending |
+| TEST-01 | Phase 7 — Testing & Integration | Pending |
+| TEST-02 | Phase 7 — Testing & Integration | Pending |
+| TEST-03 | Phase 7 — Testing & Integration | Pending |
+| TEST-04 | Phase 7 — Testing & Integration | Pending |
+| TEST-05 | Phase 7 — Testing & Integration | Pending |
+| TEST-06 | Phase 7 — Testing & Integration | Pending |
 
-| REQ-ID | Phase |
-|--------|-------|
-| FOUND-01 — FOUND-05 | Phase 1 |
-| CLIENT-01 — CLIENT-10 | Phase 2 |
-| READ-01 — READ-26 | Phase 3 |
-| DIFF-01 — DIFF-09 | Phase 4 |
-| WRITE-01 — WRITE-12 | Phase 5 |
-| PROMPT-01 — PROMPT-09 | Phase 6 |
-| TEST-01 — TEST-06, DOCS-01 — DOCS-05 | Phase 7 |
+**Coverage:** 71 / 71 v1 requirements mapped, 0 orphans, 0 duplicates.
