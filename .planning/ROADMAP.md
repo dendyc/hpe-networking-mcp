@@ -105,8 +105,8 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   3. `README.md`'s capability table includes an AOS8 row with secrets reference and updated tool count, and the auto-disable example covers AOS8.
   4. `docs/TOOLS.md` lists every new AOS8 tool with its description and tags.
   5. `CHANGELOG.md` carries a new version entry and `pyproject.toml` reflects the bumped version.
-**Plans:** 2 plans
-  - [ ] 06-01-PLAN.md — prompts.py (9 AOS8 guided prompts) + aos8/__init__.py wiring + test_aos8_prompts.py smoke test
+**Plans:** 1/2 plans executed
+  - [x] 06-01-PLAN.md — prompts.py (9 AOS8 guided prompts) + aos8/__init__.py wiring + test_aos8_prompts.py smoke test
   - [ ] 06-02-PLAN.md — INSTRUCTIONS.md (new repo-root) + README.md + docs/TOOLS.md + CHANGELOG.md + pyproject.toml version bump 2.3.0.1 -> 2.4.0.0
 
 ### Phase 7: Testing & Integration
@@ -130,7 +130,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | 3. Read Tools | 0/7 | Not started | - |
 | 4. Differentiator Tools | 0/0 | Not started | - |
 | 5. Write Tools | 3/3 | Complete   | 2026-04-28 |
-| 6. Guided Prompts & Documentation | 0/2 | Not started | - |
+| 6. Guided Prompts & Documentation | 1/2 | In Progress|  |
 | 7. Testing & Integration | 0/0 | Not started | - |
 
 ## Coverage

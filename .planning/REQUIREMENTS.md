@@ -83,15 +83,15 @@
 - [x] **WRITE-12**: `aos8_write_memory` — persist staged config changes to startup config for a given config_path; this is always an explicit operator action, never called automatically by other write tools
 
 ### PROMPT — Guided Prompts
-- [ ] **PROMPT-01**: `aos8_triage_client` — multi-step workflow: find client, check AP health, review auth events, identify likely root cause
-- [ ] **PROMPT-02**: `aos8_triage_ap` — deep-dive on a specific AP: radio state, clients, alarms, event timeline, next-step recommendations
-- [ ] **PROMPT-03**: `aos8_health_check` — network-wide health assessment across all MDs: AP counts, client counts, alarm summary, firmware versions
-- [ ] **PROMPT-04**: `aos8_audit_change` — review recent audit trail entries, summarize config changes, flag high-risk modifications
-- [ ] **PROMPT-05**: `aos8_rf_analysis` — RF environment report for a scope: channel distribution, co-channel clusters, ARM action history, recommendations
-- [ ] **PROMPT-06**: `aos8_wlan_review` — inventory all SSID profiles and virtual APs, flag mismatches or inconsistencies across AP groups
-- [ ] **PROMPT-07**: `aos8_client_flood` — investigate high client counts or failed connections at a scope; identify affected APs and likely cause
-- [ ] **PROMPT-08**: `aos8_compare_md_config` — side-by-side comparison of effective config between two MDs or AP groups
-- [ ] **PROMPT-09**: `aos8_pre_change_check` — pre-maintenance checklist: current health, pending changes, confirm write_memory state before proceeding
+- [x] **PROMPT-01**: `aos8_triage_client` — multi-step workflow: find client, check AP health, review auth events, identify likely root cause
+- [x] **PROMPT-02**: `aos8_triage_ap` — deep-dive on a specific AP: radio state, clients, alarms, event timeline, next-step recommendations
+- [x] **PROMPT-03**: `aos8_health_check` — network-wide health assessment across all MDs: AP counts, client counts, alarm summary, firmware versions
+- [x] **PROMPT-04**: `aos8_audit_change` — review recent audit trail entries, summarize config changes, flag high-risk modifications
+- [x] **PROMPT-05**: `aos8_rf_analysis` — RF environment report for a scope: channel distribution, co-channel clusters, ARM action history, recommendations
+- [x] **PROMPT-06**: `aos8_wlan_review` — inventory all SSID profiles and virtual APs, flag mismatches or inconsistencies across AP groups
+- [x] **PROMPT-07**: `aos8_client_flood` — investigate high client counts or failed connections at a scope; identify affected APs and likely cause
+- [x] **PROMPT-08**: `aos8_compare_md_config` — side-by-side comparison of effective config between two MDs or AP groups
+- [x] **PROMPT-09**: `aos8_pre_change_check` — pre-maintenance checklist: current health, pending changes, confirm write_memory state before proceeding
 
 ### TEST — Testing
 - [ ] **TEST-01**: Unit tests for `AOS8Client` using mocked httpx responses — cover: login success, login failure, token reuse, 401 refresh, `_global_result` error detection, `verify_ssl` behavior, token masking in logs
@@ -196,15 +196,15 @@
 | WRITE-10 | Phase 5 — Write Tools | Complete |
 | WRITE-11 | Phase 5 — Write Tools | Complete |
 | WRITE-12 | Phase 5 — Write Tools | Complete |
-| PROMPT-01 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-02 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-03 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-04 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-05 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-06 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-07 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-08 | Phase 6 — Guided Prompts & Documentation | Pending |
-| PROMPT-09 | Phase 6 — Guided Prompts & Documentation | Pending |
+| PROMPT-01 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-02 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-03 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-04 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-05 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-06 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-07 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-08 | Phase 6 — Guided Prompts & Documentation | Complete |
+| PROMPT-09 | Phase 6 — Guided Prompts & Documentation | Complete |
 | DOCS-01 | Phase 6 — Guided Prompts & Documentation | Pending |
 | DOCS-02 | Phase 6 — Guided Prompts & Documentation | Pending |
 | DOCS-03 | Phase 6 — Guided Prompts & Documentation | Pending |

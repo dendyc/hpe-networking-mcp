@@ -2,20 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-last_updated: "2026-04-28T19:23:33.961Z"
+status: Executing Phase 06
+last_updated: "2026-04-28T21:37:08.170Z"
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 17
-  completed_plans: 17
+  total_plans: 19
+  completed_plans: 18
 ---
 
 # Project State
 
 ## Current Phase
 
-Phase 5 — Write Tools (COMPLETE — all 3 plans done; 737 tests green; 38 AOS8 tools wired)
+Phase 6 — Guided Prompts & Documentation (Plan 01 complete — 9 AOS8 prompts registered, 767 tests green)
 
 ## Project Reference
 
@@ -32,18 +32,19 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 | 3 | Read Tools | ✅ Complete |
 | 4 | Differentiator Tools | ✅ Complete |
 | 5 | Write Tools | ✅ Complete (all 3 plans done — 12 write tools implemented, wired, and tested) |
-| 6 | Guided Prompts & Documentation | ⬜ Not started |
+| 6 | Guided Prompts & Documentation | 🔄 In Progress (Plan 01 done) |
 | 7 | Testing & Integration | ⬜ Not started |
 
 ## Performance Metrics
 
-- Plans complete: 17 / 17 (Phase 1 + Phase 2 + Phase 3 all 7 + Phase 4 + Phase 5 all 3)
-- Phases complete: 5 / 7 (Phase 1, 2, 3, 4, 5 complete; Phase 6 next)
-- Requirements satisfied: 60 / 71 (WRITE-01..12 fully wired; Phase 6 Guided Prompts remain)
+- Plans complete: 18 / 19 (Phase 1 + Phase 2 + Phase 3 all 7 + Phase 4 + Phase 5 all 3 + Phase 6 Plan 01)
+- Phases complete: 5 / 7 (Phase 1, 2, 3, 4, 5 complete; Phase 6 in progress)
+- Requirements satisfied: 69 / 71 (PROMPT-01..09 fully registered; Phase 6 Plan 02 documentation remains)
 - Duration Phase 3 Plan 01: ~12 min; 645 pre-existing tests passing; 47 new tests red as planned
 - Duration Phase 5 Plan 01: ~6 min; 693 existing tests passing; 44 new tests red as planned
 - Duration Phase 5 Plan 02: ~9 min; 43/44 Wave-0 write tests green; 693 existing tests passing
 - Duration Phase 5 Plan 03: ~6 min; 737 tests green; TOOLS dict wiring complete
+- Duration Phase 6 Plan 01: ~6 min; 767 tests green; 9 AOS8 prompts registered (PROMPT-01..09)
 
 ## Accumulated Context
 
@@ -71,10 +72,11 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 - [Phase 05-write-tools]: Used Annotated type aliases in writes.py to stay under 500-line limit while preserving full Field descriptions for tool schemas
 - [Phase 05-write-tools]: post_object() passes config_path=None as None so operational endpoints (disconnect_client, reboot_ap) receive params=None not params={}
 - [Phase 05-write-tools]: No 'differentiators' key present at edit time; TOOLS dict gained 6th key 'writes' with 12 tool names; test_aos8_init.py updated to assert 38-tool total
+- [Phase 06-01]: All 9 AOS8 prompts (PROMPT-01..09) registered via register(mcp) pattern mirroring central/tools/prompts.py; try/except in __init__.py prevents prompt failure from breaking tool registration
 
 ### Open Todos
 
-- (none — Phase 5 complete; proceed to Phase 6: Guided Prompts & Documentation)
+- (none — Phase 6 Plan 01 complete; proceed to Phase 6 Plan 02: Documentation)
 
 ### Blockers
 
@@ -82,10 +84,10 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 
 ## Session Continuity
 
-- Last session: Executed Phase 5 Plan 03 — appended 'writes' key to TOOLS dict in aos8/__init__.py, all 44 write tests green + 737 total tests green. Phase 5 complete.
-- Next session: Phase 6 — Guided Prompts & Documentation (README, INSTRUCTIONS, TOOLS.md, CHANGELOG, guided prompt files for AOS8 workflows).
-- Stopped at: Completed 05-03-PLAN.md (AOS8 TOOLS dict wiring — Phase 5 complete)
+- Last session: Executed Phase 6 Plan 01 — created prompts.py (9 AOS8 prompts), wired into __init__.py try/except, smoke test 11 tests green, 767 total tests passing.
+- Next session: Phase 6 Plan 02 — Documentation (README, INSTRUCTIONS, TOOLS.md, CHANGELOG updates).
+- Stopped at: Completed 06-01-PLAN.md (AOS8 guided prompts module — PROMPT-01..09 all registered)
 
 ## Last Updated
 
-2026-04-28 (Phase 5 Plan 03 complete — Phase 5 DONE)
+2026-04-28 (Phase 6 Plan 01 complete — 9 AOS8 prompts registered)
