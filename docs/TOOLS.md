@@ -1919,7 +1919,7 @@ in `platforms/axis/__init__.py` if Axis ever flips them on.
 | `axis_get_ip_feed_categories` | `GET /api/v1.0/IpCategoriesFeed` |
 | `axis_manage_ip_feed_category` | `POST/PUT/DELETE /api/v1.0/IpCategoriesFeed` |
 
-## Aruba OS 8 / Mobility Conductor (38 tools + 9 prompts)
+## Aruba OS 8 / Mobility Conductor (47 tools + 9 prompts)
 
 Tools are exposed in dynamic mode by default via 3 meta-tools (`aos8_list_tools`,
 `aos8_get_tool_schema`, `aos8_invoke_tool`). Set `MCP_TOOL_MODE=static` to expose
@@ -1975,6 +1975,24 @@ each underlying tool individually. Write tools require `ENABLE_AOS8_WRITE_TOOLS=
 | `aos8_get_controller_stats` | CPU, memory, uptime, session counts on a controller |
 | `aos8_get_arm_history` | ARM channel-change and power-adjustment history |
 | `aos8_get_rf_monitor` | RF monitor data: interference and rogue detections |
+
+### Differentiators (9)
+
+AOS8-unique read tools that go beyond Aruba Central parity — Conductor
+hierarchy, effective configuration after inheritance, RF neighbors,
+cluster state, IPsec tunnels, and a unified per-MD health roll-up.
+
+| Tool | Purpose |
+|---|---|
+| `aos8_get_md_hierarchy` | Conductor → Managed Device tree with config_path for each node |
+| `aos8_get_effective_config` | Resolved config a specific MD or AP group sees after inheritance |
+| `aos8_get_pending_changes` | Staged Conductor changes not yet persisted via `aos8_write_memory` |
+| `aos8_get_rf_neighbors` | ARM neighbor graph for an AP — co-channel and adjacent-channel |
+| `aos8_get_cluster_state` | AP cluster membership, master/standby roles, failover state |
+| `aos8_get_air_monitors` | APs in air-monitor mode with scan results |
+| `aos8_get_ap_wired_ports` | Wired downlink port configuration and state for APs |
+| `aos8_get_ipsec_tunnels` | Site-to-site IPsec and Remote AP tunnel state |
+| `aos8_get_md_health_check` | Unified per-MD health: APs + clients + alarms + firmware in one call |
 
 ### Writes (12) — gated behind `ENABLE_AOS8_WRITE_TOOLS=true`
 
