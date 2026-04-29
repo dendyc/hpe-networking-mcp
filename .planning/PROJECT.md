@@ -10,6 +10,17 @@ A fork of the `hpe-networking-mcp` community project that adds **Aruba OS 8 (AOS
 
 An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility Conductor network with the same depth and safety as it does Aruba Central — without the operator needing to touch the CLI.
 
+## Current Milestone: v1.1 AOS8-Powered Migration Readiness
+
+**Goal:** Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data collection with live AOS8 API calls and produce a professional-grade, copy-pasteable migration assessment for field SEs and operators.
+
+**Target features:**
+- Stage 1: Live AOS8 data collection via platform tools — no CLI paste required for AOS8 source path
+- Stage 3: Deeper VSG-anchored rules unlocked by live data (VRRP VIP, ARM profiles, cluster health, local user count, config objects)
+- Stage 4: AOS8 inventory cross-referenced against Central API (AP model → firmware rec, count gap, SSID/role conflict detection)
+- Stage 5: Real-time cutover prerequisite validation (live cluster state, controller firmware version, AP counts from AOS8)
+- Output: Executive summary paragraph (GO/BLOCKED/PARTIAL) + structured REGRESSION/DRIFT/INFO findings, copy-pasteable into customer docs
+
 ## Requirements
 
 ### Validated
@@ -43,7 +54,14 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 
 ### Active
 
-*(No active requirements — start next milestone with `/gsd:new-milestone`)*
+- [ ] **SKILL-01**: Skill auto-detects AOS8 connectivity and switches to API mode — no paste required for AOS8 source path
+- [ ] **SKILL-02**: Stage 1 collects all 16 AOS8 data points via platform tools (hierarchy, AP database, cluster state, clients, WLAN, etc.)
+- [ ] **SKILL-03**: Stage 3 adds live-data-only VSG rules (VRRP VIP validation, ARM profile detection, local user count, cluster L2 health)
+- [ ] **SKILL-04**: Stage 4 cross-references AOS8 AP inventory against Central firmware recommendations and AP count gap
+- [ ] **SKILL-05**: Stage 5 validates cutover prerequisites from live AOS8 state (controller firmware, cluster health, AP count)
+- [ ] **SKILL-06**: Report includes executive summary paragraph before the structured findings
+- [ ] **SKILL-07**: Structured findings remain clean enough to paste into a customer-facing document
+- [ ] **SKILL-08**: `tools:` frontmatter and `platforms:` tag updated to include AOS8 tools; skill regression test passes
 
 ### Out of Scope
 
@@ -104,4 +122,22 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 | Gap closure phases (08, 09) added post-audit | Milestone audit found DIFF production bug + doc/planning drift; needed correction before tagging | ✓ Good — right call to fix before shipping; kept tech debt list short |
 
 ---
-*Last updated: 2026-04-29 after v1.0 milestone completion — 9 phases, 26 plans, 766 tests, 47 AOS8 tools shipped*
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
+---
+*Last updated: 2026-04-29 — v1.1 milestone started (AOS8-Powered Migration Readiness)*

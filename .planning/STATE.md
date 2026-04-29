@@ -1,42 +1,35 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: AOS8 MVP
-status: Complete — shipped 2026-04-29
+milestone: v1.1
+milestone_name: AOS8-Powered Migration Readiness
+status: Defining requirements
 last_updated: "2026-04-29T00:00:00Z"
 progress:
-  total_phases: 9
-  completed_phases: 9
-  total_plans: 26
-  completed_plans: 26
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Current Phase
 
-All phases complete — v1.0 milestone shipped 2026-04-29.
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-29 — Milestone v1.1 started
 
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-04-29)
 
-**Core value:** An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility Conductor network with the same depth and safety as Aruba Central — without the operator touching the CLI.
-**Current focus:** v1.0 complete. Run `/gsd:new-milestone` to start v1.1 planning.
+**Core value:** An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility Conductor network with the same depth and safety as Aruba Central — without the operator needing to touch the CLI.
+**Current focus:** v1.1 — AOS8-Powered Migration Readiness skill enhancement.
 
 ## Phase Status
 
-| Phase | Name | Status |
-|-------|------|--------|
-| 1 | Platform Foundation | ✅ Complete |
-| 2 | API Client | ✅ Complete |
-| 3 | Read Tools | ✅ Complete |
-| 4 | Differentiator Tools | ✅ Complete (merged into Phase 7) |
-| 5 | Write Tools | ✅ Complete |
-| 6 | Guided Prompts & Documentation | ✅ Complete |
-| 7 | Testing & Integration | ✅ Complete |
-| 8 | Fix DIFF Tools Production Bug | ✅ Complete |
-| 9 | Phase 4 Closure & Documentation Accuracy | ✅ Complete |
+*(No phases defined yet — roadmap in progress)*
 
 ## Milestone Summary
 
@@ -50,14 +43,14 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 
 *(See PROJECT.md → Key Decisions for full decision log)*
 
-Key patterns discovered:
+Key patterns from v1.0:
 - Phase 4 (Differentiators) merged cleanly into Phase 7 — no dedicated phase needed when differentiators are in scope of integration testing
 - Local response helpers in tool files are a footgun — always use canonical `_helpers.run_show`/`get_object`; Phase 8 fixed this the hard way
 - Gap closure phases (08, 09) after audit = right call; keep pre-tag quality bar high
 
 ### Open Todos
 
-*(none — all v1.0 work complete)*
+*(none — v1.1 requirements and roadmap in progress)*
 
 ### Blockers
 
@@ -65,4 +58,4 @@ Key patterns discovered:
 
 ## Last Updated
 
-2026-04-29 (v1.0 milestone archived — all 9 phases, 26 plans complete; git tag v1.0 pending)
+2026-04-29 — v1.1 milestone started
