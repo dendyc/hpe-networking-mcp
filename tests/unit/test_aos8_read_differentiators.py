@@ -64,9 +64,7 @@ async def test_get_effective_config_required_object_name():
     body = {"_global_result": {"status": "0"}, "_data": ["wlan ssid-profile"]}
     ctx, client = _make_ctx(body)
 
-    result = await aos8_get_effective_config(
-        ctx, object_name="ssid_prof", config_path="/md/branch1"
-    )
+    result = await aos8_get_effective_config(ctx, object_name="ssid_prof", config_path="/md/branch1")
 
     client.request.assert_awaited_once_with(
         "GET",
@@ -250,10 +248,7 @@ async def test_get_md_health_check():
 
     # At least 4 sub-calls
     assert client.request.await_count >= 4
-    commands_called = {
-        call.kwargs.get("params", {}).get("command")
-        for call in client.request.await_args_list
-    }
+    commands_called = {call.kwargs.get("params", {}).get("command") for call in client.request.await_args_list}
     for required in ("show ap active", "show ap database", "show alarms all", "show version"):
         assert required in commands_called, f"missing sub-call: {required}"
 

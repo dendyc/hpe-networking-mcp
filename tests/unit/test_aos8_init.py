@@ -77,9 +77,7 @@ EXPECTED_DIFF_TOOLS = {
     "aos8_get_ipsec_tunnels",
     "aos8_get_md_health_check",
 }
-EXPECTED_TOTAL = (
-    len(EXPECTED_TOOLS) + len(EXPECTED_WRITE_TOOLS) + len(EXPECTED_DIFF_TOOLS)
-)  # 26 + 12 + 9 = 47
+EXPECTED_TOTAL = len(EXPECTED_TOOLS) + len(EXPECTED_WRITE_TOOLS) + len(EXPECTED_DIFF_TOOLS)  # 26 + 12 + 9 = 47
 
 
 def test_tools_dict_complete():

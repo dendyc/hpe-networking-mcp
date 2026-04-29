@@ -61,15 +61,11 @@ async def test_uidaruba_value_not_logged_during_read_tool(loguru_capture):
     await client.aclose()
 
     joined = "\n".join(loguru_capture)
-    assert _LEAK_BAIT_TOKEN not in joined, (
-        f"UIDARUBA token value leaked: {joined!r}"
-    )
+    assert _LEAK_BAIT_TOKEN not in joined, f"UIDARUBA token value leaked: {joined!r}"
     # Per Pitfall 1: any line referencing UIDARUBA must redact it
     for line in loguru_capture:
         if "UIDARUBA" in line:
-            assert "<redacted>" in line, (
-                f"UIDARUBA appeared without redaction: {line!r}"
-            )
+            assert "<redacted>" in line, f"UIDARUBA appeared without redaction: {line!r}"
 
 
 async def test_uidaruba_value_not_logged_during_write_tool(loguru_capture):
