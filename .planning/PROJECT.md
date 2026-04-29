@@ -82,9 +82,17 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ UIDARUBA token never logged at tool layer (TEST-04 verified end-to-end) — Validated in Phase 7: testing-integration
 - ✓ All 6 existing platform test suites unmodified and passing (non-regression, D-07) — Validated in Phase 7: testing-integration
 
+### Validated
+
+*(Validated in Phase 8: fix-diff-tools-production-bug)*
+
+- ✓ `differentiators.py` uses canonical `run_show`/`get_object` from `_helpers`; local `_show`/`_object` helpers deleted — response-contract bug fixed — Validated in Phase 8: fix-diff-tools-production-bug
+- ✓ All 13 DIFF tool test mocks updated to wrap responses in `_resp()` (MagicMock with `.json.return_value`), matching real `AOS8Client.request()` contract — Validated in Phase 8: fix-diff-tools-production-bug
+- ✓ 764 unit tests pass; zero regressions across all platforms — Validated in Phase 8: fix-diff-tools-production-bug
+
 ### Active
 
-*(No active requirements — all milestone work complete through Phase 7)*
+*(No active requirements — all milestone work complete through Phase 8)*
 
 ### Out of Scope
 
@@ -159,4 +167,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 after Phase 7 (testing-integration) completion*
+*Last updated: 2026-04-29 after Phase 8 (fix-diff-tools-production-bug) completion*
