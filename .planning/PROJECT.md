@@ -57,8 +57,8 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - [ ] **SKILL-01**: Skill auto-detects AOS8 connectivity and switches to API mode — no paste required for AOS8 source path
 - [ ] **SKILL-02**: Stage 1 collects all 16 AOS8 data points via platform tools (hierarchy, AP database, cluster state, clients, WLAN, etc.)
 - [ ] **SKILL-03**: Stage 3 adds live-data-only VSG rules (VRRP VIP validation, ARM profile detection, local user count, cluster L2 health)
-- [ ] **SKILL-04**: Stage 4 cross-references AOS8 AP inventory against Central firmware recommendations and AP count gap
-- [ ] **SKILL-05**: Stage 5 validates cutover prerequisites from live AOS8 state (controller firmware, cluster health, AP count)
+- [x] **SKILL-04**: Stage 4 cross-references AOS8 AP inventory against Central firmware recommendations and AP count gap — Validated in Phase 12: central-enrichment-cutover-validation
+- [x] **SKILL-05**: Stage 5 validates cutover prerequisites from live AOS8 state (controller firmware, cluster health, AP count) — Validated in Phase 12: central-enrichment-cutover-validation
 - [ ] **SKILL-06**: Report includes executive summary paragraph before the structured findings
 - [ ] **SKILL-07**: Structured findings remain clean enough to paste into a customer-facing document
 - [ ] **SKILL-08**: `tools:` frontmatter and `platforms:` tag updated to include AOS8 tools; skill regression test passes
@@ -140,4 +140,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 — Phase 11 complete: AOS8 live-mode rule evaluation prose layered into aos-migration-readiness.md (RULES-01/02/03/04 all wired)*
+*Last updated: 2026-04-29 — Phase 12 complete: Central enrichment (ENRICH-01..04) and cutover prerequisite (CUTOVER-01..03) sub-paths inserted into Stages 4 and 5 of aos-migration-readiness.md; SKILL-04 and SKILL-05 validated*
