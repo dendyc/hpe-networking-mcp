@@ -90,9 +90,20 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ All 13 DIFF tool test mocks updated to wrap responses in `_resp()` (MagicMock with `.json.return_value`), matching real `AOS8Client.request()` contract — Validated in Phase 8: fix-diff-tools-production-bug
 - ✓ 764 unit tests pass; zero regressions across all platforms — Validated in Phase 8: fix-diff-tools-production-bug
 
+### Validated
+
+*(Validated in Phase 9: phase-4-closure-documentation-accuracy)*
+
+- ✓ `04-VERIFICATION.md` created as delegated stub (0/0 score) documenting Phase 4 was absorbed into Phase 7; cross-references all 9 DIFF tools and Phase 7 VERIFICATION — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ REQUIREMENTS.md DIFF-01..09 all `[x]`; traceability table shows Complete for all 9 DIFF rows — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ README.md, docs/TOOLS.md, CHANGELOG.md corrected to 47 AOS8 tools (was 38); Differentiators (9) subsection added to TOOLS.md — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ `server.py` `execute_description` includes `aos8_` prefix; regression test in `test_server_code_mode.py` guards all 7 platform prefixes — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ Version bumped to 2.4.0.1; CHANGELOG.md [2.4.0.1] entry documents Phase 8 + Phase 9 fixes — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ Full unit suite at 766 tests (764 + 2 new code-mode tests); zero regressions — Validated in Phase 9: phase-4-closure-documentation-accuracy
+
 ### Active
 
-*(No active requirements — all milestone work complete through Phase 8)*
+*(No active requirements — all milestone work complete through Phase 9)*
 
 ### Out of Scope
 
@@ -167,4 +178,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 after Phase 8 (fix-diff-tools-production-bug) completion*
+*Last updated: 2026-04-29 after Phase 9 (phase-4-closure-documentation-accuracy) completion — v1.0 milestone fully complete (all 9 phases, 26 plans, 766 tests)*
