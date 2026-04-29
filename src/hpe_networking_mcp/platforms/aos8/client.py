@@ -138,7 +138,7 @@ class AOS8Client:
             AOS8AuthError: On transport error, non-200 status, non-JSON response,
                 or ``_global_result.status != "0"``.
         """
-        logger.info("AOS8: requesting new UIDARUBA token from {}", self._config.host)
+        logger.info("AOS8: requesting new session token from {}", self._config.host)
         try:
             response = await self._http.post(
                 "/v1/api/login",
@@ -167,7 +167,7 @@ class AOS8Client:
             raise AOS8AuthError(f"AOS8 login response missing UIDARUBA field: {gr}")
 
         self._token = token
-        logger.info("AOS8: obtained UIDARUBA {}", mask_secret(token))
+        logger.info("AOS8: obtained session token {}", mask_secret(token))
 
     def _check_global_result(self, response: httpx.Response) -> None:
         """Raise AOS8APIError if the response contains a non-zero _global_result.
