@@ -2,7 +2,9 @@
 
 ## What This Is
 
-A fork of the `hpe-networking-mcp` community project that adds **Aruba OS 8 (AOS8) / Mobility Conductor** as a seventh platform module alongside the existing six (Juniper Mist, Aruba Central, HPE GreenLake, Aruba ClearPass, Juniper Apstra, Axis Atmos Cloud). The goal is full feature parity with the existing Aruba Central module — health overview, device management, client troubleshooting, alerts/events, and WLAN/config management — surfaced through the same MCP tool patterns (dynamic mode, write-gate, Docker secrets) as every other platform.
+A fork of the `hpe-networking-mcp` community project that adds **Aruba OS 8 (AOS8) / Mobility Conductor** as a seventh platform module alongside the existing six (Juniper Mist, Aruba Central, HPE GreenLake, Aruba ClearPass, Juniper Apstra, Axis Atmos Cloud). Ships full feature parity with the existing Aruba Central module — health overview, device management, client troubleshooting, alerts/events, WLAN/config management, and AOS8-unique differentiators (Conductor hierarchy, effective config, cluster state, RF neighbors, IPsec) — surfaced through the same MCP tool patterns (dynamic mode, write-gate, Docker secrets) as every other platform.
+
+**Shipped v1.0:** 47 AOS8 tools + 9 guided prompts, 766-test suite, full operator documentation. Version 2.4.0.1.
 
 ## Core Value
 
@@ -28,82 +30,20 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ Middleware stack: null-strip, validation-catch, elicitation, retry (5xx + 429) — existing
 - ✓ Non-root Docker container (mcpuser uid 1000), Streamable HTTP on port 8000 — existing
 
-### Validated
+*(Validated in v1.0 — Phases 1–9)*
 
-*(Validated in Phase 1 & Phase 2)*
-
-- ✓ AOS8 API client with UIDARUBA token auth (login/logout, session reuse, HTTPS port 4343) — Validated in Phase 2: api-client
-- ✓ Docker secrets: `aos8_host`, `aos8_username`, `aos8_password`, `aos8_port`, `aos8_verify_ssl` — Validated in Phase 1: foundation
-- ✓ Unit tests with mocked API responses (no live system required for CI) — Validated in Phase 2: api-client
-- ✓ Platform auto-disable if AOS8 secrets absent/empty (consistent with other platforms) — Validated in Phase 2: api-client
-- ✓ health tool updated to probe AOS8 alongside existing platforms — Validated in Phase 2: api-client
-- ✓ Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true` with elicitation confirmation — Validated in Phase 2: api-client
-
-### Validated
-
-*(Validated in Phase 3: read-tools)*
-
-- ✓ AOS8 supports both Mobility Conductor hierarchy and standalone controllers — Validated in Phase 3: read-tools
-- ✓ config_path defaults to `/md`, overridable per-call for targeted MD/AP-group operations — Validated in Phase 3: read-tools
-- ✓ Health & devices: controller inventory, AP inventory, device stats, firmware status (READ-01..08) — Validated in Phase 3: read-tools
-- ✓ Client connectivity: client lookup by MAC/IP/username, connection state, association details (READ-09..12) — Validated in Phase 3: read-tools
-- ✓ Alerts & events: active alerts, event history, audit logs (READ-13..15) — Validated in Phase 3: read-tools
-- ✓ WLAN & config: SSID/WLAN profile read, configuration object read (READ-16..19) — Validated in Phase 3: read-tools
-- ✓ Troubleshooting: ping, traceroute, show command passthrough, logs, controller stats, ARM history, RF monitor (READ-20..26) — Validated in Phase 3: read-tools
-- ✓ Dynamic mode: 3 meta-tools (`aos8_list_tools`, `aos8_get_tool_schema`, `aos8_invoke_tool`) wired via `build_meta_tools` — Validated in Phase 3: read-tools
-
-### Validated
-
-*(Validated in Phase 5: write-tools)*
-
-- ✓ AOS8 write tools: 12 WRITE tools (WRITE-01..12) — SSID/VAP/AP-group/role/VLAN/AAA/ACL/netdest config, client disconnect, AP reboot, write-memory — Validated in Phase 5: write-tools
-- ✓ Write tools gated behind `ENABLE_AOS8_WRITE_TOOLS=true`; elicitation middleware extended for `{"aos8_write","aos8_write_delete"}` tags — Validated in Phase 5: write-tools
-- ✓ `aos8_write_memory` uses dedicated `/v1/configuration/object/write_memory` endpoint; manage_X tools return `requires_write_memory_for=[config_path]` — Validated in Phase 5: write-tools
-- ✓ TDD red→green cycle: 44 contract tests in `test_aos8_write.py`; full suite 737/737 passing — Validated in Phase 5: write-tools
-
-### Validated
-
-*(Validated in Phase 6: guided-prompts-documentation)*
-
-- ✓ 9 AOS8 guided prompts (PROMPT-01..09): triage_client, triage_ap, health_check, audit_change, rf_analysis, wlan_review, client_flood, compare_md_config, pre_change_check — Validated in Phase 6: guided-prompts-documentation
-- ✓ `aos8_pre_change_check` explicitly surfaces `aos8_write_memory` contract (WRITE-12) to operators — Validated in Phase 6: guided-prompts-documentation
-- ✓ Operator-facing `INSTRUCTIONS.md` at repo root (config_path semantics, write_memory contract, show_command, Conductor vs. standalone, prompt index) — Validated in Phase 6: guided-prompts-documentation
-- ✓ `docs/TOOLS.md` AOS8 section: all 38 tools + 9 prompts documented — Validated in Phase 6: guided-prompts-documentation
-- ✓ README.md AOS8 capability row, secrets reference, auto-disable example, "38 + 9 prompts" count — Validated in Phase 6: guided-prompts-documentation
-- ✓ Version bumped to 2.4.0.0; CHANGELOG.md [2.4.0.0] entry complete — Validated in Phase 6: guided-prompts-documentation
-
-### Validated
-
-*(Validated in Phase 7: testing-integration)*
-
-- ✓ 9 AOS8 differentiator read tools (DIFF-01..09): MD hierarchy, effective config, pending changes, RF neighbors, cluster state, air monitors, AP wired ports, IPsec tunnels, unified MD health check aggregator — Validated in Phase 7: testing-integration
-- ✓ AOS8 tool count raised to 47 (38 → 47); TOOLS["differentiators"] wired in __init__.py — Validated in Phase 7: testing-integration
-- ✓ TDD red→green cycle: 13 contract tests in test_aos8_read_differentiators.py; 2 security token-leak tests; all 764 unit tests passing — Validated in Phase 7: testing-integration
-- ✓ UIDARUBA token never logged at tool layer (TEST-04 verified end-to-end) — Validated in Phase 7: testing-integration
-- ✓ All 6 existing platform test suites unmodified and passing (non-regression, D-07) — Validated in Phase 7: testing-integration
-
-### Validated
-
-*(Validated in Phase 8: fix-diff-tools-production-bug)*
-
-- ✓ `differentiators.py` uses canonical `run_show`/`get_object` from `_helpers`; local `_show`/`_object` helpers deleted — response-contract bug fixed — Validated in Phase 8: fix-diff-tools-production-bug
-- ✓ All 13 DIFF tool test mocks updated to wrap responses in `_resp()` (MagicMock with `.json.return_value`), matching real `AOS8Client.request()` contract — Validated in Phase 8: fix-diff-tools-production-bug
-- ✓ 764 unit tests pass; zero regressions across all platforms — Validated in Phase 8: fix-diff-tools-production-bug
-
-### Validated
-
-*(Validated in Phase 9: phase-4-closure-documentation-accuracy)*
-
-- ✓ `04-VERIFICATION.md` created as delegated stub (0/0 score) documenting Phase 4 was absorbed into Phase 7; cross-references all 9 DIFF tools and Phase 7 VERIFICATION — Validated in Phase 9: phase-4-closure-documentation-accuracy
-- ✓ REQUIREMENTS.md DIFF-01..09 all `[x]`; traceability table shows Complete for all 9 DIFF rows — Validated in Phase 9: phase-4-closure-documentation-accuracy
-- ✓ README.md, docs/TOOLS.md, CHANGELOG.md corrected to 47 AOS8 tools (was 38); Differentiators (9) subsection added to TOOLS.md — Validated in Phase 9: phase-4-closure-documentation-accuracy
-- ✓ `server.py` `execute_description` includes `aos8_` prefix; regression test in `test_server_code_mode.py` guards all 7 platform prefixes — Validated in Phase 9: phase-4-closure-documentation-accuracy
-- ✓ Version bumped to 2.4.0.1; CHANGELOG.md [2.4.0.1] entry documents Phase 8 + Phase 9 fixes — Validated in Phase 9: phase-4-closure-documentation-accuracy
-- ✓ Full unit suite at 766 tests (764 + 2 new code-mode tests); zero regressions — Validated in Phase 9: phase-4-closure-documentation-accuracy
+- ✓ AOS8 platform foundation: secrets, write-gate, registry, Docker Compose wiring, graceful auto-disable — v1.0
+- ✓ `AOS8Client` with UIDARUBA token reuse, asyncio.Lock refresh serialization, lazy login, token masking — v1.0
+- ✓ 26 read tools: controller/AP inventory, client lookup, alerts/audit, WLAN/VAP/role config, troubleshooting (ping/traceroute/show_command) — v1.0
+- ✓ 9 differentiator tools: MD hierarchy, effective config, pending changes, RF neighbors, cluster state, air monitors, AP wired ports, IPsec tunnels, unified MD health check — v1.0
+- ✓ 12 gated write tools with elicitation: SSID/VAP/AP-group/role/VLAN/AAA/ACL/netdest lifecycle + client disconnect + AP reboot + write_memory — v1.0
+- ✓ 9 guided workflow prompts + operator INSTRUCTIONS.md + README/TOOLS.md/CHANGELOG documentation — v1.0
+- ✓ 766-test suite: UIDARUBA token-leak detection, all 6 existing platform suites passing unmodified — v1.0
+- ✓ DIFF production bug fix: canonical `run_show`/`get_object` helpers enforced across all 9 differentiator tools — v1.0
 
 ### Active
 
-*(No active requirements — all milestone work complete through Phase 9)*
+*(No active requirements — start next milestone with `/gsd:new-milestone`)*
 
 ### Out of Scope
 
@@ -115,30 +55,30 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 
 ## Context
 
+**Current state (v1.0):**
+- AOS8 platform module: 47 tools (26 read + 9 differentiator + 12 write) + 9 guided prompts
+- Version: 2.4.0.1 (pyproject.toml)
+- Test suite: 766 unit tests, all platforms green
+- ~148K total Python LOC in project; AOS8 module ~3K LOC
+- No live AOS8 test system — all tests use mocked HTTP responses
+
 **Forked from:** `github.com/nowireless4u/hpe-networking-mcp` (community project, MIT license)
 
 **AOS8 API characteristics:**
 - HTTPS only, default port 4343 (Mobility Conductor and Managed Devices)
-- Auth: POST `/v1/configuration/object/aaa_prof` login → `UIDARUBA` session token in cookie
+- Auth: POST login → `UIDARUBA` session token in cookie
 - Only GET and POST HTTP methods supported (no PUT, PATCH, DELETE)
 - Config API: `/v1/configuration/object/<object_name>?config_path=<path>`
 - Show Command API: `/v1/configuration/showcommand?command=<cli-command>&UIDARUBA=<token>`
 - Write Memory API: must be called per config_path after changes to persist config
-- Responses: structured JSON; show command responses include `_meta` field listing available fields
 - SSL: self-signed certs common in enterprise; `verify_ssl` flag needed
 
-**Topology handled:**
-- Mobility Conductor → Managed Devices hierarchy (config_path `/md`, `/md/<device>`, `/md/<ap-group>`)
-- Standalone controllers (config_path `/mm` or direct device path)
-
-**Existing project patterns to follow:**
-- Platform module in `src/hpe_networking_mcp/platforms/aos8/`
-- `_registry.py` module-level FastMCP holder, `client.py` API client, `tools/` directory
-- `TOOLS` dict + `register_tools(mcp, config)` entry point
-- Secrets loaded via `_read_secret()` from `SECRETS_DIR`
-- All tools prefixed `aos8_*`
-- Tags: `aos8_read` / `aos8_write` / `aos8_write_delete`
-- Tests in `tests/unit/test_aos8_*.py` with `pytest.mark.unit`
+**v2 deferred:**
+- Cross-platform `site_health_check` integration for AOS8 (no flat "site" concept; design deferred)
+- Firmware upgrade orchestration (high blast radius; defer until write tools proven stable)
+- PCAP / packet capture workflows (requires unsupported HTTP methods or special extensions)
+- Generic config-object CRUD passthrough (footgun — 500+ objects with no schema discovery)
+- Bulk AP operations (move AP group, mass reboot)
 
 ## Constraints
 
@@ -154,28 +94,14 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Follow existing platform module pattern exactly | Consistency — new platform fits seamlessly into server bootstrap, middleware, dynamic mode | — Pending |
-| config_path defaults to `/md`, overridable | Covers Conductor hierarchy (most common) while supporting targeted per-MD operations | — Pending |
-| Session token reuse (not per-call login) | AOS8 docs explicitly warn against repeated login; prevents session exhaustion on Conductor | — Pending |
-| Write Memory as explicit tool, not auto-called | Operator intent — AI should call it deliberately, not silently; matches staged-write pattern from Axis | — Pending |
-| Mock-only tests (no live system) | No test hardware available; follow same mock pattern as existing unit tests | — Pending |
-
-## Evolution
-
-This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd:transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd:complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+| Follow existing platform module pattern exactly | Consistency — new platform fits seamlessly into server bootstrap, middleware, dynamic mode | ✓ Good — zero friction integrating with existing middleware and dynamic mode |
+| config_path defaults to `/md`, overridable | Covers Conductor hierarchy (most common) while supporting targeted per-MD operations | ✓ Good — clean operator UX; config_path semantics documented in INSTRUCTIONS.md |
+| Session token reuse (not per-call login) | AOS8 docs explicitly warn against repeated login; prevents session exhaustion on Conductor | ✓ Good — asyncio.Lock prevents race; lazy login prevents startup block |
+| Write Memory as explicit tool, not auto-called | Operator intent — AI should call it deliberately, not silently; matches staged-write pattern from Axis | ✓ Good — `pre_change_check` prompt surfaces this contract explicitly |
+| Mock-only tests (no live system) | No test hardware available; follow same mock pattern as existing unit tests | ✓ Good — 766 tests run in CI with no infrastructure |
+| Phase 4 (Differentiators) merged into Phase 7 | Discovery: differentiator tools could be tested alongside integration work without separate phase | ✓ Good — Phase 7 delivered DIFF tools + integration in one coherent phase |
+| Local `_show`/`_object` helpers in differentiators.py (Phase 7) | Frozen test mocks returned dict directly; appeared correct under test | ⚠️ Revisit — was a bug; Phase 8 fixed to use canonical `run_show`/`get_object`; don't repeat this pattern |
+| Gap closure phases (08, 09) added post-audit | Milestone audit found DIFF production bug + doc/planning drift; needed correction before tagging | ✓ Good — right call to fix before shipping; kept tech debt list short |
 
 ---
-*Last updated: 2026-04-29 after Phase 9 (phase-4-closure-documentation-accuracy) completion — v1.0 milestone fully complete (all 9 phases, 26 plans, 766 tests)*
+*Last updated: 2026-04-29 after v1.0 milestone completion — 9 phases, 26 plans, 766 tests, 47 AOS8 tools shipped*
