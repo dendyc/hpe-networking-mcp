@@ -28,10 +28,10 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ### Central Enrichment (Stage 4)
 
-- [ ] **ENRICH-01**: AP count gap — skill compares AOS8 `aos8_get_ap_database()` total against `central_get_aps()` total; reports exact counts (X source APs, Y in Central, Z not yet onboarded)
-- [ ] **ENRICH-02**: Model → firmware recommendation — skill extracts distinct AP models from AOS8 inventory, calls `central_recommend_firmware()` per model, surfaces recommended AOS10 firmware version in the report
-- [ ] **ENRICH-03**: SSID conflict detection — skill compares AOS8 SSID names (from `aos8_get_bss_table()` / WLAN objects) against existing Central WLAN profiles via `central_get_wlan_profiles()`; flags naming collisions
-- [ ] **ENRICH-04**: Role/VLAN conflict detection — skill extracts role names and VLAN IDs from AOS8 effective config, cross-checks against `central_get_roles()` and `central_get_named_vlans()`; flags conflicts
+- [x] **ENRICH-01**: AP count gap — skill compares AOS8 `aos8_get_ap_database()` total against `central_get_aps()` total; reports exact counts (X source APs, Y in Central, Z not yet onboarded)
+- [x] **ENRICH-02**: Model → firmware recommendation — skill extracts distinct AP models from AOS8 inventory, calls `central_recommend_firmware()` per model, surfaces recommended AOS10 firmware version in the report
+- [x] **ENRICH-03**: SSID conflict detection — skill compares AOS8 SSID names (from `aos8_get_bss_table()` / WLAN objects) against existing Central WLAN profiles via `central_get_wlan_profiles()`; flags naming collisions
+- [x] **ENRICH-04**: Role/VLAN conflict detection — skill extracts role names and VLAN IDs from AOS8 effective config, cross-checks against `central_get_roles()` and `central_get_named_vlans()`; flags conflicts
 
 ### Cutover Readiness (Stage 5)
 

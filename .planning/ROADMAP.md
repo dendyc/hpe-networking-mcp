@@ -73,7 +73,7 @@
   5. Skill flags controllers below the 8.10.0.12 / 8.12.0.1 firmware floor as REGRESSION (VSG §1643-§1649) using the live controller version from AOS8
   6. Skill captures a live AP-count snapshot from `aos8_get_ap_database()` and surfaces it as the pre-cutover baseline for post-cutover diffing
 **Plans**: 2 plans
-- [ ] 12-01-PLAN.md — Stage 4 AOS8 live-mode sub-path: ENRICH-01..04 (AP count gap, per-model firmware rec table, SSID/role/VLAN conflicts as REGRESSION)
+- [x] 12-01-PLAN.md — Stage 4 AOS8 live-mode sub-path: ENRICH-01..04 (AP count gap, per-model firmware rec table, SSID/role/VLAN conflicts as REGRESSION)
 - [ ] 12-02-PLAN.md — Stage 5 AOS8 live-mode sub-path: CUTOVER-01..03 (cluster L2-connected health, fresh show-version firmware floor, AP-count baseline)
 
 ### Phase 13: Executive Output & Quality Gate
@@ -102,7 +102,7 @@
 | 9. Phase 4 Closure & Documentation Accuracy | v1.0 | 3/3 | Complete | 2026-04-28 |
 | 10. Live Detection & Collection | v1.1 | 2/2 | Complete    | 2026-04-29 |
 | 11. Live VSG Rules | v1.1 | 0/1 | Complete    | 2026-04-29 |
-| 12. Central Enrichment & Cutover Validation | v1.1 | 0/2 | Not started | — |
+| 12. Central Enrichment & Cutover Validation | v1.1 | 1/2 | In Progress|  |
 | 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
 
 ---
