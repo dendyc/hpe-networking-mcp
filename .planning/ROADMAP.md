@@ -42,7 +42,9 @@
   4. Skill retrieves cluster state, running-config, and local-user db via `aos8_get_cluster_state()` + `aos8_show_command()` passthrough (replacing the cluster/running-config/local-user/inventory/port/trunk pastes)
   5. Skill retrieves client baseline, BSS/SSID table, active AP RF state, and AP wired ports via `aos8_get_clients()` / `aos8_get_bss_table()` / `aos8_get_active_aps()` / `aos8_get_ap_wired_ports()` (replacing the association/user-table/essid/active/lldp pastes)
   6. AOS6 and IAP paste paths still load and execute unchanged — no regression in non-AOS8 source paths
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 10-01-PLAN.md — Wave 0: extend skill-tool-reference regex to include aos8 + add Phase-10 AOS8 tool-presence test
+- [ ] 10-02-PLAN.md — Rewrite aos-migration-readiness.md: Stage -1 detection block, AOS8 Stage 1 live-mode (4 batches) + paste-fallback sub-paths, frontmatter additions
 
 ### Phase 11: Live VSG Rules
 **Goal**: Stage 3 of the skill applies VSG-anchored rules (VRRP VIP, ARM/radio profiles, local-user count, static AP IPs) directly from live AOS8 data, auto-flagging REGRESSION/DRIFT findings without operator paste.
@@ -93,7 +95,7 @@
 | 7. Testing & Integration | v1.0 | 3/3 | Complete | 2026-04-29 |
 | 8. Fix DIFF Tools Production Bug | v1.0 | 1/1 | Complete | 2026-04-28 |
 | 9. Phase 4 Closure & Documentation Accuracy | v1.0 | 3/3 | Complete | 2026-04-28 |
-| 10. Live Detection & Collection | v1.1 | 0/0 | Not started | — |
+| 10. Live Detection & Collection | v1.1 | 0/2 | Not started | — |
 | 11. Live VSG Rules | v1.1 | 0/0 | Not started | — |
 | 12. Central Enrichment & Cutover Validation | v1.1 | 0/0 | Not started | — |
 | 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
