@@ -121,7 +121,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   4. A dedicated test scans captured log output across the entire client+tool surface and fails if any UIDARUBA value appears.
   5. Mist, Central, GreenLake, ClearPass, Apstra, and Axis test suites all pass unmodified.
 **Plans:** 3 plans
-  - [ ] 07-01-PLAN.md — Wave 0 RED scaffold: 9 DIFF tests, tool-layer token-leak test, test_aos8_init.py expectations
+  - [x] 07-01-PLAN.md — Wave 0 RED scaffold: 9 DIFF tests, tool-layer token-leak test, test_aos8_init.py expectations
   - [ ] 07-02-PLAN.md — Implement differentiators.py (DIFF-01..09); DIFF + security tests GREEN
   - [ ] 07-03-PLAN.md — Wire TOOLS["differentiators"] in __init__.py; full 7-platform suite regression
 

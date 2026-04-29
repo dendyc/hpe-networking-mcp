@@ -94,11 +94,11 @@
 - [x] **PROMPT-09**: `aos8_pre_change_check` — pre-maintenance checklist: current health, pending changes, confirm write_memory state before proceeding
 
 ### TEST — Testing
-- [ ] **TEST-01**: Unit tests for `AOS8Client` using mocked httpx responses — cover: login success, login failure, token reuse, 401 refresh, `_global_result` error detection, `verify_ssl` behavior, token masking in logs
-- [ ] **TEST-02**: Unit test per read tool category (health, clients, alerts, WLAN, troubleshoot) using fixture JSON responses
-- [ ] **TEST-03**: Unit tests for write tools — confirm `aos8_write` tag on all write tools; confirm `aos8_write_delete` on delete operations; confirm `config_path` required (no default) on all writes
-- [ ] **TEST-04**: Unit test that UIDARUBA token never appears in any log output across client and tool tests
-- [ ] **TEST-05**: Unit test that platform auto-disables cleanly when secrets are absent
+- [x] **TEST-01**: Unit tests for `AOS8Client` using mocked httpx responses — cover: login success, login failure, token reuse, 401 refresh, `_global_result` error detection, `verify_ssl` behavior, token masking in logs
+- [x] **TEST-02**: Unit test per read tool category (health, clients, alerts, WLAN, troubleshoot) using fixture JSON responses
+- [x] **TEST-03**: Unit tests for write tools — confirm `aos8_write` tag on all write tools; confirm `aos8_write_delete` on delete operations; confirm `config_path` required (no default) on all writes
+- [x] **TEST-04**: Unit test that UIDARUBA token never appears in any log output across client and tool tests
+- [x] **TEST-05**: Unit test that platform auto-disables cleanly when secrets are absent
 - [ ] **TEST-06**: Existing platform tests (Mist, Central, GreenLake, ClearPass, Apstra, Axis) all pass without modification
 
 ### DOCS — Documentation
@@ -210,11 +210,11 @@
 | DOCS-03 | Phase 6 — Guided Prompts & Documentation | Complete |
 | DOCS-04 | Phase 6 — Guided Prompts & Documentation | Complete |
 | DOCS-05 | Phase 6 — Guided Prompts & Documentation | Complete |
-| TEST-01 | Phase 7 — Testing & Integration | Pending |
-| TEST-02 | Phase 7 — Testing & Integration | Pending |
-| TEST-03 | Phase 7 — Testing & Integration | Pending |
-| TEST-04 | Phase 7 — Testing & Integration | Pending |
-| TEST-05 | Phase 7 — Testing & Integration | Pending |
+| TEST-01 | Phase 7 — Testing & Integration | Complete |
+| TEST-02 | Phase 7 — Testing & Integration | Complete |
+| TEST-03 | Phase 7 — Testing & Integration | Complete |
+| TEST-04 | Phase 7 — Testing & Integration | Complete |
+| TEST-05 | Phase 7 — Testing & Integration | Complete |
 | TEST-06 | Phase 7 — Testing & Integration | Pending |
 
 **Coverage:** 71 / 71 v1 requirements mapped, 0 orphans, 0 duplicates.
