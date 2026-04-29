@@ -53,8 +53,7 @@ The skill's job here is to prove the in-chat workflow produces credible readines
 
 ### Stage -1 — Session-start AOS8 detection (DETECT-01)
 
-Before beginning the Stage 0 operator interview, call `health()` once and
-inspect the per-platform status.
+Before beginning the Stage 0 operator interview, call `health()` once and inspect the per-platform status.
 
 **If `aos8.status == "ok"`** (AOS8 platform is configured and reachable):
 > Announce to the operator, verbatim:
@@ -62,16 +61,10 @@ inspect the per-platform status.
 >
 > Then proceed to Stage 0. The Stage 1 AOS8 section will use the live-mode sub-path (API calls in four grouped batches — COLLECT-01..04). The paste table is not used unless an individual API batch fails.
 
-**Otherwise** (AOS8 not configured, status is `unavailable` / `degraded` /
-not present, OR no AOS8 secrets are mounted):
-> Proceed silently to Stage 0. Make no announcement. The paste-driven flow
-> is unchanged for AOS6 sessions, IAP sessions, and AOS8 sessions where
-> the platform is unreachable. Stage 1 will use the paste-fallback
-> sub-path for the chosen source.
+**Otherwise** (AOS8 not configured, status `unavailable` / `degraded`, or no AOS8 secrets mounted):
+> Proceed silently to Stage 0. Make no announcement. The paste-driven flow is unchanged for AOS6, IAP, and unreachable-AOS8 sessions. Stage 1 will use the paste-fallback sub-path.
 
-This detection step never blocks the audit — failures and unreachables
-silently fall through to the existing paste flow.
-
+This detection step never blocks the audit — failures silently fall through to the existing paste flow.
 ### Stage 0 — Operator interview (mandatory before data collection)
 
 Lock these answers into the audit context:
@@ -97,8 +90,37 @@ The audit must NOT proceed without all seven answers.
 Tell the operator: *"Run all of the commands below in one CLI session, save the entire output, and paste the bundle back here in one message. Pre-flight tips:* `no paging` *to avoid space-bar prompts; enable session logging in PuTTY / SecureCRT first;* `encrypt disable` *if you want passphrases visible in cleartext (note: this exposes RADIUS shared secrets — confirm before pasting)."*
 
 Per VSG §1832-§1872 — *"Checklist for Information Collection"* — the data set differs per source platform.
-
 #### If source = `aos8` (anchor: VSG §1671-§1873)
+
+##### AOS8 live-mode sub-path — used when Stage -1 announced "AOS8 API mode"
+No CLI paste required. Calls AOS8 tools directly in **four grouped batches** (COLLECT-01..04). On any tool error, fall back per-batch to an exact-CLI paste request for that batch only.
+
+**Batch 1 — MD hierarchy + per-node effective config (COLLECT-01)**
+1. Call `aos8_get_md_hierarchy()`. Expected: node tree `/md`, `/md/<region>`, `/md/<region>/<site>`, `/md/<region>/<site>/<ap-group>`.
+2. For each config object type (`ap_sys_prof`, `virtual_ap`, `ssid_prof`, `aaa_prof`, `aaa_server_group`, `wlan_ssid_profile`, `reg_domain_profile`, `arm_profile`, `dot11a_radio_prof`, `dot11g_radio_prof`), call `aos8_get_effective_config(object_name="<type>", config_path="/md")`. Tool is **object-scoped** — iterate; results feed Stage 3 rule checks.
+3. Call `aos8_show_command(command="show configuration effective detail")` for a text capture.
+*On batch 1 error:* ask operator to run `show configuration node-hierarchy` and `show configuration effective detail <node>` and paste. Continue to Batch 2.
+**Batch 2 — Full AP inventory (COLLECT-02)**
+Call `aos8_get_ap_database()`. Expected: per-AP `model`, `mac`, `serial`, `ip_mode` (DHCP / static), `group`, `ap_name`, `ip` — replaces `show ap database long` (VSG §1740, §1851-§1852). Stage 3 RULES-04 reuses `ip_mode` directly.
+*On batch 2 error:* ask operator to run `show ap database long` and paste. Continue to Batch 3.
+**Batch 3 — Cluster state + running-config + local-user db + inventory + ports (COLLECT-03)**
+1. Call `aos8_get_cluster_state()`. Expected: cluster L2 / L3 status — replaces `show lc-cluster group-membership` (VSG §2399).
+2. Call `aos8_show_command(command="show running-config")`.
+3. Call `aos8_show_command(command="show local-user db")`.
+4. Call `aos8_show_command(command="show inventory")`.
+5. Call `aos8_show_command(command="show port status")` and `aos8_show_command(command="show trunk")`.
+*On batch 3 error:* identify which step(s) failed; ask operator for **only the failed CLI commands** by name. Continue to Batch 4.
+**Batch 4 — Client baseline + BSS/SSID table + active APs + AP wired ports (COLLECT-04)**
+1. Call `aos8_get_clients()`. Expected: aggregate counts (clients-by-SSID, total, users-with-roles) — replaces `show ap association` + `show user-table`.
+2. Call `aos8_get_bss_table()`. Expected: SSID name + AP-broadcasting count + radio band — replaces `show ap essid`.
+3. Call `aos8_get_active_aps()`. Expected: active AP list with channel / TX power / client count — replaces `show ap active`.
+4. For each AP from Batch 2 (or a representative sample), call `aos8_get_ap_wired_ports(ap_name="<ap_name>")`. Tool is **per-AP** — iterate. Replaces `show ap lldp neighbors`.
+*On batch 4 error:* identify which call(s) failed; ask operator to run the failed command(s) and paste. Continue to Stage 2.
+
+After all four batches, present a compiled Stage 1 inventory table (AP count, controller list, cluster state, local-user count, SSID count) before Stage 2.
+
+##### AOS8 paste-fallback sub-path — used when Stage -1 was silent (AOS8 unreachable or not configured)
+Use the same 16-command bundle (API path unavailable):
 
 | # | Where | Command | Purpose (VSG anchor) |
 |---|---|---|---|
