@@ -72,9 +72,19 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ README.md AOS8 capability row, secrets reference, auto-disable example, "38 + 9 prompts" count — Validated in Phase 6: guided-prompts-documentation
 - ✓ Version bumped to 2.4.0.0; CHANGELOG.md [2.4.0.0] entry complete — Validated in Phase 6: guided-prompts-documentation
 
+### Validated
+
+*(Validated in Phase 7: testing-integration)*
+
+- ✓ 9 AOS8 differentiator read tools (DIFF-01..09): MD hierarchy, effective config, pending changes, RF neighbors, cluster state, air monitors, AP wired ports, IPsec tunnels, unified MD health check aggregator — Validated in Phase 7: testing-integration
+- ✓ AOS8 tool count raised to 47 (38 → 47); TOOLS["differentiators"] wired in __init__.py — Validated in Phase 7: testing-integration
+- ✓ TDD red→green cycle: 13 contract tests in test_aos8_read_differentiators.py; 2 security token-leak tests; all 764 unit tests passing — Validated in Phase 7: testing-integration
+- ✓ UIDARUBA token never logged at tool layer (TEST-04 verified end-to-end) — Validated in Phase 7: testing-integration
+- ✓ All 6 existing platform test suites unmodified and passing (non-regression, D-07) — Validated in Phase 7: testing-integration
+
 ### Active
 
-*(No active requirements — all mileston work complete through Phase 6)*
+*(No active requirements — all milestone work complete through Phase 7)*
 
 ### Out of Scope
 
@@ -149,4 +159,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 after Phase 5 (write-tools) completion*
+*Last updated: 2026-04-29 after Phase 7 (testing-integration) completion*
