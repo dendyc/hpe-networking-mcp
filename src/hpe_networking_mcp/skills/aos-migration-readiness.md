@@ -227,6 +227,50 @@ If AOS8 live mode is active (Stage -1 announced API mode), Stage 1 already colle
 
 Different rule sets apply based on **source platform** AND **target SSID mode**. The audit walks the rules below and classifies each finding as **REGRESSION** (must fix before migration), **DRIFT** (should address; not blocking), or **INFO** (operator reference).
 
+#### AOS8 live-mode sub-path — rules evaluated from Stage 1 data (used when Stage -1 announced "AOS8 API mode")
+
+When AOS8 live mode is active, RULES-01, RULES-02, and RULES-04 are evaluated directly from the Stage 1 batch data already in context — no re-fetching, no operator paste. RULES-03 result is **pending Stage 4 A11** (ClearPass cross-check). After this sub-path, continue with the universal + AOS6/8 + per-target-mode rule tables below — those apply regardless of source path.
+
+Each finding below uses the format **Severity — Description (VSG §anchor) (source: `tool_call(args)`, Batch N)**.
+
+##### RULES-01 — VRRP VIP for AP system profiles (REGRESSION, VSG §1654-§1657)
+
+From the Batch 1 `aos8_get_effective_config(object_name='ap_sys_prof', config_path='/md')` response, inspect the LMS IP field (and Backup-LMS IP, if present) of each `ap_sys_prof` returned. If the LMS IP matches a controller management IP (any individual managed-device address from `aos8_get_md_hierarchy()` Batch 1) rather than the VRRP virtual IP, emit:
+
+- **REGRESSION** — AP system profile `<profile_name>` LMS IP is `<lms_ip_value>`, which matches an individual controller management IP rather than the VRRP virtual IP. APs will strand on first controller upgrade. (VSG §1654-§1657) (source: `aos8_get_effective_config(object_name='ap_sys_prof', config_path='/md')`, Batch 1)
+
+Reference the field by intent ("the LMS IP field in the `ap_sys_prof` response") — do **not** pin a specific JSON key path; introspect the response structure at runtime. If multiple `ap_sys_prof` objects return, emit one finding per profile with the wrong IP.
+
+*If Batch 1 failed:* RULES-01 cannot be evaluated from live data. Mark as **inconclusive — paste required** and consult any per-batch fallback paste of `show running-config` already supplied. Equivalent paste-mode rule is C2 below.
+
+##### RULES-02 — ARM / radio / regulatory-domain profile detection (DRIFT, VSG §1163-§1166)
+
+From the Batch 1 effective-config results for `arm_profile`, `dot11a_radio_prof`, `dot11g_radio_prof`, and `reg_domain_profile` (each fetched via `aos8_get_effective_config(object_name=<profile_type>, config_path='/md')`), detect presence of any configured object across all four profile types. Empty/absent at every queried path means no DRIFT for that profile type — distinguish "envelope present" from "objects present".
+
+If any of the four profile types has at least one configured object at the queried `/md` root scope, emit:
+
+- **DRIFT** — Active legacy RF profiles detected at `/md` root: `<list of profile_type=profile_name pairs>`. These are replaced by Central AirMatch + ClientMatch in AOS 10 (channel, TX power, channel-width, DFS, band-steering all move to Central). (VSG §1163-§1166) (source: `aos8_get_effective_config(object_name='arm_profile|dot11a_radio_prof|dot11g_radio_prof|reg_domain_profile', config_path='/md')`, Batch 1)
+
+Per-AP-group enumeration is out of scope for this phase — Batch 1 collects at the `/md` root and AOS8 effective config inherits down. Report at the granularity Stage 1 collected.
+
+*If Batch 1 failed:* RULES-02 cannot be evaluated from live data. Mark as **inconclusive — paste required** and consult any pasted `show configuration effective detail` output. Equivalent paste-mode rule is C4 below.
+
+##### RULES-03 — Local user count cross-check (DRIFT) — pending Stage 4 A11
+
+Stage 1 Batch 3 already collected the AOS8 local-user count via `aos8_show_command(command='show local-user db')`. The cross-check against ClearPass executes in **Stage 4 A11** (`clearpass_get_local_users()`) — do **not** call ClearPass twice. Stage 3 emits no RULES-03 finding here; the determination is deferred. See Stage 4 A11 for the dual-source-of-truth comparison.
+
+*If Batch 3 failed:* The AOS8 local-user count is unavailable; A11 will note "AOS8 count unknown — paste of `show local-user db` required for full cross-check".
+
+##### RULES-04 — Static AP IP detection (REGRESSION, VSG §1232-§1234)
+
+From the Batch 2 `aos8_get_ap_database()` response, inspect the `ip_mode` field of each AP entry. For every AP whose `ip_mode` is anything other than DHCP (e.g., `static`), emit one finding:
+
+- **REGRESSION** — AP `<ap_name>` (MAC `<wired_mac>`) has `ip_mode='<value>'` (statically addressed). AOS 10 does not support static AP IPs — APs must be DHCP-addressed before AP convert. (VSG §1232-§1234) (source: `aos8_get_ap_database()`, Batch 2)
+
+If no APs have a non-DHCP `ip_mode`, emit a single INFO confirmation: "AP database shows all APs DHCP-addressed (RULES-04 PASS)."
+
+*If Batch 2 failed:* RULES-04 cannot be evaluated from live data. Mark as **inconclusive — paste required** and consult any pasted `show ap database long` output. Equivalent paste-mode rule is U2 (Universal rules table) below.
+
 #### Universal rules (apply to all source → target combinations)
 
 | # | Check | Severity | Anchor |
