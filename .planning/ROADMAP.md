@@ -24,7 +24,8 @@
 
 ### v1.1 AOS8-Powered Migration Readiness
 
-- [x] **Phase 10: Live Detection & Collection** — Skill auto-detects AOS8 and pulls all Stage 1 source data via API (completed 2026-04-29)
+- [x] **Phase 10: Live Detection & Collection** — Skill auto-detects AOS8 and pulls all Stage 1 source data via API
+ (completed 2026-04-29)
 - [ ] **Phase 11: Live VSG Rules** — Stage 3 evaluates VRRP/ARM/local-user/static-AP rules from live data
 - [ ] **Phase 12: Central Enrichment & Cutover Validation** — Stage 4 cross-references Central + Stage 5 validates live cutover prerequisites
 - [ ] **Phase 13: Executive Output & Quality Gate** — Customer-grade report format + frontmatter/regression test green
@@ -56,7 +57,8 @@
   3. Skill cross-checks AOS8 `show local-user db` count against ClearPass `clearpass_get_local_users()` count and flags a DRIFT when both are non-zero
   4. Skill flags a REGRESSION listing every AP whose IP mode in `aos8_get_ap_database()` is static (VSG §1232-§1234)
   5. Each rule cites its VSG section reference in the finding text and identifies the source tool call that produced the evidence
-**Plans**: TBD
+**Plans**: 1 plan
+- [ ] 11-01-PLAN.md — Layer AOS8 live-mode rule evaluation into Stage 3 (RULES-01/02/04) + expand Stage 4 A11 (RULES-03 cross-check); insert Stage 2 skip clause
 
 ### Phase 12: Central Enrichment & Cutover Validation
 **Goal**: Stage 4 cross-references AOS8 inventory against the destination Central tenant, and Stage 5 validates live cutover prerequisites — together producing the data the SE needs to plan the actual move.
@@ -96,7 +98,7 @@
 | 8. Fix DIFF Tools Production Bug | v1.0 | 1/1 | Complete | 2026-04-28 |
 | 9. Phase 4 Closure & Documentation Accuracy | v1.0 | 3/3 | Complete | 2026-04-28 |
 | 10. Live Detection & Collection | v1.1 | 2/2 | Complete    | 2026-04-29 |
-| 11. Live VSG Rules | v1.1 | 0/0 | Not started | — |
+| 11. Live VSG Rules | v1.1 | 0/1 | Planned     | — |
 | 12. Central Enrichment & Cutover Validation | v1.1 | 0/0 | Not started | — |
 | 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
 
