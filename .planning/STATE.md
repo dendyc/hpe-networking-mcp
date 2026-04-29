@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Milestone complete
-last_updated: "2026-04-29T03:11:36.211Z"
+status: Ready to plan
+last_updated: "2026-04-29T04:02:46.423Z"
 progress:
-  total_phases: 7
-  completed_phases: 6
-  total_plans: 22
-  completed_plans: 22
+  total_phases: 9
+  completed_phases: 7
+  total_plans: 23
+  completed_plans: 23
 ---
 
 # Project State
@@ -83,6 +83,7 @@ Current focus: All 7 phases complete — project at v1.0 milestone (functional c
 - [Phase 07]: DIFF-09 partial-failure surfaces error to result['aps'] root when ap_active or ap_db fails (Pitfall 3 contract)
 - [Phase 07]: AOS8 client.py login log lines renamed UIDARUBA->session token to satisfy security audit redaction-line guard
 - [Phase 07]: Plan 07-03: TOOLS['differentiators'] wired; 47 tools registered; 764 tests green; D-06 authorized doc-deviation logged
+- [Phase 08]: Phase 8 fix: DIFF tools use canonical _helpers.run_show/get_object — invalidates Phase 7 frozen-mock rationale; tests now mirror real httpx.Response contract
 
 ### Open Todos
 
@@ -105,6 +106,7 @@ Current focus: All 7 phases complete — project at v1.0 milestone (functional c
 | 07 | 01 | 12 min | 4 | 13 | Wave 0 RED scaffold; 13 DIFF + 2 security tests RED; TEST-05 gap-fill GREEN |
 | Phase 07 P02 | 10 min | 2 tasks | 2 files |
 | Phase 07 P03 | 6 min | 2 tasks | 4 files |
+| Phase 08 P01 | 8 min | 3 tasks | 2 files |
 
 ## Last Updated
 
