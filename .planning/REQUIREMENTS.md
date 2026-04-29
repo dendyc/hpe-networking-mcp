@@ -35,9 +35,9 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ### Cutover Readiness (Stage 5)
 
-- [ ] **CUTOVER-01**: Live cluster health — skill calls `aos8_get_cluster_state()` to confirm L2-connected status before single-controller upgrade; flags unhealthy cluster as REGRESSION
-- [ ] **CUTOVER-02**: Controller firmware version check — skill parses controller firmware version from AOS8 API against the 8.10.0.12 / 8.12.0.1 prerequisite; auto-flags REGRESSION if below (VSG §1643-§1649)
-- [ ] **CUTOVER-03**: AP count snapshot — skill retrieves live AP count from `aos8_get_ap_database()` for use in pre/during-cutover planning and post-cutover diff
+- [x] **CUTOVER-01**: Live cluster health — skill calls `aos8_get_cluster_state()` to confirm L2-connected status before single-controller upgrade; flags unhealthy cluster as REGRESSION
+- [x] **CUTOVER-02**: Controller firmware version check — skill parses controller firmware version from AOS8 API against the 8.10.0.12 / 8.12.0.1 prerequisite; auto-flags REGRESSION if below (VSG §1643-§1649)
+- [x] **CUTOVER-03**: AP count snapshot — skill retrieves live AP count from `aos8_get_ap_database()` for use in pre/during-cutover planning and post-cutover diff
 
 ### Output Format
 
