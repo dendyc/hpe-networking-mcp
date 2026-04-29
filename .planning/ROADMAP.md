@@ -26,7 +26,7 @@
 
 - [x] **Phase 10: Live Detection & Collection** — Skill auto-detects AOS8 and pulls all Stage 1 source data via API
  (completed 2026-04-29)
-- [ ] **Phase 11: Live VSG Rules** — Stage 3 evaluates VRRP/ARM/local-user/static-AP rules from live data
+- [x] **Phase 11: Live VSG Rules** — Stage 3 evaluates VRRP/ARM/local-user/static-AP rules from live data (completed 2026-04-29)
 - [ ] **Phase 12: Central Enrichment & Cutover Validation** — Stage 4 cross-references Central + Stage 5 validates live cutover prerequisites
 - [ ] **Phase 13: Executive Output & Quality Gate** — Customer-grade report format + frontmatter/regression test green
 
@@ -98,7 +98,7 @@
 | 8. Fix DIFF Tools Production Bug | v1.0 | 1/1 | Complete | 2026-04-28 |
 | 9. Phase 4 Closure & Documentation Accuracy | v1.0 | 3/3 | Complete | 2026-04-28 |
 | 10. Live Detection & Collection | v1.1 | 2/2 | Complete    | 2026-04-29 |
-| 11. Live VSG Rules | v1.1 | 0/1 | Planned     | — |
+| 11. Live VSG Rules | v1.1 | 0/1 | Complete    | 2026-04-29 |
 | 12. Central Enrichment & Cutover Validation | v1.1 | 0/0 | Not started | — |
 | 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
 
