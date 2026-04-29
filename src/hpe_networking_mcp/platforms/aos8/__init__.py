@@ -47,6 +47,17 @@ TOOLS: dict[str, list[str]] = {
         "aos8_get_arm_history",
         "aos8_get_rf_monitor",
     ],
+    "differentiators": [
+        "aos8_get_md_hierarchy",
+        "aos8_get_effective_config",
+        "aos8_get_pending_changes",
+        "aos8_get_rf_neighbors",
+        "aos8_get_cluster_state",
+        "aos8_get_air_monitors",
+        "aos8_get_ap_wired_ports",
+        "aos8_get_ipsec_tunnels",
+        "aos8_get_md_health_check",
+    ],
     "writes": [
         "aos8_manage_ssid_profile",
         "aos8_manage_virtual_ap",
