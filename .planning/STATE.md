@@ -2,23 +2,23 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: AOS8-Powered Migration Readiness
-status: in-progress
-last_updated: "2026-04-29T07:21:40Z"
+status: completed
+last_updated: "2026-04-29T15:34:48.016Z"
 last_activity: 2026-04-29
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
 
 ## Current Phase
 
-Phase: 10 — Live Detection & Collection (in progress)
-Plan: 01 complete (test infrastructure)
-Status: Plan 01 complete — test regex extended + AOS8 catalog assertion added
+Phase: 10 — Live Detection & Collection (complete)
+Plan: 02 complete (live detection + collection skill rewrite)
+Status: Plan 02 complete — Stage -1 detection + AOS8 live-mode 4-batch collection wired into skill; partial approval (Scenario A deferred)
 Last activity: 2026-04-29
 
 ## Project Reference
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 
 | Phase | Name | Status | Reqs |
 |-------|------|--------|------|
-| 10 | Live Detection & Collection | In Progress (1/2 plans) | DETECT-01, COLLECT-01..04 |
+| 10 | Live Detection & Collection | Complete (2/2 plans) | DETECT-01, COLLECT-01..04 |
 | 11 | Live VSG Rules | Not started | RULES-01..04 |
 | 12 | Central Enrichment & Cutover Validation | Not started | ENRICH-01..04, CUTOVER-01..03 |
 | 13 | Executive Output & Quality Gate | Not started | OUTPUT-01..02, QUALITY-01..03 |
@@ -60,6 +60,8 @@ v1.1 roadmap decisions:
 - AOS6 and IAP paste paths preserved — no regression to existing source paths
 - Skill regression test (`tests/unit/test_skill_tool_references.py`) gates Phase 13 completion
 - [Phase 10]: Extended _TOOL_REF_PATTERN regex with |aos8 so typos in aos8_* skill references fail CI
+- [Phase 10-live-detection-collection]: Two-sub-path structure for AOS8 Stage 1: live-mode API path when AOS8 reachable, paste-fallback when not (D-04 amendment honored)
+- [Phase 10-live-detection-collection]: Scenario A (AOS8 live-mode announcement) deferred — no live AOS8 environment; prose mechanically correct; partial approval accepted
 
 ### Open Todos
 
@@ -71,4 +73,4 @@ v1.1 roadmap decisions:
 
 ## Last Updated
 
-2026-04-29 — Phase 10 Plan 01 complete (test infrastructure: regex + catalog assertions)
+2026-04-29 — Phase 10 Plan 02 complete (skill rewrite: Stage -1 detection + AOS8 4-batch live-mode; partial approval — Scenario A deferred pending live AOS8 environment)
