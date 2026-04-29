@@ -22,9 +22,16 @@ def _load(name: str) -> dict:
     return json.loads((_FIXTURES / name).read_text())
 
 
+def _resp(body: dict) -> MagicMock:
+    """Build a MagicMock that mimics httpx.Response with a .json() method."""
+    r = MagicMock()
+    r.json.return_value = body
+    return r
+
+
 def _make_ctx(body: dict):
     client = MagicMock()
-    client.request = AsyncMock(return_value=body)
+    client.request = AsyncMock(return_value=_resp(body))
     ctx = MagicMock()
     ctx.lifespan_context = {"aos8_client": client}
     return ctx, client
@@ -228,16 +235,16 @@ async def test_get_md_health_check():
     def _route(method, path, params=None, **kwargs):
         cmd = (params or {}).get("command", "")
         if cmd == "show ap active":
-            return aps_active
+            return _resp(aps_active)
         if cmd == "show ap database":
-            return aps_db
+            return _resp(aps_db)
         if cmd == "show alarms all":
-            return alarms
+            return _resp(alarms)
         if cmd == "show version":
-            return version
+            return _resp(version)
         if cmd == "show user summary":
-            return users
-        return {"_global_result": {"status": "0"}}
+            return _resp(users)
+        return _resp({"_global_result": {"status": "0"}})
 
     client = MagicMock()
     client.request = AsyncMock(side_effect=_route)
@@ -279,14 +286,14 @@ async def test_get_md_health_check_handles_partial_failure():
         if cmd == "show ap active":
             raise RuntimeError("conductor unreachable for active APs")
         if cmd == "show ap database":
-            return aps_db
+            return _resp(aps_db)
         if cmd == "show alarms all":
-            return alarms
+            return _resp(alarms)
         if cmd == "show version":
-            return version
+            return _resp(version)
         if cmd == "show user summary":
-            return users
-        return {"_global_result": {"status": "0"}}
+            return _resp(users)
+        return _resp({"_global_result": {"status": "0"}})
 
     client = MagicMock()
     client.request = AsyncMock(side_effect=_route)
