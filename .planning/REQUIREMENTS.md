@@ -175,15 +175,15 @@
 | READ-24 | Phase 3 — Read Tools | Complete |
 | READ-25 | Phase 3 — Read Tools | Complete |
 | READ-26 | Phase 3 — Read Tools | Complete |
-| DIFF-01 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-02 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-03 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-04 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-05 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-06 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-07 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-08 | Phase 4 — Differentiator Tools | Pending |
-| DIFF-09 | Phase 4 — Differentiator Tools | Pending |
+| DIFF-01 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-02 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-03 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-04 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-05 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-06 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-07 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-08 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-09 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
 | WRITE-01 | Phase 5 — Write Tools | Complete |
 | WRITE-02 | Phase 5 — Write Tools | Complete |
 | WRITE-03 | Phase 5 — Write Tools | Complete |
@@ -218,3 +218,5 @@
 | TEST-06 | Phase 7 — Testing & Integration | Complete |
 
 **Coverage:** 71 / 71 v1 requirements mapped, 0 orphans, 0 duplicates.
+
+*Note: DIFF-01..09 implemented by Phase 7 (plans 07-01/07-02/07-03); reassigned to Phase 8 for formal closure after audit identified production bug. Phase 4 formally retired as merged.*

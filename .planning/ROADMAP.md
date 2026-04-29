@@ -11,12 +11,15 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 - [ ] **Phase 1: Platform Foundation** — Secrets, gating, registry, and Compose plumbing in place
 - [ ] **Phase 2: API Client** — `AOS8Client` with token-reuse auth, error handling, and health probe
 - [ ] **Phase 3: Read Tools** — Health, clients, alerts, WLAN, and troubleshooting read surface
-- [ ] **Phase 4: Differentiator Tools** — Conductor-hierarchy, RF, cluster, and IPsec read tools unique to AOS8
+- [x] **Phase 4: Differentiator Tools** — Conductor-hierarchy, RF, cluster, and IPsec read tools unique to AOS8 *(merged into Phase 7; see Phase 7 plans 07-01/07-02/07-03)*
 - [x] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory`
  (completed 2026-04-28)
 - [x] **Phase 6: Guided Prompts & Documentation** — Workflow prompts plus `INSTRUCTIONS.md`/`README.md`/`TOOLS.md` updates
  (completed 2026-04-28)
-- [ ] **Phase 7: Testing & Integration** — Mocked unit tests, log-leak audits, and regression of existing platforms
+- [x] **Phase 7: Testing & Integration** — Mocked unit tests, log-leak audits, and regression of existing platforms
+ (completed 2026-04-29)
+- [ ] **Phase 8: Fix DIFF Tools Production Bug** — Patch `differentiators.py` response-contract bug; update test mocks
+- [ ] **Phase 9: Phase 4 Closure & Documentation Accuracy** — Retire Phase 4 debt, check off DIFF requirements, fix doc tool counts
 
 ## Phase Details
 
@@ -125,17 +128,45 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   - [x] 07-02-PLAN.md — Implement differentiators.py (DIFF-01..09); DIFF + security tests GREEN
   - [x] 07-03-PLAN.md — Wire TOOLS["differentiators"] in __init__.py; full 7-platform suite regression
 
+### Phase 8: Fix DIFF Tools Production Bug
+**Goal:** Patch the 2-line response-contract bug in `differentiators.py` that causes all 9 DIFF tools to return a raw `httpx.Response` object instead of parsed JSON in production. Update test mocks to match the real `AOS8Client.request()` contract.
+**Depends on:** Phase 7
+**Gap Closure:** Closes critical integration gap identified by v1.0 milestone audit
+**Requirements:** DIFF-01, DIFF-02, DIFF-03, DIFF-04, DIFF-05, DIFF-06, DIFF-07, DIFF-08, DIFF-09
+**Success Criteria** (what must be TRUE):
+  1. `differentiators.py` `_show()` and `_object()` call `.json()` on the `httpx.Response` returned by `client.request()` before passing to `strip_meta()` — matching the established pattern in `_helpers.run_show()` and `get_object()`.
+  2. `test_aos8_read_differentiators.py` mocks use `AsyncMock(return_value=mock_response)` where `mock_response.json.return_value = body` — verifying the real `.json()` call is exercised.
+  3. All 13 DIFF tests pass GREEN; full 764-test suite has zero regressions.
+  4. Ruff lint and mypy type check remain clean.
+**Plans:** TBD
+
+### Phase 9: Phase 4 Closure & Documentation Accuracy
+**Goal:** Formally retire the Phase 4 planning debt by creating a cross-reference VERIFICATION.md, marking DIFF-01..09 complete in REQUIREMENTS.md, correcting the tool count in all user-facing docs from 38 to 47, and fixing the code-mode `execute_description` to include `aos8_`.
+**Depends on:** Phase 8
+**Gap Closure:** Closes planning integrity gap and authorized doc deviation from v1.0 milestone audit
+**Requirements:** DIFF-01, DIFF-02, DIFF-03, DIFF-04, DIFF-05, DIFF-06, DIFF-07, DIFF-08, DIFF-09, DOCS-01, DOCS-02, DOCS-03, DOCS-04
+**Success Criteria** (what must be TRUE):
+  1. `.planning/phases/04-differentiator-tools/04-VERIFICATION.md` exists and documents that Phase 4 was absorbed into Phase 7 (plans 07-01/07-02/07-03), with cross-references to Phase 7's VERIFICATION.md Observable Truth #1.
+  2. `REQUIREMENTS.md` has all 9 DIFF requirements checked `[x]` and the traceability table shows "Complete" for DIFF-01..09.
+  3. `README.md` capability row shows 47 AOS8 tools (was 38); tool count in description updated.
+  4. `docs/TOOLS.md` AOS8 section lists all 9 differentiator tools with descriptions.
+  5. `CHANGELOG.md` [2.4.0.0] entry reflects 47 tools (not 38).
+  6. `server.py` `execute_description` includes `aos8_` in the list of callable tool prefixes.
+**Plans:** TBD
+
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation | 4/4 | Complete | 2026-04-28 |
 | 2. API Client | 3/3 | Complete | 2026-04-28 |
-| 3. Read Tools | 0/7 | Not started | - |
-| 4. Differentiator Tools | 0/0 | Not started | - |
-| 5. Write Tools | 3/3 | Complete   | 2026-04-28 |
-| 6. Guided Prompts & Documentation | 2/2 | Complete   | 2026-04-28 |
-| 7. Testing & Integration | 0/0 | Not started | - |
+| 3. Read Tools | 7/7 | Complete | 2026-04-28 |
+| 4. Differentiator Tools | — | Merged into Phase 7 | 2026-04-29 |
+| 5. Write Tools | 3/3 | Complete | 2026-04-28 |
+| 6. Guided Prompts & Documentation | 2/2 | Complete | 2026-04-28 |
+| 7. Testing & Integration | 3/3 | Complete | 2026-04-29 |
+| 8. Fix DIFF Tools Production Bug | 0/0 | Not started | - |
+| 9. Phase 4 Closure & Documentation Accuracy | 0/0 | Not started | - |
 
 ## Coverage
 
@@ -148,10 +179,10 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | FOUND-01 — FOUND-05 | 5 | Phase 1 |
 | CLIENT-01 — CLIENT-10 | 10 | Phase 2 |
 | READ-01 — READ-26 | 26 | Phase 3 |
-| DIFF-01 — DIFF-09 | 9 | Phase 4 |
+| DIFF-01 — DIFF-09 | 9 | Phase 8 (gap closure; impl. by Phase 7) |
 | WRITE-01 — WRITE-12 | 12 | Phase 5 |
 | PROMPT-01 — PROMPT-09 + DOCS-01 — DOCS-05 | 14 | Phase 6 |
 | TEST-01 — TEST-06 | 6 | Phase 7 |
 
 ---
-*Last updated: 2026-04-28 after Phase 2 Plan 03 execution (Phase 2 complete)*
+*Last updated: 2026-04-28 after v1.0 milestone audit — gap closure phases 08 and 09 added*
