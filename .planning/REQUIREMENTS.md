@@ -99,7 +99,7 @@
 - [x] **TEST-03**: Unit tests for write tools — confirm `aos8_write` tag on all write tools; confirm `aos8_write_delete` on delete operations; confirm `config_path` required (no default) on all writes
 - [x] **TEST-04**: Unit test that UIDARUBA token never appears in any log output across client and tool tests
 - [x] **TEST-05**: Unit test that platform auto-disables cleanly when secrets are absent
-- [ ] **TEST-06**: Existing platform tests (Mist, Central, GreenLake, ClearPass, Apstra, Axis) all pass without modification
+- [x] **TEST-06**: Existing platform tests (Mist, Central, GreenLake, ClearPass, Apstra, Axis) all pass without modification
 
 ### DOCS — Documentation
 - [x] **DOCS-01**: `INSTRUCTIONS.md` updated with AOS8 section covering config_path semantics, write_memory contract, show_command usage, and Conductor vs standalone behavior
@@ -215,6 +215,6 @@
 | TEST-03 | Phase 7 — Testing & Integration | Complete |
 | TEST-04 | Phase 7 — Testing & Integration | Complete |
 | TEST-05 | Phase 7 — Testing & Integration | Complete |
-| TEST-06 | Phase 7 — Testing & Integration | Pending |
+| TEST-06 | Phase 7 — Testing & Integration | Complete |
 
 **Coverage:** 71 / 71 v1 requirements mapped, 0 orphans, 0 duplicates.

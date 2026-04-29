@@ -123,7 +123,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 **Plans:** 3 plans
   - [x] 07-01-PLAN.md — Wave 0 RED scaffold: 9 DIFF tests, tool-layer token-leak test, test_aos8_init.py expectations
   - [x] 07-02-PLAN.md — Implement differentiators.py (DIFF-01..09); DIFF + security tests GREEN
-  - [ ] 07-03-PLAN.md — Wire TOOLS["differentiators"] in __init__.py; full 7-platform suite regression
+  - [x] 07-03-PLAN.md — Wire TOOLS["differentiators"] in __init__.py; full 7-platform suite regression
 
 ## Progress
 
