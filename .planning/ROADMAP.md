@@ -26,7 +26,8 @@
 
 - [x] **Phase 10: Live Detection & Collection** — Skill auto-detects AOS8 and pulls all Stage 1 source data via API
  (completed 2026-04-29)
-- [x] **Phase 11: Live VSG Rules** — Stage 3 evaluates VRRP/ARM/local-user/static-AP rules from live data (completed 2026-04-29)
+- [x] **Phase 11: Live VSG Rules** — Stage 3 evaluates VRRP/ARM/local-user/static-AP rules from live data
+ (completed 2026-04-29)
 - [ ] **Phase 12: Central Enrichment & Cutover Validation** — Stage 4 cross-references Central + Stage 5 validates live cutover prerequisites
 - [ ] **Phase 13: Executive Output & Quality Gate** — Customer-grade report format + frontmatter/regression test green
 
@@ -71,7 +72,9 @@
   4. Skill flags an unhealthy AOS8 cluster (anything other than L2-connected from `aos8_get_cluster_state()`) as a REGRESSION blocking single-controller upgrade
   5. Skill flags controllers below the 8.10.0.12 / 8.12.0.1 firmware floor as REGRESSION (VSG §1643-§1649) using the live controller version from AOS8
   6. Skill captures a live AP-count snapshot from `aos8_get_ap_database()` and surfaces it as the pre-cutover baseline for post-cutover diffing
-**Plans**: TBD
+**Plans**: 2 plans
+- [ ] 12-01-PLAN.md — Stage 4 AOS8 live-mode sub-path: ENRICH-01..04 (AP count gap, per-model firmware rec table, SSID/role/VLAN conflicts as REGRESSION)
+- [ ] 12-02-PLAN.md — Stage 5 AOS8 live-mode sub-path: CUTOVER-01..03 (cluster L2-connected health, fresh show-version firmware floor, AP-count baseline)
 
 ### Phase 13: Executive Output & Quality Gate
 **Goal**: The skill renders a customer-grade report (executive summary + clean structured findings) and ships with frontmatter + regression test that prove every referenced AOS8 tool is real.
@@ -99,7 +102,7 @@
 | 9. Phase 4 Closure & Documentation Accuracy | v1.0 | 3/3 | Complete | 2026-04-28 |
 | 10. Live Detection & Collection | v1.1 | 2/2 | Complete    | 2026-04-29 |
 | 11. Live VSG Rules | v1.1 | 0/1 | Complete    | 2026-04-29 |
-| 12. Central Enrichment & Cutover Validation | v1.1 | 0/0 | Not started | — |
+| 12. Central Enrichment & Cutover Validation | v1.1 | 0/2 | Not started | — |
 | 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
 
 ---
