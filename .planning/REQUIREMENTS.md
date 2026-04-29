@@ -10,14 +10,14 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ### Detection
 
-- [ ] **DETECT-01**: Skill detects AOS8 connectivity at session start and announces API mode (live data) vs paste-mode fallback to operator
+- [x] **DETECT-01**: Skill detects AOS8 connectivity at session start and announces API mode (live data) vs paste-mode fallback to operator
 
 ### Collection (Stage 1)
 
-- [ ] **COLLECT-01**: Skill retrieves MD hierarchy + per-node effective config via `aos8_get_md_hierarchy()` + `aos8_get_effective_config()` — replaces `show configuration node-hierarchy` + `show configuration effective detail` paste
-- [ ] **COLLECT-02**: Skill retrieves full AP inventory (model, MAC, serial, IP mode, AP group) via `aos8_get_ap_database()` — replaces `show ap database long` paste
-- [ ] **COLLECT-03**: Skill retrieves cluster state, running-config, and local-user db via `aos8_get_cluster_state()` + `aos8_show_command()` passthrough — replaces `show lc-cluster group-membership`, `show running-config`, `show local-user db`, `show inventory`, `show port status`, `show trunk` pastes
-- [ ] **COLLECT-04**: Skill retrieves client baseline, BSS/SSID table, active AP RF state, and AP wired ports via `aos8_get_clients()` / `aos8_get_bss_table()` / `aos8_get_active_aps()` / `aos8_get_ap_wired_ports()` — replaces `show ap association`, `show user-table`, `show ap essid`, `show ap active`, `show ap lldp neighbors` pastes
+- [x] **COLLECT-01**: Skill retrieves MD hierarchy + per-node effective config via `aos8_get_md_hierarchy()` + `aos8_get_effective_config()` — replaces `show configuration node-hierarchy` + `show configuration effective detail` paste
+- [x] **COLLECT-02**: Skill retrieves full AP inventory (model, MAC, serial, IP mode, AP group) via `aos8_get_ap_database()` — replaces `show ap database long` paste
+- [x] **COLLECT-03**: Skill retrieves cluster state, running-config, and local-user db via `aos8_get_cluster_state()` + `aos8_show_command()` passthrough — replaces `show lc-cluster group-membership`, `show running-config`, `show local-user db`, `show inventory`, `show port status`, `show trunk` pastes
+- [x] **COLLECT-04**: Skill retrieves client baseline, BSS/SSID table, active AP RF state, and AP wired ports via `aos8_get_clients()` / `aos8_get_bss_table()` / `aos8_get_active_aps()` / `aos8_get_ap_wired_ports()` — replaces `show ap association`, `show user-table`, `show ap essid`, `show ap active`, `show ap lldp neighbors` pastes
 
 ### Live Rules (Stage 3)
 
