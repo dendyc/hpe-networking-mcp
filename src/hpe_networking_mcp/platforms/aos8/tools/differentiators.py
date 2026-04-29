@@ -23,7 +23,8 @@ from hpe_networking_mcp.platforms.aos8._registry import tool
 from hpe_networking_mcp.platforms.aos8.tools import READ_ONLY
 from hpe_networking_mcp.platforms.aos8.tools._helpers import (
     format_aos8_error,
-    strip_meta,
+    get_object,
+    run_show,
 )
 
 __all__ = [
@@ -37,53 +38,6 @@ __all__ = [
     "aos8_get_ipsec_tunnels",
     "aos8_get_md_health_check",
 ]
-
-
-_SHOWCOMMAND_PATH = "/v1/configuration/showcommand"
-
-
-async def _show(client: Any, command: str, *, config_path: str | None = None) -> Any:
-    """Execute an AOS8 show command and return the cleaned JSON body.
-
-    Calls ``client.request("GET", "/v1/configuration/showcommand", params=...)``
-    and strips the ``_meta`` / ``_global_result`` envelope. Unlike
-    ``_helpers.run_show``, this routine treats the ``client.request`` return
-    value as the JSON body dict directly — matching the test contract for
-    differentiator tools where mocks return a dict (not an httpx.Response).
-
-    Args:
-        client: ``AOS8Client`` from ``ctx.lifespan_context["aos8_client"]``.
-        command: Full show command string (e.g. ``"show switch hierarchy"``).
-        config_path: Optional hierarchy node included as a query parameter
-            only when not ``None``.
-
-    Returns:
-        Parsed JSON body with ``_meta`` and ``_global_result`` removed.
-    """
-    params: dict[str, Any] = {"command": command}
-    if config_path is not None:
-        params["config_path"] = config_path
-    body = await client.request("GET", _SHOWCOMMAND_PATH, params=params)
-    return strip_meta(body)
-
-
-async def _object(client: Any, object_name: str, *, config_path: str) -> Any:
-    """Fetch an AOS8 configuration object and strip envelope keys.
-
-    Args:
-        client: ``AOS8Client`` instance.
-        object_name: AOS8 object key (e.g. ``"ssid_prof"``).
-        config_path: Hierarchy scope (required).
-
-    Returns:
-        Parsed JSON body with ``_meta`` and ``_global_result`` removed.
-    """
-    body = await client.request(
-        "GET",
-        f"/v1/configuration/object/{object_name}",
-        params={"config_path": config_path},
-    )
-    return strip_meta(body)
 
 
 # ---------------------------------------------------------------------------
@@ -104,7 +58,7 @@ async def aos8_get_md_hierarchy(ctx: Context) -> dict[str, Any] | str:
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, "show switch hierarchy")
+        return await run_show(client, "show switch hierarchy")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch MD hierarchy")
 
@@ -135,7 +89,7 @@ async def aos8_get_effective_config(
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _object(client, object_name, config_path=config_path)
+        return await get_object(client, object_name, config_path=config_path)
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, f"fetch effective config for {object_name}")
 
@@ -157,7 +111,7 @@ async def aos8_get_pending_changes(ctx: Context) -> dict[str, Any] | str:
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, "show configuration pending")
+        return await run_show(client, "show configuration pending")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch pending changes")
 
@@ -185,7 +139,7 @@ async def aos8_get_rf_neighbors(
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(
+        return await run_show(
             client,
             f"show ap arm-neighbors ap-name {ap_name}",
             config_path=config_path,
@@ -211,7 +165,7 @@ async def aos8_get_cluster_state(ctx: Context) -> dict[str, Any] | str:
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, "show lc-cluster group-membership")
+        return await run_show(client, "show lc-cluster group-membership")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch cluster state")
 
@@ -233,7 +187,7 @@ async def aos8_get_air_monitors(ctx: Context) -> dict[str, Any] | str:
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, "show ap monitor active-laser-beams")
+        return await run_show(client, "show ap monitor active-laser-beams")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch air monitors")
 
@@ -259,7 +213,7 @@ async def aos8_get_ap_wired_ports(
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, f"show ap port status ap-name {ap_name}")
+        return await run_show(client, f"show ap port status ap-name {ap_name}")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch AP wired ports")
 
@@ -281,7 +235,7 @@ async def aos8_get_ipsec_tunnels(ctx: Context) -> dict[str, Any] | str:
     """
     client = ctx.lifespan_context["aos8_client"]
     try:
-        return await _show(client, "show crypto ipsec sa")
+        return await run_show(client, "show crypto ipsec sa")
     except Exception as exc:  # noqa: BLE001
         return format_aos8_error(exc, "fetch IPsec tunnels")
 
@@ -315,11 +269,11 @@ async def aos8_get_md_health_check(
     client = ctx.lifespan_context["aos8_client"]
     try:
         results: Any = await asyncio.gather(
-            _show(client, "show ap active", config_path=config_path),
-            _show(client, "show ap database", config_path=config_path),
-            _show(client, "show alarms all", config_path=config_path),
-            _show(client, "show version", config_path=config_path),
-            _show(client, "show user summary", config_path=config_path),
+            run_show(client, "show ap active", config_path=config_path),
+            run_show(client, "show ap database", config_path=config_path),
+            run_show(client, "show alarms all", config_path=config_path),
+            run_show(client, "show version", config_path=config_path),
+            run_show(client, "show user summary", config_path=config_path),
             return_exceptions=True,
         )
         ap_active, ap_db, alarms, version, users = results
