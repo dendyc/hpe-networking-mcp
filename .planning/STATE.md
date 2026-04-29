@@ -85,6 +85,8 @@ Current focus: All 7 phases complete — project at v1.0 milestone (functional c
 - [Phase 07]: Plan 07-03: TOOLS['differentiators'] wired; 47 tools registered; 764 tests green; D-06 authorized doc-deviation logged
 - [Phase 08]: Phase 8 fix: DIFF tools use canonical _helpers.run_show/get_object — invalidates Phase 7 frozen-mock rationale; tests now mirror real httpx.Response contract
 - [Phase 09]: Read source via Path(srv.__file__) for regex inspection in regression test — avoids import side-effects; tests remain pure unit tests
+- [Phase 09-03]: 04-VERIFICATION.md uses score 0/0 (DELEGATED) to avoid double-counting in future audit aggregation; Phase 7 carries the 5/5 score for the DIFF truths
+- [Phase 09-03]: REQUIREMENTS.md drift corrected: DIFF-01..09 checkboxes changed from unchecked to checked; traceability rows changed from Pending to Complete
 
 ### Open Todos
 
@@ -108,7 +110,11 @@ Current focus: All 7 phases complete — project at v1.0 milestone (functional c
 | Phase 07 P02 | 10 min | 2 tasks | 2 files |
 | Phase 07 P03 | 6 min | 2 tasks | 4 files |
 | Phase 08 P01 | 8 min | 3 tasks | 2 files |
+<<<<<<< HEAD
 | Phase 09 P01 | 3 | 2 tasks | 2 files |
+=======
+| Phase 09 P03 | 5min | 2 tasks | 2 files |
+>>>>>>> worktree-agent-a85d0328d6b3d6788
 
 ## Last Updated
 

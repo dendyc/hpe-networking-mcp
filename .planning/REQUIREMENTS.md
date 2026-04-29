@@ -58,15 +58,15 @@
 - [x] **READ-26**: `aos8_get_rf_monitor` — RF monitor data including interference and rogue detections
 
 ### DIFF — AOS8 Differentiator Tools (Read)
-- [ ] **DIFF-01**: `aos8_get_md_hierarchy` — Conductor-to-Managed-Device relationship tree showing all MDs and their config_path
-- [ ] **DIFF-02**: `aos8_get_effective_config` — resolved configuration a specific MD or AP group sees after inheritance from parent nodes
-- [ ] **DIFF-03**: `aos8_get_pending_changes` — staged config changes on the Conductor that have not yet been persisted with write_memory
-- [ ] **DIFF-04**: `aos8_get_rf_neighbors` — ARM neighbor graph for an AP showing co-channel and adjacent-channel neighbors
-- [ ] **DIFF-05**: `aos8_get_cluster_state` — AP cluster membership, master/standby controller roles, and failover state
-- [ ] **DIFF-06**: `aos8_get_air_monitors` — list of APs operating in air-monitor mode with scan results
-- [ ] **DIFF-07**: `aos8_get_ap_wired_ports` — wired port configuration and state for APs with wired downlinks
-- [ ] **DIFF-08**: `aos8_get_ipsec_tunnels` — site-to-site IPsec and Remote AP tunnel state
-- [ ] **DIFF-09**: `aos8_get_md_health_check` — unified health report for a specific MD or config_path scope (equivalent of cross-platform site_health_check for AOS8)
+- [x] **DIFF-01**: `aos8_get_md_hierarchy` — Conductor-to-Managed-Device relationship tree showing all MDs and their config_path
+- [x] **DIFF-02**: `aos8_get_effective_config` — resolved configuration a specific MD or AP group sees after inheritance from parent nodes
+- [x] **DIFF-03**: `aos8_get_pending_changes` — staged config changes on the Conductor that have not yet been persisted with write_memory
+- [x] **DIFF-04**: `aos8_get_rf_neighbors` — ARM neighbor graph for an AP showing co-channel and adjacent-channel neighbors
+- [x] **DIFF-05**: `aos8_get_cluster_state` — AP cluster membership, master/standby controller roles, and failover state
+- [x] **DIFF-06**: `aos8_get_air_monitors` — list of APs operating in air-monitor mode with scan results
+- [x] **DIFF-07**: `aos8_get_ap_wired_ports` — wired port configuration and state for APs with wired downlinks
+- [x] **DIFF-08**: `aos8_get_ipsec_tunnels` — site-to-site IPsec and Remote AP tunnel state
+- [x] **DIFF-09**: `aos8_get_md_health_check` — unified health report for a specific MD or config_path scope (equivalent of cross-platform site_health_check for AOS8)
 
 ### WRITE — Write Tools (gated behind ENABLE_AOS8_WRITE_TOOLS=true)
 - [x] **WRITE-01**: `aos8_manage_ssid_profile` — create, update, or delete an SSID profile; requires explicit `config_path`; response includes `requires_write_memory_for` field
@@ -175,15 +175,15 @@
 | READ-24 | Phase 3 — Read Tools | Complete |
 | READ-25 | Phase 3 — Read Tools | Complete |
 | READ-26 | Phase 3 — Read Tools | Complete |
-| DIFF-01 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-02 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-03 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-04 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-05 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-06 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-07 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-08 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
-| DIFF-09 | Phase 8 — Fix DIFF Tools Production Bug | Pending |
+| DIFF-01 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-02 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-03 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-04 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-05 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-06 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-07 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-08 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
+| DIFF-09 | Phase 8 — Fix DIFF Tools Production Bug | Complete |
 | WRITE-01 | Phase 5 — Write Tools | Complete |
 | WRITE-02 | Phase 5 — Write Tools | Complete |
 | WRITE-03 | Phase 5 — Write Tools | Complete |
