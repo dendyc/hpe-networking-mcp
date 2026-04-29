@@ -371,7 +371,7 @@ def _register_code_mode(mcp: FastMCP) -> None:
         "In scope: `await call_tool(name: str, params: dict) -> Any`.\n\n"
         "`call_tool` ONLY dispatches to platform tools — names start with one "
         "of: `mist_`, `central_`, `greenlake_`, `clearpass_`, `apstra_`, "
-        "`axis_` — plus the cross-platform `health` tool.\n\n"
+        "`axis_`, `aos8_` — plus the cross-platform `health` tool.\n\n"
         "The discovery tools `tags`, `search`, and `get_schema` are NOT "
         "callable from inside execute(). They live at the outer MCP surface "
         "for planning. Call them BEFORE writing your code block to find "
