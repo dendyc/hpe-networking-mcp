@@ -14,7 +14,8 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 - [ ] **Phase 4: Differentiator Tools** — Conductor-hierarchy, RF, cluster, and IPsec read tools unique to AOS8
 - [x] **Phase 5: Write Tools** — Gated config-mutation and operational write tools with explicit `write_memory`
  (completed 2026-04-28)
-- [x] **Phase 6: Guided Prompts & Documentation** — Workflow prompts plus `INSTRUCTIONS.md`/`README.md`/`TOOLS.md` updates (completed 2026-04-28)
+- [x] **Phase 6: Guided Prompts & Documentation** — Workflow prompts plus `INSTRUCTIONS.md`/`README.md`/`TOOLS.md` updates
+ (completed 2026-04-28)
 - [ ] **Phase 7: Testing & Integration** — Mocked unit tests, log-leak audits, and regression of existing platforms
 
 ## Phase Details
@@ -119,7 +120,10 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   3. Every read tool category and every write tool has at least one fixture-driven unit test, and write/delete tag coverage is asserted automatically.
   4. A dedicated test scans captured log output across the entire client+tool surface and fails if any UIDARUBA value appears.
   5. Mist, Central, GreenLake, ClearPass, Apstra, and Axis test suites all pass unmodified.
-**Plans:** TBD
+**Plans:** 3 plans
+  - [ ] 07-01-PLAN.md — Wave 0 RED scaffold: 9 DIFF tests, tool-layer token-leak test, test_aos8_init.py expectations
+  - [ ] 07-02-PLAN.md — Implement differentiators.py (DIFF-01..09); DIFF + security tests GREEN
+  - [ ] 07-03-PLAN.md — Wire TOOLS["differentiators"] in __init__.py; full 7-platform suite regression
 
 ## Progress
 
