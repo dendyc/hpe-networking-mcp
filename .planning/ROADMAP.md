@@ -85,7 +85,8 @@
   2. Structured findings render as clean markdown — no raw JSON blobs, no tool-call artifacts, no orphan stack traces — and paste cleanly into a customer-facing document
   3. Skill frontmatter `tools:` list includes every AOS8 tool name referenced in the skill body, and the `platforms:` tag includes `aos8` alongside `central`
   4. `tests/unit/test_skill_tool_references.py` passes with the updated skill, validating every referenced tool against the live catalog
-**Plans**: TBD
+**Plans**: 1 plan
+- [ ] 13-01-PLAN.md — Skill body edits (exec summary, output hygiene rules, PARTIAL matrix row) + frontmatter platforms update + regression test gate
 
 ## Progress
 
@@ -103,7 +104,7 @@
 | 10. Live Detection & Collection | v1.1 | 2/2 | Complete    | 2026-04-29 |
 | 11. Live VSG Rules | v1.1 | 0/1 | Complete    | 2026-04-29 |
 | 12. Central Enrichment & Cutover Validation | v1.1 | 2/2 | Complete    | 2026-04-29 |
-| 13. Executive Output & Quality Gate | v1.1 | 0/0 | Not started | — |
+| 13. Executive Output & Quality Gate | v1.1 | 0/1 | Not started | — |
 
 ---
 *Archive: [v1.0 roadmap details](milestones/v1.0-ROADMAP.md)*
