@@ -52,11 +52,11 @@ Managing HPE networking infrastructure with AI assistants today means juggling m
 | **Staged Writes + Commit Workflow** | — | — | — | — | ✅ | ✅ | — |
 | **Guided Prompts** | ✅ | ✅ | — | — | — | — | ✅ |
 | **Dynamic Tool Discovery** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Underlying tools (static mode)** | **35 + 2 prompts** | **73 + 12 prompts** | **10** | **140** | **19** | **25** | **38 + 9 prompts** |
+| **Underlying tools (static mode)** | **35 + 2 prompts** | **73 + 12 prompts** | **10** | **140** | **19** | **25** | **47 + 9 prompts** |
 | **Exposed meta-tools (dynamic mode, default)** | **3** | **3** | **3** | **3** | **3** | **3** | **3** |
 | **Cross-Platform** | **3 tools + 3 prompts** | **3 tools + 3 prompts** | — | **1 tool** | — | — | — |
 
-> **Default tool surface**: v2.0+ ships with `MCP_TOOL_MODE=dynamic` by default. Each platform exposes three meta-tools (`<platform>_list_tools`, `<platform>_get_tool_schema`, `<platform>_invoke_tool`), plus four cross-platform static tools (`health`, `site_health_check`, `site_rf_check`, `manage_wlan_profile`) and two skills tools (`skills_list`, `skills_load`). **27 tools total** for the seven-platform configuration (7 × 3 meta-tools + 4 cross-platform + 2 skills) — down from 275+ tools / ~64,000 tokens in v1.x. Set `MCP_TOOL_MODE=static` to restore the full per-tool surface (every underlying tool is still here; it just defaults to hidden behind the meta-tools). v2.1.0.0 also ships `MCP_TOOL_MODE=code` as an experimental opt-in — FastMCP's `CodeMode` transform with a sandboxed Python `execute` for multi-step workflows; see [docs/TOOLS.md#code-mode](docs/TOOLS.md). v2.3.0.0 introduces **Skills** — markdown-defined multi-step procedures discoverable via `skills_list` / `skills_load`; see [docs/TOOLS.md#skills](docs/TOOLS.md). v2.4.0.0 adds **AOS8** (38 tools + 9 prompts) — see [INSTRUCTIONS.md](INSTRUCTIONS.md) for AOS8-specific operator guidance. See [docs/MIGRATING_TO_V2.md](docs/MIGRATING_TO_V2.md).
+> **Default tool surface**: v2.0+ ships with `MCP_TOOL_MODE=dynamic` by default. Each platform exposes three meta-tools (`<platform>_list_tools`, `<platform>_get_tool_schema`, `<platform>_invoke_tool`), plus four cross-platform static tools (`health`, `site_health_check`, `site_rf_check`, `manage_wlan_profile`) and two skills tools (`skills_list`, `skills_load`). **27 tools total** for the seven-platform configuration (7 × 3 meta-tools + 4 cross-platform + 2 skills) — down from 275+ tools / ~64,000 tokens in v1.x. Set `MCP_TOOL_MODE=static` to restore the full per-tool surface (every underlying tool is still here; it just defaults to hidden behind the meta-tools). v2.1.0.0 also ships `MCP_TOOL_MODE=code` as an experimental opt-in — FastMCP's `CodeMode` transform with a sandboxed Python `execute` for multi-step workflows; see [docs/TOOLS.md#code-mode](docs/TOOLS.md). v2.3.0.0 introduces **Skills** — markdown-defined multi-step procedures discoverable via `skills_list` / `skills_load`; see [docs/TOOLS.md#skills](docs/TOOLS.md). v2.4.0.0 adds **AOS8** (47 tools + 9 prompts) — see [INSTRUCTIONS.md](INSTRUCTIONS.md) for AOS8-specific operator guidance. See [docs/MIGRATING_TO_V2.md](docs/MIGRATING_TO_V2.md).
 
 ### Aruba Central Guided Prompts
 
@@ -196,7 +196,7 @@ docker compose up -d
 docker compose logs
 ```
 
-Look for lines like `Mist: 35 tools registered`, `ClearPass: 140 tools registered`, `Axis: 25 underlying tools registered`, `AOS8: 38 underlying tools + 3 meta-tools (dynamic mode)`, `Tool mode: dynamic`, and `Uvicorn running on http://0.0.0.0:8000`. Your MCP server is running at `http://localhost:8000/mcp`. In the default dynamic mode, only 27 tools are exposed to the AI when all seven platforms are enabled — the underlying platform tools are discoverable via each platform's `list_tools` / `get_tool_schema` / `invoke_tool` meta-tools. Mist registers 2 guided prompts; Central registers 12; AOS8 registers 9.
+Look for lines like `Mist: 35 tools registered`, `ClearPass: 140 tools registered`, `Axis: 25 underlying tools registered`, `AOS8: 47 underlying tools + 3 meta-tools (dynamic mode)`, `Tool mode: dynamic`, and `Uvicorn running on http://0.0.0.0:8000`. Your MCP server is running at `http://localhost:8000/mcp`. In the default dynamic mode, only 27 tools are exposed to the AI when all seven platforms are enabled — the underlying platform tools are discoverable via each platform's `list_tools` / `get_tool_schema` / `invoke_tool` meta-tools. Mist registers 2 guided prompts; Central registers 12; AOS8 registers 9.
 
 ### Docker Image
 
@@ -414,7 +414,7 @@ Set `ENABLE_AOS8_WRITE_TOOLS=true` to expose the 12 AOS8 write tools (gated by e
 │ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐           │
 │ │  Mist  │ │Central │ │GreenLk │ │ClrPass │ │ Apstra │ │  Axis  │ │  AOS8  │           │
 │ │ mist_* │ │centrl_*│ │grnlake │ │clrpass │ │apstra_*│ │ axis_* │ │ aos8_* │           │
-│ │35 tools│ │73 tools│ │10 tools│ │140 tool│ │19 tools│ │25 tools│ │38 tools│           │
+│ │35 tools│ │73 tools│ │10 tools│ │140 tool│ │19 tools│ │25 tools│ │47 tools│           │
 │ │+2 prmt │ │+12prmt │ │        │ │        │ │        │ │        │ │+9 prmt │           │
 │                                                                                         │
 │  Hidden behind meta-tools in dynamic mode;  fully exposed in static mode.               │
@@ -561,7 +561,7 @@ hpe-networking-mcp/
 │       ├── clearpass/           # 140 ClearPass tools + pyclearpass SDK client
 │       ├── apstra/              # 19 Apstra tools + async httpx client
 │       ├── axis/                # 25 Axis Atmos Cloud tools + httpx client (JWT bearer)
-│       ├── aos8/                # 38 AOS8 tools + 9 prompts + UIDARUBA session client
+│       ├── aos8/                # 47 AOS8 tools + 9 prompts + UIDARUBA session client
 │       ├── manage_wlan.py       # Cross-platform WLAN management tool
 │       ├── sync_prompts.py      # Cross-platform WLAN sync prompts
 │       ├── site_health_check.py # Cross-platform site health aggregator
