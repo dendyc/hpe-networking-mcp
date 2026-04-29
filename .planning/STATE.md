@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Executing Phase 07
-last_updated: "2026-04-29T02:49:51.231Z"
+last_updated: "2026-04-29T03:00:10.924Z"
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 22
-  completed_plans: 20
+  completed_plans: 21
 ---
 
 # Project State
@@ -77,6 +77,9 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 - [Phase 06-01]: All 9 AOS8 prompts (PROMPT-01..09) registered via register(mcp) pattern mirroring central/tools/prompts.py; try/except in __init__.py prevents prompt failure from breaking tool registration
 - [Phase 06]: New INSTRUCTIONS.md at repo root is operator-facing; in-package src/hpe_networking_mcp/INSTRUCTIONS.md (AI-facing) was NOT modified (Pitfall 3 honored)
 - [Phase 07]: Phase 7 Plan 01 RED scaffold: 13 differentiator tests + 2 security tests landed; EXPECTED_TOTAL=47; TEST-05 gap-fill via monkeypatch on SECRETS_DIR
+- [Phase 07]: differentiators.py uses local _show/_object helpers (direct client.request return) because frozen test mocks return dict directly, not httpx.Response
+- [Phase 07]: DIFF-09 partial-failure surfaces error to result['aps'] root when ap_active or ap_db fails (Pitfall 3 contract)
+- [Phase 07]: AOS8 client.py login log lines renamed UIDARUBA->session token to satisfy security audit redaction-line guard
 
 ### Open Todos
 
@@ -98,6 +101,7 @@ Current focus: Phase 5 complete — proceed to Phase 6 (Guided Prompts & Documen
 | Phase | Plan | Duration | Tasks | Files Touched | Notes |
 |-------|------|----------|-------|---------------|-------|
 | 07 | 01 | 12 min | 4 | 13 | Wave 0 RED scaffold; 13 DIFF + 2 security tests RED; TEST-05 gap-fill GREEN |
+| Phase 07 P02 | 10 min | 2 tasks | 2 files |
 
 ## Last Updated
 
