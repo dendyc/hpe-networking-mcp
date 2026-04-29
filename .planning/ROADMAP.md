@@ -138,7 +138,8 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
   2. `test_aos8_read_differentiators.py` mocks use `AsyncMock(return_value=mock_response)` where `mock_response.json.return_value = body` — verifying the real `.json()` call is exercised.
   3. All 13 DIFF tests pass GREEN; full 764-test suite has zero regressions.
   4. Ruff lint and mypy type check remain clean.
-**Plans:** TBD
+**Plans:** 1 plan
+  - [ ] 08-01-PLAN.md — Refactor differentiators.py to use canonical _helpers (run_show/get_object); update test mocks to httpx.Response shape; lint/mypy/regression gate
 
 ### Phase 9: Phase 4 Closure & Documentation Accuracy
 **Goal:** Formally retire the Phase 4 planning debt by creating a cross-reference VERIFICATION.md, marking DIFF-01..09 complete in REQUIREMENTS.md, correcting the tool count in all user-facing docs from 38 to 47, and fixing the code-mode `execute_description` to include `aos8_`.
@@ -165,7 +166,7 @@ Every phase delivers a coherent, verifiable capability. Read tools are split int
 | 5. Write Tools | 3/3 | Complete | 2026-04-28 |
 | 6. Guided Prompts & Documentation | 2/2 | Complete | 2026-04-28 |
 | 7. Testing & Integration | 3/3 | Complete | 2026-04-29 |
-| 8. Fix DIFF Tools Production Bug | 0/0 | Not started | - |
+| 8. Fix DIFF Tools Production Bug | 0/1 | Not started | - |
 | 9. Phase 4 Closure & Documentation Accuracy | 0/0 | Not started | - |
 
 ## Coverage
