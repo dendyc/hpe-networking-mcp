@@ -68,7 +68,19 @@ If `MCP_TOOL_MODE=static` is set, every per-platform tool is visible up front wi
 5. **MANDATORY: use the information you already have from `<platform>_list_tools` before invoking.** Every tool entry from `list_tools` includes a `params` map showing parameter names + types (and `?` suffix for optional) — always check it before calling `invoke_tool`. Never invoke with `params={}` or guessed names when the `list_tools` output already told you what's required.
 6. **Call `<platform>_get_tool_schema(name=...)` when the `list_tools` params map isn't sufficient.** Specifically: when a param's type is an enum class name (e.g. `"Action_type"`) and you don't yet know its valid values, when you need field descriptions to understand parameter semantics, or when a `dict`/`payload` param needs a nested schema. You do NOT need to re-read a schema you've already fetched in the same conversation; cache it mentally.
 7. **Don't manually retry transient API failures.** The server auto-retries 5xx errors on read tools (3 attempts, exponential backoff) and 429 rate-limit responses on both reads and writes (honors `Retry-After` header). If a tool returns a 5xx or 429 to you, it has *already* exhausted retries — don't loop calling the same tool. 4xx errors (other than 429) and 5xx errors on write tools are NOT auto-retried; surface those to the user with the actual error message.
-8. **Use Skills for multi-step procedures.** When the user asks for something that's a known *runbook* — "infra health check", "pre-change baseline", "WLAN sync audit", "are X and Y in sync?", "give me a daily standup" — call `skills_list()` first to see whether a skill matches, then `skills_load(name=...)` to fetch the markdown runbook and follow its steps. Skills are step-by-step procedures authored as markdown — they tell you which platform tools to call in what order and how to format the result. Don't reinvent a multi-step procedure from scratch when one is bundled.
+8. **Always check Skills FIRST for multi-step / cross-platform questions.** Even when the user names a specific platform (e.g. *"how's my infrastructure in Central?"*), call `skills_list()` BEFORE reaching for per-platform tools. A skill might cover the question better than a manual sequence — and the check is cheap (~1 round-trip). Common triggers — call `skills_list()` for ANY query in this shape:
+
+| User query shape | Likely skill |
+|---|---|
+| *"how's my infrastructure?"*, *"is everything healthy?"*, *"infra status / overview / standup"*, *"what's broken?"*, *"how is health in &lt;platform&gt;?"* | `infrastructure-health-check` |
+| *"about to push a change"*, *"give me a baseline before X"*, *"pre-flight for change window"*, *"snapshot before maintenance"* | `change-pre-check` |
+| *"the change is done — verify"*, *"post-change check"*, *"is it still healthy after the change?"* | `change-post-check` |
+| *"are WLANs in sync?"*, *"WLAN drift audit"*, *"compare WLANs across Mist and Central"* | `wlan-sync-validation` |
+| *"audit Central scope / config"*, *"where are my Central WLAN profiles assigned"*, *"Central scope hierarchy"*, *"is my Central config drifting"* | `central-scope-audit` |
+| *"audit Mist scope / config"*, *"where are my Mist WLAN templates assigned"*, *"find bare site-level WLANs"*, *"is my Mist config drifting"* | `mist-scope-audit` |
+| *"AOS 8 → AOS 10 migration readiness"*, *"AOS 6 → AOS 10 readiness"*, *"Instant AP → AOS 10 readiness"*, *"can we migrate this controller to Central"*, *"campus migrate audit"*, *"are we ready for AOS 10"* | `aos-migration-readiness` |
+
+After `skills_list()`, call `skills_load(name=...)` to get the runbook, then follow its steps — including its output format. Don't reinvent the procedure from scratch when one's bundled. If `skills_list()` returns no relevant match, fall back to manual.
 
 ---
 
@@ -110,9 +122,9 @@ When a Mist tool response includes a `_next` field, use `mist_get_next_page(url=
 Push configuration as high as possible: Org-level templates → Site group assignment → Site-level → Device-level. Device-level overrides are a last resort — they cannot be managed in bulk and cause drift.
 
 ### WLANs
-- **ALWAYS** create SSIDs as org-level WLANs inside WLAN templates. Assign templates to site groups.
-- **NEVER** create site-level WLANs. If asked to create a WLAN at a site, create an org-level WLAN in a WLAN template and assign the template to the site's site group instead.
-- When cloning or copying a site's config, do NOT copy site-level WLANs. Ensure all SSIDs come from org-level WLAN templates.
+- **ALWAYS** create SSIDs as org-level WLANs inside WLAN templates. The template itself is the unit of reuse — assign each template at the appropriate scope: **org-wide**, to a **site group**, or to **specific sites**. Never assign at the device level.
+- **NEVER** create site-level WLANs (i.e. WLANs created at a site without going through a template). If a WLAN should apply only to one site, put it in a template and assign that template to that single site — don't create a bare site-level WLAN.
+- When cloning or copying a site's config, do NOT copy bare site-level WLANs. Ensure all SSIDs come from org-level WLAN templates.
 - Organize WLAN templates by function: Corporate/Dot1X, MPSK/IoT, Guest, Onboarding.
 
 ### RADIUS / Template Variables
@@ -127,7 +139,7 @@ Push configuration as high as possible: Org-level templates → Site group assig
 - Prefer Cloud PSK (per-user unique passphrase with VLAN assignment) over static shared PSKs. Cloud PSK allows individual key rotation and per-device segmentation.
 
 ### Site Groups
-- Assign WLAN templates and RF templates to site groups, not individual sites. New sites added to a group automatically inherit all templates.
+- Site groups exist so a single template assignment can target multiple sites at once — new sites added to a group automatically inherit all templates assigned to that group. Prefer site-group assignment when a template applies to multiple sites; fall back to individual site assignment for site-specific cases. Both are valid; org-level assignment fits when the template applies everywhere.
 
 ### Firmware
 - Auto-upgrade should be enabled at the org level with a maintenance window.
@@ -136,7 +148,7 @@ Push configuration as high as possible: Org-level templates → Site group assig
 When asked to create a new site based on an existing site:
 - Use the `provision_site_from_template` prompt for single sites
 - Use the `bulk_provision_sites` prompt for multiple sites
-- NEVER copy site-level WLANs — always use org-level WLAN templates assigned via site groups
+- NEVER copy bare site-level WLANs — always use org-level WLAN templates assigned at the right scope (org / site group / site)
 
 ---
 
@@ -212,6 +224,35 @@ When asked to create a new site based on an existing site:
   - Filter with `device_type`, `site_id`, `site_name`, or `serial_number`. Default behavior omits devices already on Central's recommended version; pass `include_up_to_date=True` to see them too.
   - The `release_type` field reflects the API's `firmwareClassification` directly — values are `LSR`, `SSR`, or `UNCLASSIFIED` (AOS 8 and other builds the API doesn't classify fall into the last bucket and pass Central's recommendation through).
   - Narrowing `device_type` restricts the pool used to mine the newest LSR target for SSR devices — leave it unset when you want the tool to make SSR→LSR recommendations.
+
+## Aruba Central Best Practices
+
+### Configuration Hierarchy
+Central uses Configuration Manager scopes: **Global → Site Collections → Sites → Device Groups → Devices**. Push configuration as high in the hierarchy as practical. Lower scopes inherit from higher ones and can override.
+
+### WLAN Profiles
+- Define each SSID as a **WLAN profile**, then assign the profile at the right scope: **Global**, **site collection**, **site**, or **device group**. Pick the broadest scope that matches the intent (Global > Site collection > Site > Device group).
+- Central does **not** have "WLAN templates" — that's Mist terminology. Central has profiles. Mapping these one-to-one across platforms is wrong; see the *Mist ↔ Central terminology* table below.
+
+### Local Overrides — use local profiles, not direct configs
+- It *is* possible to create configuration directly at a lower scope (a site-level setting that doesn't come from a profile). **Do not do this.** It leads to configuration drift.
+- When a per-site / per-device-group override is needed, create it as a **local profile** assigned at that scope. If the local profile is later deleted, the parent-scope inherited configuration takes over automatically. Bare local configs have no fallback and orphan.
+
+### Naming convention
+Match Central scope names to Mist scope names where possible (Mist site group "Corporate" ↔ Central site collection "Corporate") so cross-platform sync workflows pair them up.
+
+## Mist ↔ Central terminology
+
+These two platforms have similar concepts with different names. Do NOT generalize a rule from one platform onto the other — the mechanisms differ. When the user asks about a Central-only audit, do not mention WLAN templates, site groups, or org-level WLANs (those are Mist concepts). When the user asks about a Mist-only audit, do not mention WLAN profiles, site collections, Global scope, or device groups (those are Central concepts).
+
+| Concept | Mist | Central |
+|---|---|---|
+| Reusable config bundle for SSIDs | WLAN **template** | WLAN **profile** |
+| Top of the hierarchy | **Org** (org-level) | **Global** (Global scope) |
+| Group of sites | **Site group** | **Site collection** |
+| Individual site | **Site** | **Site** |
+| Group of devices | *(no equivalent)* | **Device group** |
+| Override at lower scope | Bare site-level config (avoid) | Local profile (correct) / bare local config (avoid) |
 
 ## Cross-Platform WLAN Management
 

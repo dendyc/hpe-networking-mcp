@@ -44,6 +44,414 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 11+ new unit tests in tests/unit/test_aos8_prompts.py covering prompt registration and non-empty return contract for all 9 PROMPT-01..09 prompts.
 - Phase-5 baseline of 737 tests remains green; total now 767+ tests passing.
 
+## [2.3.0.8] - 2026-04-28
+
+**Fixes a content gap in `central-scope-audit`: when an alias has a placeholder default value (e.g. `1.1.1.1`, RFC-5737 documentation block) at Global, the audit was flagging it as REGRESSION without first checking whether the alias is *overridden* at consuming scopes (Site Collection / Site / Device Group / per-device via `Save as local profile`). In Aruba Central's two-layer alias model, a placeholder at the definition scope is the canonical pattern — what matters is whether each consumer (Static Routes, profiles, ACLs, etc.) has an override at scope-or-below. Caught in the wild when the audit flagged four `Default Gateway -*` aliases all defaulting to `1.1.1.1` at Global as REGRESSION without confirming whether the consuming static routes had per-site / per-device overrides.**
+
+### What changed
+
+Three updates to `skills/central-scope-audit.md`:
+
+1. **Step 7 (Aliases)** — added a new *"Placeholder default values — MUST walk the hierarchy before flagging"* sub-section spelling out:
+   - Common placeholder sentinels: `1.1.1.1`, `0.0.0.0`, `255.255.255.255`, RFC-5737 documentation blocks (`192.0.2.x`, `198.51.100.x`, `203.0.113.x`), and obvious tokens like names containing `placeholder` / `default` / `template`.
+   - **Mandatory hierarchy lookup before assigning severity**: identify every consumer (Static Routes are the canonical case; also role ACLs, net-services, server-host fields, AP Uplink, any `*-Address` / `*-NextHop` field), then for each consuming scope use `central_get_scope_resources` + `central_get_effective_config(include_details=true)` walking Global → Collections → Sites → Device Groups → Devices to resolve the alias's effective value.
+   - **Severity follows coverage, not the placeholder itself**: REGRESSION only when a consuming scope has *no* override at-or-below (the device installs the literal placeholder); DRIFT when the consumer is itself unused / disabled; INFO when every consumer is overridden (canonical pattern).
+   - Reporting requirement: name the alias, the placeholder, the consuming profile + scope, and the override state for each consumer.
+2. **Step 11 (Routing & Network Services)** — added a per-profile check telling the audit that any static route referencing a `Default Gateway -*` / `Next Hop` / `MGMT Default Gateway` alias MUST follow Step 7's hierarchy-lookup procedure before deciding severity, and added a corresponding REGRESSION entry that explicitly notes *"Do not flag REGRESSION on the placeholder alone — it's REGRESSION specifically because no consumer overrode the placeholder."*
+3. **Output rollup** — added the new REGRESSION entry (placeholder unoverridden at consuming scope) with a structured one-finding template, and a paired INFO entry (placeholder with full override coverage) so the report can list canonical-pattern aliases without operator confusion.
+
+### Why it mattered
+
+The two-layer alias model exists *precisely* so a single alias name like `Default Gateway - SW` can resolve to a different next-hop on every site. A blanket *"alias defaults to 1.1.1.1 = REGRESSION"* finding either generates false positives (canonical pattern flagged as broken) or — if the auditor stops there — masks the actual question: *which consumers, if any, would push the literal placeholder to real devices*. The fix mandates the hierarchy walk before assigning severity, and gives the audit explicit language to use when a placeholder is fully covered (INFO) vs partially covered (DRIFT) vs uncovered at a real consumer (REGRESSION).
+
+### Tests
+
+- 653 passing, 0 failing — `test_skill_tool_references.py` still resolves every platform-prefixed tool reference (8/8 parametrized cases pass).
+
+## [2.3.0.7] - 2026-04-28
+
+**Fixes a content bug in `mist-scope-audit`: the skill conflated 802.1X reauthentication interval with RADIUS accounting interim-update interval. The Mist Wired guide §2660-§2663 recommendation of 6-12 hours (21600-43200s) applies to *reauthentication* (`reauth_interval` on dot1x-enabled port profiles), not to `acct_interim_interval` (RADIUS accounting interim updates) — but the audit was citing it against the latter. Caught in the wild when a user's audit flagged `acct_interim_interval: 60` with the §2662 reauth recommendation.**
+
+### What changed
+
+- **`mist-scope-audit.md`** — three locations corrected:
+  - Per-port-profile structural-checks table: row renamed from "RADIUS interim-update" to "802.1X reauthentication interval (`reauth_interval` on dot1x-enabled port profiles)" with the full §2660-§2663 quote and an explicit *"Do NOT confuse this with `acct_interim_interval`"* warning.
+  - Drift findings list: same correction with note that `acct_interim_interval` should be flagged as INFO (not DRIFT) without citing §2662 since the Mist Wired guide doesn't give a recommended value for it.
+  - Output-formatting rollup: counter renamed to "802.1X `reauth_interval` outside 6-12 hour range".
+
+### Why it mattered
+
+Reauthentication interval (how often a 802.1X client must re-prove identity to RADIUS) and accounting interim interval (how often accounting status updates are sent to the accounting server) are two different fields with different purposes. The Mist Wired guide §1803 describes accounting interim updates as a frequency setting without prescribing a value; §2660-§2663 describes reauthentication with the 6-12 hour recommendation. Conflating them would either generate false-positive drift findings (flagging perfectly fine accounting intervals) or, worse, push operators to set accounting intervals to multi-hour values they shouldn't.
+
+### Tests
+
+- 653 passing, 0 failing — no test changes (skill body is content; reference test still validates every platform-prefixed tool name resolves).
+
+## [2.3.0.6] - 2026-04-28
+
+**Adds `aos-migration-readiness` skill — VSG-anchored AOS 6 / AOS 8 / Instant AP → AOS 10 migration readiness audit (PoC). Operator pastes a fixed bundle of CLI command outputs from the source platform into chat; the audit parses the bundle, runs Central-side API checks, applies ~50 granular VSG-anchored rules across source-platform × target-mode combinations, and emits a GO / BLOCKED / PARTIAL verdict with cutover sequencing and rollback validation.**
+
+### What's new
+
+- **`aos-migration-readiness` skill** (~44K chars) — covers all three legacy source platforms (AOS 6 Mobility Conductor, AOS 8 Mobility Conductor + Controller, Instant AP Virtual Controller cluster) and all three AOS 10 SSID-forwarding modes (Tunnel, Bridge, Mixed). Anchored on the **Aruba Campus Migrate VSG** with section-number citations on every finding.
+- **6-stage audit pipeline:**
+  - **Stage 0**: 7-question operator interview (source platform, AirWave state, target mode, scope, cluster type, L3 Mobility, target HA mode)
+  - **Stage 1**: Paste-driven data collection — fixed CLI command tables per source platform (16 commands for AOS 8 per VSG §1671-§1873; adapted command sets for AOS 6 and IAP) collected as one all-at-once bundle
+  - **Stage 2**: Per-artifact parse instructions per source platform
+  - **Stage 3**: ~50 VSG-anchored readiness rules — Universal (U1-U11), AOS 6/8-specific (C1-C10), IAP-specific (I1-I10), per-target-mode rules (T1-T7 Tunnel, B1-B11 Bridge, M1-M5 Mixed)
+  - **Stage 4**: Central API checks (A1-A13) — workspace state, scope-tree readiness, license inventory, firmware-recommendation delta, NAD/server-group/named-VLAN parity
+  - **Stage 5**: Cutover sequencing + rollback per VSG §2352-§2576 (8-phase: AP redistribute → upgrade Controller 1 → AP convert test → upgrade remaining APs → upgrade Controller 2 → rollback validation)
+- **GO / BLOCKED / PARTIAL verdict** with structured report: source-platform inventory, target-side state, AOS 10 hierarchy mapping suggestion, REGRESSION / DRIFT / INFO findings (each citing VSG section), cutover sequence, recommended next actions, PoC caveats
+- **Decision matrix** maps ~30 conditions to verdicts so the AI doesn't have to invent ranking rules at runtime
+- **PoC scope explicitly noted:** PII / customer-data tokenization is *not* implemented — paste-into-chat workflow has known PII exposure since the AI client ingests configs before relaying. Production migrations should use HPE's VALID8 channel-partner-only discovery tool
+
+### Documentation
+
+- **`INSTRUCTIONS.md`** — added a new query→skill row to the rule #8 table covering migration-readiness query shapes (*"AOS 8 → AOS 10 migration readiness"*, *"AOS 6 → AOS 10 readiness"*, *"Instant AP → AOS 10 readiness"*, *"are we ready for AOS 10"*)
+
+### Tests
+
+- 653 passing (was 652) — `test_skill_tool_references.py` picks up the new skill via parametrization and validates every platform-prefixed tool reference in the body resolves to a real tool in the catalog
+
+### Skill count
+
+- **7 bundled skills** (was 6): `infrastructure-health-check`, `change-pre-check`, `change-post-check`, `wlan-sync-validation`, `central-scope-audit`, `mist-scope-audit`, **`aos-migration-readiness`** ← new
+
+## [2.3.0.5] - 2026-04-28
+
+**Adds two comprehensive scope-aware configuration-audit skills, one per platform — anchored on Aruba's Validated Solution Guides (Central) and Mist's best-practices documentation, covering ~25 / ~20 profile categories respectively with explicit "should be" judgments against vendor-recommended scope.**
+
+### What's new
+
+Two symmetric audit skills, both read-only:
+
+- **`central-scope-audit`** — Walks Central's Configuration Manager hierarchy (Global → Site Collections → Sites → Device Groups → Devices) across **~25 profile categories** (Authentication Servers, Server Groups, AAA Authentication, Roles, Role ACLs, Role GPIDs, Policies, Policy Groups, Network Services, Network Groups, Object Groups, Aliases, WLAN profiles, Named VLANs, User Administration, System Administration, Switch System, Source Interface, Port Profile, Interface Profile, Device Identity, Static Routing, DHCP Snooping, AP Uplink, etc.). Each finding is judged against the **VSG-recommended scope** with explicit *"VSG recommends X, found at Y"* drift markers.
+- **`mist-scope-audit`** — Walks Mist's org → site-group → site → device-profile → device hierarchy across **~20 categories** (WLAN templates, per-WLAN settings, bare site-level WLANs, RF templates, site templates, site groups, site-level overrides, device profiles, firmware auto-upgrade, PSK/MPSK strategy). Anchored on Mist best-practices: *"template everything, override nothing unless you have to."*
+
+### VSG / best-practices anchoring
+
+The Central audit cites VSG section + line numbers for each scope recommendation:
+
+| Profile category | VSG-recommended scope | VSG anchor |
+|---|---|---|
+| Authentication Server | **Global** | Campus Deploy §10703 |
+| Authentication Server Group | **Global** | Campus Deploy §10564 |
+| Device Identity | **Global** | Campus Deploy §11753 |
+| AAA Authentication | **Site** | Campus Deploy §11799 |
+| Switch System / VLAN / Static Routing / DHCP Snooping | **Site** | Campus Deploy §11659, §11420, §12415, §11179 |
+| Port Profile / Interface Profile | **Site** per device-function | Campus Deploy §11948-12061 |
+| Roles / Policies | **Site** typically | Campus Deploy §9337, Policy Design §1184 |
+
+Plus VSG-derived rules:
+- *"A role is not pushed to a device unless referenced by a scoped policy"* (Policy Design)
+- *"Keep the number of roles as small as possible"* (Policy Design)
+
+The Mist audit anchors on the local best-practices doc with citations like *"per §2.4: assign templates to site groups whenever possible"* and *"per §4.5: enable auto-upgrade at the org level with maintenance window"*.
+
+### What each audit checks (structured per skill)
+
+**Central** (12 audit checks, ~25 profile categories):
+0. Reachability + scope-tree snapshot (committed + effective view)
+1. Authentication Servers — should be Global
+2. Authentication Server Groups — should be Global
+3. AAA Authentication profiles — typically Site
+4. Roles + Role ACLs + Role GPIDs — orphan detection, role-count sanity, role→policy linkage
+5. Policies + Policy Groups — orphan detection, broken role references
+6. Network Services / Groups / Object Groups — orphan detection
+7. Aliases — orphan / duplicate / hardcoded-instead detection
+8. WLAN Profiles + Named VLANs — bare-local-scope WLANs (primary drift), VLAN naming consistency
+9. System profiles (User Admin / System Admin / Switch System / Source Interface)
+10. Interface profiles (Port / Interface / Device Identity / AP Uplink)
+11. Routing & Network Services (Static Routing / DHCP Snooping / AP Uplink)
+12. Cross-cutting — bare local configs, peer-collection diff, assignment-density heuristics
+
+**Mist** (11 audit checks, ~20 categories):
+0. Reachability + org_id
+1. WLAN templates + assignment scope (org / site-group / site)
+2. Per-WLAN settings (band steering, 11r, mDNS scope, ARP filter, broadcast limit, VLAN ≠ 1, PSK type, RADIUS via template variables)
+3. Bare site-level WLANs (primary drift source)
+4. Org-level WLAN reconciliation (every WLAN should have a template_id)
+5. RF templates + assignment scope + per-band channel-width / TX-power rules
+6. Site templates (consistent new-site baseline)
+7. Site groups + site membership
+8. Site-level overrides (only timezone / country / local gateway IP / unique VLANs are valid; everything else is drift)
+9. Device profiles + device-level config (device-level = REGRESSION)
+10. Firmware auto-upgrade policy (maintenance window, pilot site group, compliance tracking)
+11. PSK / MPSK strategy (Cloud PSK preferred, expiration on guest PSKs)
+
+### Output format — structured + repeatable
+
+Both skills emit reports with the same `REGRESSION → DRIFT → INFO` severity order. Each section heading must be present even if "0 findings" — operators can eyeball today's audit against last week's. Profile-category summary table at the top gives a one-glance health view.
+
+### INSTRUCTIONS.md rule #8 query→skill table extended
+
+Two new rows mapping audit-shaped queries to the new skills:
+
+| User query shape | Likely skill |
+|---|---|
+| *"audit Central scope / config"*, *"where are my Central WLAN profiles assigned"*, *"is my Central config drifting"* | `central-scope-audit` |
+| *"audit Mist scope / config"*, *"where are my Mist WLAN templates assigned"*, *"find bare site-level WLANs"* | `mist-scope-audit` |
+
+### Skill design — read-only audits, no fixes
+
+Both skills are explicitly **read-only**. They identify issues; they don't correct them. Fixes still go through `mist_change_org_configuration_objects` / `central_manage_*` with elicitation gating. Keeping the audit pure-read means the operator can run it freely (no write-tool flag, no elicitation prompt, no chance of accidentally touching production) and decide which findings to act on.
+
+### Tests (650 → 652)
+
+Two new parametrized cases in `test_skill_tool_references.py::TestSkillToolReferences` (one per new skill) — automatic from the existing pytest parametrization. The regression test caught a regex artifact (`central_manage_*` in prose) which was added to `_GLOBAL_ALLOWLIST` alongside the existing meta-tool / historical mentions. Central audit references **23 distinct Central tools**; Mist audit references **8 Mist tools** (Mist gets fewer because `mist_get_configuration_objects` covers many object types via the `object_type` parameter — `wlantemplates`, `rftemplates`, `sitegroups`, `deviceprofiles`, `psks`, etc.).
+
+### Live-tested
+
+- Container restarts with **6 skills registered** (was 4)
+- `skills_load("central-scope-audit")` returns **16,027-char body** at top level in code mode
+- `skills_load("mist-scope-audit")` returns **16,049-char body** at top level in code mode
+- Both new skills appear with correct platform tags in `skills_list(platform="central")` / `skills_list(platform="mist")` filters
+
+### Reference material (kept locally, gitignored)
+
+The Central audit is anchored on the four Aruba Validated Solution Guides
+(Campus Design, Campus Deploy, Policy Design, Policy Deploy) — vendor-licensed
+PDFs kept in `docs/central/vsg/` for skill authoring; **not redistributed via
+the repo** (added to `.gitignore`). Same pattern for `docs/mist/vsg/` which
+holds the Mist best-practices reference.
+
+### Maximum-granularity rewrite (in-PR iteration)
+
+After the def-vs-value correction, user requested *"the more granular we
+are with Central and Mist config audit the better the results. Add as
+much detail as possible to both."* Both skills were rewritten again
+against all source material:
+
+- **Central audit: 21K → 38K chars** (15 audit steps, 60 REGRESSION
+  signals, 44 DRIFT signals). Now includes per-setting checks within
+  each category (specific VSG-recommended values, not just scope).
+  Examples: VLAN 1 as production = REGRESSION, MTU < 9198 on CX/AOS-10
+  = REGRESSION (per VSG §970), Loop Protect Re-Enable Time = 0 =
+  REGRESSION (per VSG §3298), DHCP snooping/ARP inspection not trust
+  on LAG = REGRESSION (per VSG §3495), default captive-portal cert
+  = REGRESSION (per VSG §364), server group with only 1 RADIUS server
+  = REGRESSION (per VSG §5006), missing canonical roles (ARUBA-AP /
+  BLACKHOLE / REJECT-AUTH / CRITICAL-AUTH) = REGRESSION when 802.1X
+  / APs are deployed.
+- **Mist audit: 18K → 33K chars** (15 audit steps, 44 REGRESSION
+  signals, 63 DRIFT signals). Three NEW source documents incorporated:
+  Mist Wired Assurance Configuration Guide, Mist Wireless Assurance
+  Configuration Guide, Juniper AI-Driven Wired & Wireless Network
+  Deployment Guide. New audit categories: switch configuration
+  templates (org/site/device hierarchy), site variables (Mist's
+  alias-equivalent — same definition-vs-value pattern), port profiles
+  (static + dynamic + DPC rules), AP-port best practices, virtual
+  chassis. New per-setting checks: 11r on non-Enterprise SSID =
+  REGRESSION (won't function), WEP/WPA1 = REGRESSION, port security
+  on AP ports = REGRESSION (Mist Wired §4016), MAC-based dynamic
+  match on 802.1X port = REGRESSION (Mist Wired §3001), CLI-managed
+  switches = REGRESSION (Mist Wired §3597-§3598), 2.4 GHz channel
+  width > 20 MHz = REGRESSION, 2.4 GHz channels other than {1,6,11}
+  = REGRESSION.
+
+### Definition-vs-value pattern (Central) — corrected mid-PR after user catch
+
+Initial draft of the audit conflated two distinct device-level patterns the
+VSG documents in Campus Deploy §11220-§11377 and §10620-§10625:
+
+1. **Auto-imported device-level profiles** (drift): when a switch is
+   onboarded, Central auto-creates device-level profiles for STP / System
+   Administration / etc. with naming convention `profile-<device serial>` and
+   `Inherits From: Self`. These BLOCK inheritance from higher-scope profiles.
+   **VSG explicitly directs operators to delete these.** The audit now
+   detects them as REGRESSION findings.
+2. **"Save as local profile" — intentional device-level overrides** (canonical):
+   the operator's explicit override mechanism. Used for alias VALUES per
+   device (the SC-SW-IP pattern — the alias DEFINITION lives at Site/Collection/Global,
+   each switch's IP VALUE is assigned via `Save as local profile`), per-VLAN
+   switch-param tweaks, etc. These are **VSG-canonical, not drift.** The
+   audit lists them at INFO level for periodic review — never flags.
+
+The audit's cross-cutting rule (Step 12) now uses three buckets at device
+scope: REGRESSION (auto-imported `profile-<serial>` or bare local config) /
+INFO (sanctioned `Save as local profile` overrides + per-device alias VALUE
+assignments) / RESEARCH (effective vs committed inconsistencies).
+
+Same softening applied to Mist Step 9: per-device hostname / IP / name are
+inherent identification (NOT drift); only device-level config that *competes*
+with template / site-group / org config (radio overrides without justification,
+device-level WLAN, firmware pin diverging from auto-upgrade) is REGRESSION.
+
+## [2.3.0.4] - 2026-04-28
+
+**Fixes the AI generalizing Mist-only WLAN best practices onto Central, plus broadens the Mist WLAN-template assignment scope guidance.**
+
+### What went wrong
+
+In-the-wild signal: a user asked their AI for a Central config / scope audit and got back:
+
+> *"WLANs should live in templates assigned to site groups (Global or Site-Collection scope), never at site or device level."*
+
+That sentence is wrong on multiple counts:
+- *"templates"* — Central does **not** have WLAN templates. That's Mist terminology. Central uses WLAN profiles.
+- *"never at site or device level"* — too restrictive even for Mist (templates can target a single site) and Central (WLAN profiles can be assigned at site or device-group scope).
+- *"Global or Site-Collection scope"* — Central terminology mashed onto Mist guidance.
+
+Two compounding root causes:
+
+1. **Mist guidance overreach.** INSTRUCTIONS.md `Mist Best Practices > WLANs` said *"assign templates to site groups"* — implying site groups were the *only* valid template-assignment target. The actual rule is **org-wide / site groups / specific sites — never device level**. The same too-narrow language was repeated in `platforms/mist/tools/guardrails.py:_check_site_wlan_creation`'s warning text.
+
+2. **Missing Aruba Central Best Practices section.** When asked for a Central audit, the AI had no Central-specific guidance to anchor on. It generalized Mist's *"push config high, use templates"* rule onto Central, picked up Central terminology along the way (*"Site-Collection scope"*), and produced a hybrid that's wrong on both platforms.
+
+### What's fixed
+
+**Mist guidance broadened** (matches the actual platform model):
+
+- `INSTRUCTIONS.md > Mist Best Practices > WLANs` — *"assign each template at the appropriate scope: org-wide, to a site group, or to specific sites. Never at the device level."* The rule against bare site-level WLANs (i.e. WLANs created without a template) stays — that's still correct shorthand for *"WLANs without a template should never be created"*.
+- `INSTRUCTIONS.md > Site Groups` — site groups are now described as one of three valid assignment targets, not the only valid one. Site-level template assignment is explicitly endorsed for site-specific cases.
+- `INSTRUCTIONS.md > Site Provisioning` — broadened the same way.
+- `platforms/mist/tools/guardrails.py:_check_site_wlan_creation` — warning text now lists all three valid scopes (org / site group / specific sites) and explicitly notes "never at device level" instead of implying site groups are the only target.
+
+**Aruba Central Best Practices section added** (mirrors Mist structure but uses correct Central terminology):
+
+- Configuration Hierarchy: *Global → Site Collections → Sites → Device Groups → Devices*
+- WLAN Profiles: assign at *Global*, *site collection*, *site*, or *device group* (Mist has no device-group equivalent — this scope is Central-only)
+- **Local overrides — use local profiles, not direct configs**: explicitly explains that bare local-scope configs lead to drift and orphan when the parent profile changes. The correct override pattern is a **local profile** assigned at the lower scope, which falls back to inherited config cleanly when deleted.
+- Naming: keep Mist site groups and Central site collections in sync by name so cross-platform sync workflows pair up.
+
+**Mist ↔ Central terminology table** added under the Central section:
+
+| Concept | Mist | Central |
+|---|---|---|
+| Reusable config bundle for SSIDs | WLAN **template** | WLAN **profile** |
+| Top of the hierarchy | **Org** | **Global** |
+| Group of sites | **Site group** | **Site collection** |
+| Individual site | **Site** | **Site** |
+| Group of devices | *(no equivalent)* | **Device group** |
+| Override at lower scope | Bare site-level config (avoid) | Local profile (correct) / bare local config (avoid) |
+
+The table is preceded by an explicit *"do NOT generalize a rule from one platform onto the other"* directive — meant to defang the exact AI behavior that produced the original bad answer.
+
+### Tests (649 → 650)
+
+One new guardrail-message-content test in `tests/unit/test_guardrails.py::TestSiteWlanCreation::test_site_wlan_create_warning_lists_all_valid_scopes`:
+
+- Asserts the warning mentions org-wide assignment
+- Asserts the warning mentions site-group assignment
+- Asserts the warning mentions site-level assignment (not just site groups)
+- Asserts the warning calls out "never at device level" explicitly
+
+Catches a regression where someone narrows the scope guidance back to site-groups-only.
+
+### Live-tested
+
+Verified via direct probe of the running server's `instructions` field over the MCP `initialize` response that the new sections (`Aruba Central Best Practices`, `Local Overrides`, `Mist ↔ Central terminology`, `Device Groups`, `Configuration Manager`) are all loaded and reach the AI client at session start.
+
+## [2.3.0.3] - 2026-04-28
+
+**Fixes a top-level visibility bug that hid `skills_list` and `skills_load` in code mode since v2.3.0.0, and strengthens INSTRUCTIONS.md rule #8 to make the AI proactively check skills first.**
+
+### What was broken
+
+In **code mode**, the actual MCP-exposed surface was 4 tools (`tags`, `search`, `get_schema`, `execute`) — `skills_list` and `skills_load` were nowhere to be found in `tools/list`. The AI had no top-level signal that skills existed, so it never reached for them on questions like *"how's my infrastructure in Central?"*.
+
+Confirmed via direct wire-protocol probe (`tools/list` over the streaming-HTTP MCP endpoint) — not just inferred. Verified the regression had been present since v2.3.0.0 by reading git history; nothing in server.py or skills/ ever passed skills as discovery tools.
+
+### Why it happened
+
+`skills_list` / `skills_load` were registered via `@mcp.tool` before `_register_code_mode(mcp)` ran. CodeMode's `transform_tools()` then *replaces* the visible catalog with `[*discovery_tools, execute]` — it doesn't merge with the existing catalog, it substitutes. So skills were callable from inside `execute()` via `await call_tool("skills_list", {})` (their `@mcp.tool` registration kept them in the backend catalog), but invisible to the AI at the top level. I tested skills via `execute()` during v2.3.0.0 development and didn't notice they weren't visible at the top.
+
+### The fix
+
+`skills/_engine.py` now exposes two discovery-tool factories matching `CodeMode.discovery_tools`'s signature (same shape as fastmcp's `GetTags` / `Search` / `GetSchemas`):
+
+- `SkillsListDiscoveryTool(registry)` — produces a `skills_list` Tool
+- `SkillsLoadDiscoveryTool(registry)` — produces a `skills_load` Tool
+
+`server.py:_register_code_mode` builds a `SkillRegistry` once and hands the factories into `discovery_tools` alongside the standard `GetTags`/`Search`/`GetSchemas`. In code mode the exposed surface is now **6 tools**: `tags`, `search`, `get_schema`, `skills_list`, `skills_load`, `execute`.
+
+`server.py:create_server` skips the `@mcp.tool` registration path (`_register_skills(mcp)`) when `tool_mode == "code"` to avoid registering them twice. Dynamic and static modes still use `register(mcp)` — `@mcp.tool` works correctly there because no transform replaces the catalog.
+
+### Trade-off accepted
+
+Skills are now **discovery-only** in code mode — same shape as `tags`/`search`/`get_schema`. They're callable at the top level but NOT from inside `execute()` (the sandbox's `call_tool` only resolves backend platform tools). That matches their semantic role: planning tools, not dispatch tools. The `execute_description` is updated to call this out explicitly, alongside the existing note about `tags`/`search`/`get_schema` not being callable inside `execute()`. If any LLM tries `await call_tool("skills_list", {})` from inside the sandbox, the existing `SandboxErrorCatchMiddleware` (v2.2.0.4) will surface `Sandbox error: Unknown tool: skills_list` as a string so the LLM can self-correct.
+
+### INSTRUCTIONS.md rule #8 strengthened
+
+The previous rule said *"call `skills_list` first when the user asks for a known runbook"* — too passive, required the AI to recognize the runbook shape. New rule:
+
+> *"**Always check Skills FIRST for multi-step / cross-platform questions.** Even when the user names a specific platform (e.g. *"how's my infrastructure in Central?"*), call `skills_list()` BEFORE reaching for per-platform tools..."*
+
+Plus a query→skill table giving concrete pattern → skill mappings:
+
+| User query shape | Likely skill |
+|---|---|
+| *"how's my infrastructure?"*, *"is everything healthy?"*, *"how is health in &lt;platform&gt;?"* | `infrastructure-health-check` |
+| *"about to push a change"*, *"give me a baseline"* | `change-pre-check` |
+| *"the change is done — verify"*, *"post-change check"* | `change-post-check` |
+| *"are WLANs in sync?"*, *"WLAN drift audit"* | `wlan-sync-validation` |
+
+### Tests (644 → 649)
+
+- `TestDiscoveryToolFactories` × 5 cases — factories produce Tools with the right name + working body, support filter args, accept custom names, return clean errors on no-match
+- `TestCodeModeAggregatorGating` extended — asserts `skills.register` is called in dynamic/static and NOT called in code mode (with a comment pointing at this CHANGELOG entry so future contributors don't "fix" the assertion the wrong way)
+
+Plus an end-to-end live verification via the wire-protocol `tools/list`:
+- code mode → 6 top-level tools (`tags`, `search`, `get_schema`, `skills_list`, `skills_load`, `execute`)
+- dynamic mode → 109 visible (per-platform meta-tools + cross-platform statics + skills_list + skills_load)
+
+### Live-tested
+
+- `tools/call` for `skills_list` at the top level in code mode → returns all 4 bundled skills
+- `tools/call` for `skills_load` at the top level in code mode → returns infrastructure-health-check body
+- Dynamic-mode wire probe confirms skills_list / skills_load still appear there
+
+## [2.3.0.2] - 2026-04-27
+
+**Fixes 12 wrong tool-name references in the bundled skills, tightens output templates so the AI doesn't improvise inconsistent formatting, and adds a regression test that catches this whole class of bug at CI time.**
+
+### What went wrong
+
+In-the-wild signal from running `infrastructure-health-check` and `change-pre-check`: skills were referencing tool names that don't exist (e.g. `clearpass_get_recent_audit_log`, `mist_get_org_wlans`, `apstra_get_blueprint_revisions`). The AI got "tool not found" errors via the discovery tools and worked around them — sometimes by skipping the step entirely (silent gap in output), sometimes by improvising a substitute. Output was incomplete and inconsistent across runs.
+
+Root cause: the v2.3.0.0 skills were authored without verifying every referenced name against the actual tool catalog. The output formatting templates were also loose enough that the AI was filling in freeform sections.
+
+### Skill fixes (12 wrong names corrected)
+
+| Wrong name | Correct name | Files |
+|---|---|---|
+| `clearpass_get_recent_audit_log` | `clearpass_get_system_events` | infrastructure-health-check, change-pre-check, change-post-check |
+| `clearpass_get_active_sessions` | `clearpass_get_sessions` | change-pre-check |
+| `clearpass_get_enforcement_policy` | `clearpass_get_enforcement_policies(policy_id=...)` | change-pre-check |
+| `mist_get_org_wlans` / `mist_get_site_wlans` | `mist_get_wlans()` (accepts `org_id` or `site_id`) | wlan-sync-validation |
+| `mist_get_wlan` (singular) | `mist_get_configuration_objects(object_type="wlans", object_id=...)` | change-pre-check |
+| `mist_get_device` | `mist_search_device` (org inventory) or `mist_get_ap_details` / `mist_get_switch_details` (specific device) | change-pre-check |
+| `mist_get_device_port_config` | `mist_get_switch_details(device_id=...)` (port config is part of switch detail) | change-pre-check |
+| `central_get_site_wlans` | `central_get_wlans(site_id=...)` | wlan-sync-validation |
+| `central_get_wlan` (singular) | `central_get_wlans()` | change-pre-check |
+| `central_get_switch_port` | `central_get_switch_details(serial=...)` | change-pre-check |
+| `apstra_get_blueprint_revisions` | `apstra_get_blueprints(blueprint_id=...)` (record `version`) + `apstra_get_diff_status` (uncommitted changes) | change-pre-check |
+
+### Tightened output templates
+
+Each skill's "Output formatting" section now leads with a directive: *"Use the EXACT structure below. Every section heading must be present even if its content is..."* This stops the AI from skipping sections, adding freeform "Notable" sections that aren't in the template, or rewriting headings between runs. The output structure itself is unchanged — same headings, same fields — just enforced.
+
+`infrastructure-health-check` also gained `apstra_get_anomalies`, `axis_get_connectors`, and `axis_get_status` to the `tools:` frontmatter (they were referenced in the body but missing from the metadata list) and clarified the Axis step to spell out the runtime-status field names (`cpuStatus`, `memoryStatus`, `networkStatus`, `diskSpaceStatus`).
+
+### Regression test (`tests/unit/test_skill_tool_references.py`)
+
+Builds a server in static mode (every tool registered) plus the dynamic-mode meta-tool name patterns. Walks each `skills/*.md` body and `INSTRUCTIONS.md`, extracts every platform-prefixed identifier via regex, asserts each appears in the canonical catalog or in a small `_GLOBAL_ALLOWLIST` for known historical mentions (e.g. *"`apstra_health` was removed in v2.0"*) and regex artifacts (e.g. incomplete patterns like `mist_change_org` inside *"`mist_change_org_*` family"* prose).
+
+5 new test cases:
+- Per-skill parametrized check: 4 skills × 1 test = 4 cases
+- INSTRUCTIONS.md check: 1 case
+
+Future skill authors get a CI failure if they reference a non-existent tool, with a clear remediation message ("either fix the name to match a real tool, or — if the reference is intentional — add it to `_GLOBAL_ALLOWLIST`").
+
+### What we didn't change
+
+- INSTRUCTIONS.md had **0 actual broken references**. The regex caught 12 hits but every single one was either historical prose ("X was removed in v2.0", surfaced for context) or a regex artifact (incomplete pattern like `mist_change_org` inside `mist_change_org_*` family-mention prose). All were added to the allowlist with comments rather than rewritten.
+- `@mcp.prompt(...)` bodies and human-facing docs (README, docs/TOOLS.md) — same regex sweep but no real bugs found, so no changes there. The regression test currently covers skills + INSTRUCTIONS.md; expand if more authoring surfaces emerge.
+
+### Tests (639 → 644)
+
+5 new regression tests; existing 639 still pass.
+
 ## [2.3.0.1] - 2026-04-27
 
 **Adds the `change-post-check` skill (partner to `change-pre-check`) and documents two pydantic-monty sandbox limits the LLM was discovering at runtime.**
