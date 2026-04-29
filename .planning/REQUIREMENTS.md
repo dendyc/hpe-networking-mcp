@@ -75,28 +75,26 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ## Traceability
 
-*(Filled by roadmapper)*
-
 | REQ-ID | Phase |
 |--------|-------|
-| DETECT-01 | — |
-| COLLECT-01 | — |
-| COLLECT-02 | — |
-| COLLECT-03 | — |
-| COLLECT-04 | — |
-| RULES-01 | — |
-| RULES-02 | — |
-| RULES-03 | — |
-| RULES-04 | — |
-| ENRICH-01 | — |
-| ENRICH-02 | — |
-| ENRICH-03 | — |
-| ENRICH-04 | — |
-| CUTOVER-01 | — |
-| CUTOVER-02 | — |
-| CUTOVER-03 | — |
-| OUTPUT-01 | — |
-| OUTPUT-02 | — |
-| QUALITY-01 | — |
-| QUALITY-02 | — |
-| QUALITY-03 | — |
+| DETECT-01 | Phase 10 |
+| COLLECT-01 | Phase 10 |
+| COLLECT-02 | Phase 10 |
+| COLLECT-03 | Phase 10 |
+| COLLECT-04 | Phase 10 |
+| RULES-01 | Phase 11 |
+| RULES-02 | Phase 11 |
+| RULES-03 | Phase 11 |
+| RULES-04 | Phase 11 |
+| ENRICH-01 | Phase 12 |
+| ENRICH-02 | Phase 12 |
+| ENRICH-03 | Phase 12 |
+| ENRICH-04 | Phase 12 |
+| CUTOVER-01 | Phase 12 |
+| CUTOVER-02 | Phase 12 |
+| CUTOVER-03 | Phase 12 |
+| OUTPUT-01 | Phase 13 |
+| OUTPUT-02 | Phase 13 |
+| QUALITY-01 | Phase 13 |
+| QUALITY-02 | Phase 13 |
+| QUALITY-03 | Phase 13 |
