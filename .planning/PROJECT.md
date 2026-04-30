@@ -59,9 +59,9 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - [ ] **SKILL-03**: Stage 3 adds live-data-only VSG rules (VRRP VIP validation, ARM profile detection, local user count, cluster L2 health)
 - [x] **SKILL-04**: Stage 4 cross-references AOS8 AP inventory against Central firmware recommendations and AP count gap — Validated in Phase 12: central-enrichment-cutover-validation
 - [x] **SKILL-05**: Stage 5 validates cutover prerequisites from live AOS8 state (controller firmware, cluster health, AP count) — Validated in Phase 12: central-enrichment-cutover-validation
-- [ ] **SKILL-06**: Report includes executive summary paragraph before the structured findings
-- [ ] **SKILL-07**: Structured findings remain clean enough to paste into a customer-facing document
-- [ ] **SKILL-08**: `tools:` frontmatter and `platforms:` tag updated to include AOS8 tools; skill regression test passes
+- [x] **SKILL-06**: Report includes executive summary paragraph before the structured findings — Validated in Phase 13: executive-output-quality-gate
+- [x] **SKILL-07**: Structured findings remain clean enough to paste into a customer-facing document — Validated in Phase 13: executive-output-quality-gate
+- [x] **SKILL-08**: `tools:` frontmatter and `platforms:` tag updated to include AOS8 tools; skill regression test passes — Validated in Phase 13: executive-output-quality-gate
 
 ### Out of Scope
 
