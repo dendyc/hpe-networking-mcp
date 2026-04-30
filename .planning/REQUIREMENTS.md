@@ -21,10 +21,10 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ### Live Rules (Stage 3)
 
-- [ ] **RULES-01**: VRRP VIP check — skill parses effective config (via API) to verify AP system profiles use the VRRP virtual IP for LMS, not individual controller IPs; auto-flags as REGRESSION if not (VSG §1654-§1657)
-- [ ] **RULES-02**: ARM / radio profile detection — skill detects active ARM profiles, dot11a/g radio profiles, and regulatory domain profiles from AP-group objects + effective config via API; auto-flags as DRIFT (VSG §1163-§1166)
-- [ ] **RULES-03**: Local user count cross-check — skill calls `aos8_show_command("show local-user db")` to get actual count, compares against `clearpass_get_local_users()` count; flags dual-source-of-truth as DRIFT automatically
-- [ ] **RULES-04**: Static AP IP detection — skill parses IP mode field from `aos8_get_ap_database()` response to automatically detect statically addressed APs; flags as REGRESSION (VSG §1232-§1234)
+- [x] **RULES-01**: VRRP VIP check — skill parses effective config (via API) to verify AP system profiles use the VRRP virtual IP for LMS, not individual controller IPs; auto-flags as REGRESSION if not (VSG §1654-§1657)
+- [x] **RULES-02**: ARM / radio profile detection — skill detects active ARM profiles, dot11a/g radio profiles, and regulatory domain profiles from AP-group objects + effective config via API; auto-flags as DRIFT (VSG §1163-§1166)
+- [x] **RULES-03**: Local user count cross-check — skill calls `aos8_show_command("show local-user db")` to get actual count, compares against `clearpass_get_local_users()` count; flags dual-source-of-truth as DRIFT automatically
+- [x] **RULES-04**: Static AP IP detection — skill parses IP mode field from `aos8_get_ap_database()` response to automatically detect statically addressed APs; flags as REGRESSION (VSG §1232-§1234)
 
 ### Central Enrichment (Stage 4)
 
