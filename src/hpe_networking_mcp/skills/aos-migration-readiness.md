@@ -503,6 +503,7 @@ Aggregate findings from all stages into one verdict + structured report (see *Ou
 |---|---|
 | Operator hasn't picked source platform / target mode / scope / cluster type / HA mode | STOP. Don't proceed without all stage-0 answers. |
 | Operator hasn't pasted the data bundle | Output **PARTIAL** verdict — Central-side checks complete, source-side blocked. List exactly what's needed. |
+| AOS8 live mode AND one or more Stage 1 batches failed | **PARTIAL** — list which AOS8 checks could not run (e.g. "Batch 3 failed: cluster state, local-user db"). For each failed batch, include the exact CLI command(s) the operator must paste manually to complete those data points. All checks that did succeed are still reported. |
 | Source = `iap` AND target mode ≠ `bridge` | **REGRESSION** — IAP migrates to Bridge Mode per VSG §672-§676. Reject the combination; operator must plan a Tunnel Mode migration as a separate gateway-cluster deployment. |
 | AOS 8 controller firmware below `8.10.0.12` / `8.12.0.1` | **REGRESSION** — must upgrade controllers to the prerequisite version before AOS 10 swap (VSG §1643). |
 | Static AP IP addressing detected | **REGRESSION** — AOS 10 requires DHCP for AP IP (VSG §1232, §475). |
@@ -534,7 +535,27 @@ Aggregate findings from all stages into one verdict + structured report (see *Ou
 
 Use the EXACT structure below. Every section heading must be present even if empty. Lead with the verdict, then REGRESSION → DRIFT → INFO. Include a suggested AOS 10 hierarchy mapping table and a phased cutover plan.
 
+### Output hygiene (mandatory)
+
+These rules apply to every finding across Stages 3, 4, 5, and 6:
+
+1. **No raw JSON blobs.** When citing an API response, extract and quote only the specific field value relevant to the finding. Never dump the full response dict.
+2. **No tool-call syntax in finding text.** Tool names belong in the `(source: tool_name(), Batch N)` attribution at the end of the finding — never inside the finding sentence itself.
+3. **No stack traces.** If a tool call raises an exception, emit a brief one-line error note and the fallback CLI command. Never include a Python traceback.
+4. **No ellipsis or truncation markers.** Do not write `...`, `[truncated]`, or similar. Extract the relevant fields explicitly; if a response is large, summarise the salient values in prose.
+
 ```
+> Open the report with this paragraph (plain prose, 2–4 sentences, never a bullet list, never a table). Three elements in order:
+>   1. Verdict in bold caps — **GO** / **BLOCKED** / **PARTIAL**.
+>   2. Finding counts — exact integers for REGRESSION, DRIFT, INFO.
+>   3. One SE-ready sentence — name the source platform (AOS8 / AOS6 / IAP), AP count, controller count, and the key action a human SE can paste verbatim into a customer email.
+>
+> For PARTIAL verdict caused by AOS8 live-mode batch failure, append: "AOS8 live collection partially succeeded — <N> checks completed; <M> checks require manual CLI paste (see below)."
+>
+> Template (AI fills the angle-bracket placeholders at runtime; do NOT hard-code values):
+
+**<VERDICT>** — <X> REGRESSION / <Y> DRIFT / <Z> INFO findings. This <source> deployment (<N> APs, <M> controllers) <one plain-English action sentence>. <Optional context sentence — e.g. "Live AOS8 data collection was used for all checks." or PARTIAL note if applicable.>
+
 ## AOS migration readiness — <source: aos6/aos8/iap> → AOS 10 <target: tunnel/bridge/mixed>
 **Captured:** <ISO timestamp>
 **Migration scope:** <single-site PoC | multi-site | fleet-wide>
