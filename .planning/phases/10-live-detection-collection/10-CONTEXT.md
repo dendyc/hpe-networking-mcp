@@ -1,6 +1,7 @@
 # Phase 10: Live Detection & Collection - Context
 
 **Gathered:** 2026-04-29
+**Amended:** 2026-04-29 (D-04 clarified per checker review)
 **Status:** Ready for planning
 
 <domain>
@@ -31,7 +32,11 @@ AOS6 and IAP paste paths are entirely unchanged — no regression in non-AOS8 so
 
 ### Stage 1 AOS8 Paste Section (COLLECT-01..04)
 
-- **D-04:** The existing 16-command AOS8 paste table in Stage 1 is **removed entirely**. Stage 1 for AOS8 source path becomes API-only. The commands are still documented in the v1.0 TOOLS.md / INSTRUCTIONS.md for reference — they don't need to live in the skill file.
+- **D-04 (AMENDED 2026-04-29):** D-04 applies **only to the live-mode sub-path** of Stage 1 for AOS8 sources. The 16-command AOS8 paste table is removed from the **live-mode narration** — when AOS8 is reachable, Stage 1 runs API-only with no CLI paste table shown to the operator.
+
+  The paste table is **retained in the skill file as the unreachable-AOS8 paste-fallback sub-path**, used when D-02's silent fallback is triggered (AOS8 not configured / unreachable). This honors both D-04 (no paste table in the live path) and D-02 (paste-driven flow unchanged when AOS8 is unreachable).
+
+  Original phrasing of D-04 ("removed entirely") referred only to the live narration — the paste table must continue to exist somewhere in the skill so the unreachable-AOS8 path remains functional. The commands are also documented in the v1.0 TOOLS.md / INSTRUCTIONS.md for reference.
 - **D-05:** Stage 0 paste paths for AOS6 and IAP are **fully preserved** — those sections are not touched.
 
 ### Live Collection Narration
@@ -118,7 +123,7 @@ AOS6 and IAP paste paths are entirely unchanged — no regression in non-AOS8 so
 
 - Detection announcement before Stage 0: "AOS8 API mode — live data" (short, operator-friendly, matches the requirement wording from DETECT-01)
 - Paste fallback is silent — no announcement when AOS8 not connected, existing paste UX unchanged
-- The 16-command AOS8 CLI table is fully removed from Stage 1; commands are preserved in v1.0 TOOLS.md/INSTRUCTIONS.md
+- The 16-command AOS8 CLI table is removed from the live-mode narration; it is retained as the unreachable-AOS8 paste-fallback sub-path within the same Stage 1 AOS8 section. Commands also remain in v1.0 TOOLS.md/INSTRUCTIONS.md.
 - Narration is 4 batches grouped by COLLECT req — not individual tool-by-tool
 - Partial failure → exact command name only in the paste request (e.g., "run `show ap database long` and paste the output") — no table reprint
 
@@ -135,3 +140,4 @@ None — discussion stayed within phase scope.
 
 *Phase: 10-live-detection-collection*
 *Context gathered: 2026-04-29*
+*D-04 amended: 2026-04-29 (live-mode scope clarification)*

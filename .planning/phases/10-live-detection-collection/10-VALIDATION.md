@@ -1,10 +1,11 @@
 ---
 phase: 10
 slug: live-detection-collection
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: approved
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-29
+approved: 2026-04-29
 ---
 
 # Phase 10 — Validation Strategy
@@ -38,11 +39,11 @@ created: 2026-04-29
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 10-01-01 | 01 | 1 | DETECT-01 | unit | `uv run pytest tests/unit/ -k "skill" -x -q` | ✅ | ⬜ pending |
-| 10-01-02 | 01 | 1 | COLLECT-01 | unit | `uv run pytest tests/unit/ -k "skill" -x -q` | ✅ | ⬜ pending |
-| 10-01-03 | 01 | 1 | COLLECT-02 | unit | `uv run pytest tests/unit/ -k "skill" -x -q` | ✅ | ⬜ pending |
-| 10-01-04 | 01 | 1 | COLLECT-03 | unit | `uv run pytest tests/unit/ -k "skill" -x -q` | ✅ | ⬜ pending |
-| 10-01-05 | 01 | 1 | COLLECT-04 | unit | `uv run pytest tests/unit/ -k "skill" -x -q` | ✅ | ⬜ pending |
+| 10-01-01 | 01 | 1 | DETECT-01 / COLLECT-01..04 | unit | `cd hpe-networking-mcp && uv run pytest tests/unit/test_skill_tool_references.py -x -q` | ✅ | ⬜ pending |
+| 10-01-02 | 01 | 1 | DETECT-01 / COLLECT-01..04 | unit | `cd hpe-networking-mcp && uv run pytest tests/unit/test_skill_aos8_live_detection.py -x -q` | ✅ | ⬜ pending |
+| 10-02-01 | 02 | 2 | DETECT-01 | unit | `cd hpe-networking-mcp && uv run pytest tests/unit/test_skill_tool_references.py tests/unit/test_skill_aos8_live_detection.py tests/unit/test_skills.py -x -q` | ✅ | ⬜ pending |
+| 10-02-02 | 02 | 2 | COLLECT-01..04 | unit | `cd hpe-networking-mcp && uv run pytest tests/unit/test_skill_tool_references.py tests/unit/test_skill_aos8_live_detection.py tests/unit/test_skills.py -x -q` | ✅ | ⬜ pending |
+| 10-02-03 | 02 | 2 | DETECT-01 (LLM-prose) | manual | checkpoint:human-verify (3 scenarios) | ✅ | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -50,9 +51,10 @@ created: 2026-04-29
 
 ## Wave 0 Requirements
 
-- [ ] `tests/unit/test_skill_aos8_live_detection.py` — stubs for DETECT-01, COLLECT-01 through COLLECT-04 (AOS8 live-mode detection + collection)
+- [x] `tests/unit/test_skill_aos8_live_detection.py` — stubs for DETECT-01, COLLECT-01 through COLLECT-04 (AOS8 live-mode detection + collection) — addressed by Plan 10-01 Task 2
+- [x] Fix `_TOOL_REF_PATTERN` regex in `tests/unit/test_skill_tool_references.py` to include `aos8` alternation — addressed by Plan 10-01 Task 1
 
-*Note: Existing skill test infrastructure (`test_skill_tool_references.py`) covers basic tool-name validation but regex excludes `aos8_*` tools — Wave 0 must add coverage or fix regex.*
+*Wave 0 work is delivered by Plan 10-01 (Wave 1). Plan 10-02 (Wave 2) consumes those test guards.*
 
 ---
 
@@ -68,11 +70,11 @@ created: 2026-04-29
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references (delivered by Plan 10-01 Wave 1)
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved 2026-04-29 (post-checker revision; Plan 10-01 delivers Wave 0 test guards in Wave 1, consumed by Plan 10-02 in Wave 2)
