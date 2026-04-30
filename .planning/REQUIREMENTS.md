@@ -41,14 +41,14 @@ Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data col
 
 ### Output Format
 
-- [ ] **OUTPUT-01**: Report includes an executive summary paragraph at the top: GO/BLOCKED/PARTIAL verdict, count of REGRESSIONs/DRIFTs/INFOs, and one-sentence context suitable for an SE to share directly with a customer
-- [ ] **OUTPUT-02**: Structured REGRESSION/DRIFT/INFO findings formatted with clean markdown (no raw JSON, no tool call artifacts) suitable for direct paste into a customer-facing document
+- [x] **OUTPUT-01**: Report includes an executive summary paragraph at the top: GO/BLOCKED/PARTIAL verdict, count of REGRESSIONs/DRIFTs/INFOs, and one-sentence context suitable for an SE to share directly with a customer
+- [x] **OUTPUT-02**: Structured REGRESSION/DRIFT/INFO findings formatted with clean markdown (no raw JSON, no tool call artifacts) suitable for direct paste into a customer-facing document
 
 ### Quality
 
-- [ ] **QUALITY-01**: `tools:` frontmatter in skill file updated to include all AOS8 tool names referenced in the skill body
-- [ ] **QUALITY-02**: `platforms:` tag updated to include `aos8` alongside `central`
-- [ ] **QUALITY-03**: `tests/unit/test_skill_tool_references.py` passes with all new AOS8 tool name references resolving to real catalog entries
+- [x] **QUALITY-01**: `tools:` frontmatter in skill file updated to include all AOS8 tool names referenced in the skill body
+- [x] **QUALITY-02**: `platforms:` tag updated to include `aos8` alongside `central`
+- [x] **QUALITY-03**: `tests/unit/test_skill_tool_references.py` passes with all new AOS8 tool name references resolving to real catalog entries
 
 ---
 
