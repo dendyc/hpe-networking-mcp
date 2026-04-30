@@ -10,15 +10,15 @@ A fork of the `hpe-networking-mcp` community project that adds **Aruba OS 8 (AOS
 
 An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility Conductor network with the same depth and safety as it does Aruba Central — without the operator needing to touch the CLI.
 
-## Current Milestone: v1.1 AOS8-Powered Migration Readiness
+## Shipped: v1.1 AOS8-Powered Migration Readiness (2026-04-30)
 
-**Goal:** Enhance the `aos-migration-readiness` skill to replace paste-driven CLI data collection with live AOS8 API calls and produce a professional-grade, copy-pasteable migration assessment for field SEs and operators.
+**Goal:** Enhanced the `aos-migration-readiness` skill to replace paste-driven CLI data collection with live AOS8 API calls and produce a professional-grade, copy-pasteable migration assessment for field SEs and operators.
 
-**Target features:**
-- Stage 1: Live AOS8 data collection via platform tools — no CLI paste required for AOS8 source path
-- Stage 3: Deeper VSG-anchored rules unlocked by live data (VRRP VIP, ARM profiles, cluster health, local user count, config objects)
-- Stage 4: AOS8 inventory cross-referenced against Central API (AP model → firmware rec, count gap, SSID/role conflict detection)
-- Stage 5: Real-time cutover prerequisite validation (live cluster state, controller firmware version, AP counts from AOS8)
+**Delivered:**
+- Stage 1: Live AOS8 data collection via 9 platform tools — no CLI paste required for AOS8 source path
+- Stage 3: VSG-anchored rules from live data — VRRP VIP, ARM profiles, static AP IPs, local-user count cross-check
+- Stage 4: AOS8 inventory cross-referenced against Central API (AP model → firmware rec, count gap, SSID/role/VLAN conflict detection)
+- Stage 5: Real-time cutover prerequisite validation (live cluster state, controller firmware floor, AP count snapshot)
 - Output: Executive summary paragraph (GO/BLOCKED/PARTIAL) + structured REGRESSION/DRIFT/INFO findings, copy-pasteable into customer docs
 
 ## Requirements
@@ -52,16 +52,20 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 - ✓ 766-test suite: UIDARUBA token-leak detection, all 6 existing platform suites passing unmodified — v1.0
 - ✓ DIFF production bug fix: canonical `run_show`/`get_object` helpers enforced across all 9 differentiator tools — v1.0
 
+*(Validated in v1.1 — Phases 10–13)*
+
+- ✓ SKILL-01: AOS8 live-mode detection at skill session start via `health()` probe; silent fallback to paste path when unreachable — v1.1
+- ✓ SKILL-02: Stage 1 collects all 16 AOS8 data points via 9 platform tools in 4 batches; AOS6/IAP paste paths preserved — v1.1
+- ✓ SKILL-03: Stage 3 live VSG rules — VRRP VIP (REGRESSION), ARM/radio profiles (DRIFT), static AP IPs (REGRESSION), local-user cross-check (DRIFT at A11) — v1.1
+- ✓ SKILL-04: Stage 4 AOS8→Central cross-reference — AP count gap, per-model AOS10 firmware rec table, SSID/role/VLAN conflict REGRESSION findings — v1.1
+- ✓ SKILL-05: Stage 5 cutover prerequisites — cluster L2 health (REGRESSION), controller firmware floor 8.10.0.12/8.12.0.1 (REGRESSION), AP-count baseline — v1.1
+- ✓ SKILL-06: Executive summary paragraph at report top — GO/BLOCKED/PARTIAL verdict + REGRESSION/DRIFT/INFO counts + SE-ready sentence — v1.1
+- ✓ SKILL-07: Structured findings with output hygiene rules — no raw JSON, no tool-call syntax, no stack traces, no truncation — v1.1
+- ✓ SKILL-08: `tools:` frontmatter (28 tools) and `platforms:[central, aos8]` tag current; regression test gates tool name correctness — v1.1
+
 ### Active
 
-- [ ] **SKILL-01**: Skill auto-detects AOS8 connectivity and switches to API mode — no paste required for AOS8 source path
-- [ ] **SKILL-02**: Stage 1 collects all 16 AOS8 data points via platform tools (hierarchy, AP database, cluster state, clients, WLAN, etc.)
-- [ ] **SKILL-03**: Stage 3 adds live-data-only VSG rules (VRRP VIP validation, ARM profile detection, local user count, cluster L2 health)
-- [x] **SKILL-04**: Stage 4 cross-references AOS8 AP inventory against Central firmware recommendations and AP count gap — Validated in Phase 12: central-enrichment-cutover-validation
-- [x] **SKILL-05**: Stage 5 validates cutover prerequisites from live AOS8 state (controller firmware, cluster health, AP count) — Validated in Phase 12: central-enrichment-cutover-validation
-- [x] **SKILL-06**: Report includes executive summary paragraph before the structured findings — Validated in Phase 13: executive-output-quality-gate
-- [x] **SKILL-07**: Structured findings remain clean enough to paste into a customer-facing document — Validated in Phase 13: executive-output-quality-gate
-- [x] **SKILL-08**: `tools:` frontmatter and `platforms:` tag updated to include AOS8 tools; skill regression test passes — Validated in Phase 13: executive-output-quality-gate
+*(None — v1.1 complete; define v1.2 requirements via `/gsd:new-milestone`)*
 
 ### Out of Scope
 
@@ -73,10 +77,11 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 
 ## Context
 
-**Current state (v1.0):**
-- AOS8 platform module: 47 tools (26 read + 9 differentiator + 12 write) + 9 guided prompts
-- Version: 2.4.0.1 (pyproject.toml)
-- Test suite: 766 unit tests, all platforms green
+**Current state (v1.1):**
+- AOS8 platform module: 47 tools (26 read + 9 differentiator + 12 write) + 9 guided prompts (unchanged from v1.0 — v1.1 was skill-only)
+- `aos-migration-readiness` skill: ~693 lines (live AOS8 API path + paste fallback + full rule evaluation + exec summary output)
+- Version: 2.4.0.1 (pyproject.toml — no code changes in v1.1)
+- Test suite: 790 unit tests, all platforms green (790/790)
 - ~148K total Python LOC in project; AOS8 module ~3K LOC
 - No live AOS8 test system — all tests use mocked HTTP responses
 
@@ -120,6 +125,13 @@ An AI assistant that can monitor, troubleshoot, and configure an AOS8/Mobility C
 | Phase 4 (Differentiators) merged into Phase 7 | Discovery: differentiator tools could be tested alongside integration work without separate phase | ✓ Good — Phase 7 delivered DIFF tools + integration in one coherent phase |
 | Local `_show`/`_object` helpers in differentiators.py (Phase 7) | Frozen test mocks returned dict directly; appeared correct under test | ⚠️ Revisit — was a bug; Phase 8 fixed to use canonical `run_show`/`get_object`; don't repeat this pattern |
 | Gap closure phases (08, 09) added post-audit | Milestone audit found DIFF production bug + doc/planning drift; needed correction before tagging | ✓ Good — right call to fix before shipping; kept tech debt list short |
+| v1.1 scoped to skill markdown only (no Python) | All 9 AOS8 tools needed for live mode already existed; no new tools required | ✓ Good — reduced risk to zero; shipped in 2 days |
+| Two-sub-path structure per skill stage | AOS8 reachable = live path; unreachable = paste fallback — D-04 amendment pattern | ✓ Good — clean operator UX; AOS6/IAP paths untouched |
+| RULES-03 deferred to Stage 4 A11 (not Stage 3) | Avoids a second ClearPass call in Stage 3; Batch 3 data already in context at A11 | ✓ Good — D-05 single-call constraint honored |
+| `central_recommend_firmware()` called once fleet-wide (no per-model loop) | Single call returns all firmware recommendations; per-model iteration was unnecessary | ✓ Good — D-05 enforced; explicit "do NOT iterate per model" guard in skill prose |
+| Naming conflicts (SSID/role/VLAN) elevated to REGRESSION | Conflicts are blocking migration issues, not informational — D-07 decision | ✓ Good — SE-appropriate severity; paste-mode A-row severities unchanged |
+| Exec summary instruction folded into existing code fence | Single-fenced block avoids AI emitting only summary and dropping structured report | ✓ Good — consistent with top-down AI template parsing |
+| DETECT-01 live-mode announcement deferred (no live AOS8 env) | No live Mobility Conductor available; prose mechanically correct; verified partially | — Pending — behavioral confirm deferred to v1.2 or when hardware available |
 
 ---
 ## Evolution
@@ -140,4 +152,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 — Phase 12 complete: Central enrichment (ENRICH-01..04) and cutover prerequisite (CUTOVER-01..03) sub-paths inserted into Stages 4 and 5 of aos-migration-readiness.md; SKILL-04 and SKILL-05 validated*
+*Last updated: 2026-04-30 after v1.1 milestone*
