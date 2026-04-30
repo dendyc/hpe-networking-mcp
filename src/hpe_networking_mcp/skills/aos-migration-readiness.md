@@ -18,7 +18,7 @@ description: |
   a go/no-go readiness report with cutover sequencing and rollback
   validation. PoC — for production migrations, use VALID8 (HPE
   channel-partner-only discovery + analysis tool).
-platforms: [central]
+platforms: [central, aos8]
 tags: [central, migration, aos8, aos6, iap, aos10, readiness, audit, vsg]
 tools: [health, central_get_scope_tree, central_get_devices, central_get_aps, central_get_sites, central_get_site_name_id_mapping, central_recommend_firmware, central_get_config_assignments, central_get_server_groups, central_get_wlan_profiles, central_get_roles, central_get_named_vlans, clearpass_get_network_devices, clearpass_get_device_groups, clearpass_get_server_certificates, clearpass_get_local_users, greenlake_get_subscriptions, greenlake_get_workspace, greenlake_get_devices, aos8_get_md_hierarchy, aos8_get_effective_config, aos8_get_ap_database, aos8_get_cluster_state, aos8_show_command, aos8_get_clients, aos8_get_bss_table, aos8_get_active_aps, aos8_get_ap_wired_ports]
 ---
