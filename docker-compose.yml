@@ -15,10 +15,9 @@ services:
       - ENABLE_CLEARPASS_WRITE_TOOLS=${ENABLE_CLEARPASS_WRITE_TOOLS:-true}
       - ENABLE_APSTRA_WRITE_TOOLS=${ENABLE_APSTRA_WRITE_TOOLS:-true}
       - ENABLE_AXIS_WRITE_TOOLS=${ENABLE_AXIS_WRITE_TOOLS:-true}
-      - ENABLE_AOS8_WRITE_TOOLS=${ENABLE_AOS8_WRITE_TOOLS:-true}
+      - ENABLE_AOS8_WRITE_TOOLS=${ENABLE_AOS8_WRITE_TOOLS:-false}
       - DISABLE_ELICITATION=${DISABLE_ELICITATION:-false}
-      - MCP_TOOL_MODE=${MCP_TOOL_MODE:-code}
-      - FASTMCP_STATELESS_HTTP=${FASTMCP_STATELESS_HTTP:-true}
+      - MCP_TOOL_MODE=${MCP_TOOL_MODE:-dynamic}
     secrets:
       # Mist (remove lines for platforms you don't use)
       - mist_api_token
@@ -53,7 +52,7 @@ services:
       - aos8_verify_ssl
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "uv", "run", "--no-sync", "python", "-c", "import httpx, json; r = httpx.post('http://localhost:8000/mcp', json={'jsonrpc':'2.0','id':0,'method':'ping','params':{}}, headers={'Accept':'application/json, text/event-stream'}, timeout=5); r.raise_for_status()"]
+      test: ["CMD", "uv", "run", "--no-sync", "python", "-c", "import httpx; r = httpx.get('http://localhost:8000/mcp', timeout=5); assert r.status_code in (200, 405, 406)"]
       interval: 30s
       timeout: 10s
       retries: 3

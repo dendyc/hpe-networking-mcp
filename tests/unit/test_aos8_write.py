@@ -119,6 +119,7 @@ async def test_manage_ssid_profile_delete_uses_delete_action():
 
 async def test_manage_ssid_profile_invalid_action_raises():
     from fastmcp.exceptions import ToolError
+
     from hpe_networking_mcp.platforms.aos8.tools.writes import aos8_manage_ssid_profile
 
     ctx, _ = _make_ctx({})
@@ -134,6 +135,7 @@ async def test_manage_ssid_profile_invalid_action_raises():
 
 async def test_manage_ssid_profile_missing_profile_name_raises():
     from fastmcp.exceptions import ToolError
+
     from hpe_networking_mcp.platforms.aos8.tools.writes import aos8_manage_ssid_profile
 
     ctx, _ = _make_ctx({})
@@ -148,9 +150,8 @@ async def test_manage_ssid_profile_missing_profile_name_raises():
 
 
 async def test_manage_ssid_profile_global_result_error_returns_error_dict():
-    from hpe_networking_mcp.platforms.aos8.tools.writes import aos8_manage_ssid_profile
-
     from hpe_networking_mcp.platforms.aos8.client import AOS8APIError
+    from hpe_networking_mcp.platforms.aos8.tools.writes import aos8_manage_ssid_profile
 
     ctx, client = _make_ctx({})
     client.request = AsyncMock(side_effect=AOS8APIError("Profile already exists"))

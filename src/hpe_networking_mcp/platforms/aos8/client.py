@@ -164,16 +164,10 @@ class AOS8Client:
                 or ``_global_result.status != "0"``.
         """
         logger.info("AOS8: requesting new session token from {}", self._config.host)
-        # Recreate the httpx client for each login so the new session starts
-        # with a clean cookie jar and a fresh TLS connection. Stale SESSION
-        # cookies from a previous (now-expired) session can interfere with
-        # login on some AOS8 firmware versions.
-        old_http = self._http
-        self._http = self._make_http_client()
-        try:
-            await old_http.aclose()
-        except Exception:  # noqa: BLE001 — closing old client must not abort login
-            pass
+        # Clear any stale SESSION cookies from a prior (expired) session before
+        # re-logging in — preserves the persistent _http (and any test-installed
+        # MockTransport) while still giving AOS8 a clean cookie jar for login.
+        self._http.cookies.clear()
 
         try:
             response = await self._http.post(
@@ -352,28 +346,6 @@ class AOS8Client:
 
         version: str = body.get("Version") or body.get("version") or "unknown"
         return {"hostname": hostname, "version": version, "raw": body}
-
-    async def reset_session(self) -> None:
-        """Log out the current session and clear local state.
-
-        Called after the startup health probe. Controllers configured for
-        single-session-per-user reject a new login while an existing session
-        is live. Logging out first ensures the server-side session is closed
-        before the first real tool call re-authenticates.
-        """
-        if self._token is not None:
-            try:
-                await self._http.post(
-                    "/v1/api/logout",
-                    params={"UIDARUBA": self._token},
-                    timeout=_AUTH_TIMEOUT,
-                )
-                logger.debug("AOS8: startup probe session logged out cleanly")
-            except Exception as exc:  # noqa: BLE001
-                logger.warning("AOS8: startup probe logout failed (non-fatal) — {}", exc)
-        self._token = None
-        self._http.cookies.clear()
-        logger.debug("AOS8: session reset after startup probe — next call will re-authenticate")
 
     async def aclose(self) -> None:
         """Log out from AOS8 and close the underlying httpx client.

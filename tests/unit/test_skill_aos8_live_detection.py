@@ -56,6 +56,4 @@ class TestAOS8LiveDetectionTools:
         )
 
     def test_skill_file_exists(self) -> None:
-        assert SKILL_PATH.is_file(), (
-            f"aos-migration-readiness skill file missing at {SKILL_PATH}"
-        )
+        assert SKILL_PATH.is_file(), f"aos-migration-readiness skill file missing at {SKILL_PATH}"
